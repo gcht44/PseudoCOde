@@ -32,7 +32,7 @@ int main()
 	std::cout << "\n\n\n";
 
 
-	AnalizeSemantique as;
+	/*AnalizeSemantique as;
 	as.allAnalize(parser.getAST()->getTableAST());
 
 
@@ -47,7 +47,7 @@ int main()
 	std::cout << "\n\n\n";
 
 	std::cout << "Execute:\n";
-	bc.executeByteCode();
+	bc.executeByteCode();*/
 
 
 	return 0;

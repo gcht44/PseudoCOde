@@ -60,7 +60,7 @@ bool AnalizeSemantique::analize(ASTNode* node)
 		// std::cout << "Print" << std::endl;
 		analize(printNode->getExpr().get());
 	}
-	else if (auto numberNode = dynamic_cast<const NumberNode*>(node))
+	else if (auto numberNode = dynamic_cast<const IntNode*>(node))
 	{
 		return true;
 	}

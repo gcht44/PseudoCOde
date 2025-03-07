@@ -98,7 +98,7 @@ std::unique_ptr<ASTNode> Parser::parseFactorAST()
 		return expr;
 	}
 	else if (match(TokenType::NUMBER)) { // Gère les nombres
-		std::unique_ptr<ASTNode> num = std::make_unique<NumberNode>(this->TokenList[pos - 1].value);
+		std::unique_ptr<ASTNode> num = std::make_unique<IntNode>(this->TokenList[pos - 1].value);
 		// pos++;
 		return num;
 	}
@@ -106,6 +106,11 @@ std::unique_ptr<ASTNode> Parser::parseFactorAST()
 		std::unique_ptr<ASTNode> var = std::make_unique<IdentifierNode>(this->TokenList[pos - 1].value);
 		// pos++;
 		return var;
+	}
+	else if (match(TokenType::KEYWORD, "TRUE") || match(TokenType::KEYWORD, "FALSE")) { 
+		std::unique_ptr<ASTNode> bool_ = std::make_unique<BoolNode>(this->TokenList[pos - 1].value);
+		// pos++;
+		return bool_;
 	}
 	else {
 		err("Token Inconnu");
@@ -146,7 +151,7 @@ std::unique_ptr<ASTNode> Parser::parsePrintAST()
 bool Parser::parseVar()
 {
 
-	if (match(TokenType::KEYWORD, "var"))
+	if (match(TokenType::KEYWORD, "ENTIER"))
 	{
 		int currPos = pos;
 
@@ -154,6 +159,16 @@ bool Parser::parseVar()
 		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
 		this->programAST->addStatement(parseVarAST(currPos));
 		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }	
+		return true;
+	}
+	else if (match(TokenType::KEYWORD, "BOOLEAN"))
+	{
+		int currPos = pos;
+
+		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'var'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
+		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
+		this->programAST->addStatement(parseVarAST(currPos));
+		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
 		return true;
 	}
 		

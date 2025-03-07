@@ -1,4 +1,11 @@
-﻿  Parser.cpp
-C:\Users\Administrateur\Desktop\PseudoCOde-main\Compilateur\Parser.cpp(51,1): warning C4715: 'Parser::tokenTypeToStr' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\Administrateur\Desktop\PseudoCOde-main\Compilateur\Parser.cpp(113,1): warning C4715: 'Parser::parseFactorAST' : les chemins de contrôle ne retournent pas tous une valeur
-  Compilateur.vcxproj -> C:\Users\Administrateur\Desktop\PseudoCOde-main\x64\Debug\Compilateur.exe
+﻿  AST.cpp
+  ByteCode.cpp
+  Main.cpp
+  Parser.cpp
+  SemantiqueAnalize.cpp
+  SymbolTable.cpp
+  Génération de code en cours...
+C:\Users\i2402509\Desktop\PseudoCOde-main\Compilateur\SemantiqueAnalize.cpp(72,1): warning C4715: 'AnalizeSemantique::analize' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\i2402509\Desktop\PseudoCOde-main\Compilateur\Parser.cpp(51,1): warning C4715: 'Parser::tokenTypeToStr' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\i2402509\Desktop\PseudoCOde-main\Compilateur\Parser.cpp(118,1): warning C4715: 'Parser::parseFactorAST' : les chemins de contrôle ne retournent pas tous une valeur
+  Compilateur.vcxproj -> C:\Users\i2402509\Desktop\PseudoCOde-main\x64\Debug\Compilateur.exe

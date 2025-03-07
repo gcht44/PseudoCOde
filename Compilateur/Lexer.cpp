@@ -32,7 +32,10 @@ Token Lexer::readIdentifierOrKeyword(std::string ligne)
 {
     std::string value;
     while (std::isalnum(ligne[pos])) { value.push_back(ligne[pos++]); } // la boucle va s'arreter au premier espace qu'elle voit
-    if (value == "var") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "ENTIER") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "BOOLEAN") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "TRUE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "FALSE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "print") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "VARIABLE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "DEBUT") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);

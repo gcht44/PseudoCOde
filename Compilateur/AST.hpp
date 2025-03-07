@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include "SymbolTable.hpp"
 
 // Classe abstraite
 
@@ -13,11 +14,20 @@ public:
 };
 
 // Noeud pour un nombre
-class NumberNode : public ASTNode{
+class IntNode : public ASTNode{
 private:
     std::string value;
 public:
-    NumberNode(std::string v) : value(v) {}
+    IntNode(std::string v) : value(v) {}
+    void print(int indent = 0) const override;
+    std::string getValue() const;
+};
+
+class BoolNode : public ASTNode {
+private:
+    std::string value;
+public:
+    BoolNode(std::string v) : value(v) {}
     void print(int indent = 0) const override;
     std::string getValue() const;
 };

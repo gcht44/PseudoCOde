@@ -45,7 +45,7 @@ void ByteCode::generateBytecode(const ASTNode* node) {
 }
 
 void ByteCode::generateExpressionBytecode(const ASTNode* node) {
-    if (auto number = dynamic_cast<const NumberNode*>(node)) {
+    if (auto number = dynamic_cast<const IntNode*>(node)) {
         this->bytecode.push_back({ PUSH_CONST, "", std::stoi(number->getValue())});
     }
     else if (auto ident = dynamic_cast<const IdentifierNode*>(node)) {
