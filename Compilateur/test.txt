@@ -1,0 +1,7 @@
+VARIABLE:
+var x = 3;
+var y = 3;
+
+DEBUT:
+y = x + 2 * 4;
+print(y + x);
