@@ -1,5 +1,6 @@
 VARIABLE:
-ENTIER x = 3;
+REEL x = 13.03;
+ENTIER z = 30;
 BOOLEAN y = TRUE;
 
 DEBUT:

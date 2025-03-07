@@ -13,7 +13,7 @@ public:
     virtual void print(int indent = 0) const = 0;
 };
 
-// Noeud pour un nombre
+// Noeud pour un ENTIER
 class IntNode : public ASTNode{
 private:
     std::string value;
@@ -23,6 +23,17 @@ public:
     std::string getValue() const;
 };
 
+// Noeud pour un REEL
+class ReelNode : public ASTNode {
+private:
+    std::string value;
+public:
+    ReelNode(std::string v) : value(v) {}
+    void print(int indent = 0) const override;
+    std::string getValue() const;
+};
+
+// Noeud pour un BOOLEAN
 class BoolNode : public ASTNode {
 private:
     std::string value;

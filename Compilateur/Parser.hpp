@@ -5,6 +5,7 @@
 #include <vector>
 #include "Lexer.hpp"
 #include "AST.hpp"
+#include "SymbolTable.hpp"
 
 class Parser {
 
@@ -16,6 +17,7 @@ private:
 	int pos;
 	std::vector<Token> TokenList;
 	std::unique_ptr<ProgramNode> programAST;
+	SymbolTable symbolTable;
 	bool isVarParse;
 
 	std::unique_ptr<ASTNode> parseVarAST(int currPos);

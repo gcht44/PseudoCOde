@@ -21,6 +21,7 @@ enum class TokenType {
     MULT,
     DIV,
     COLON,
+    DOT,
     END
 };
 

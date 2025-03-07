@@ -1,5 +1,4 @@
 #include "AST.hpp"
-#include "SymbolTable.hpp"
 
 // Fonction utilitaire pour l'affichage indenté
 void printIndent(int indent) 
@@ -14,6 +13,16 @@ void IntNode::print(int indent) const
     std::cout << "ENTIER: " << value << "\n";   
 }
 std::string IntNode::getValue() const
+{
+    return this->value;
+}
+
+void ReelNode::print(int indent) const
+{
+    printIndent(indent);
+    std::cout << "REEL: " << value << "\n";
+}
+std::string ReelNode::getValue() const
 {
     return this->value;
 }

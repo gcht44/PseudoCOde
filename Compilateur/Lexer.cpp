@@ -34,6 +34,7 @@ Token Lexer::readIdentifierOrKeyword(std::string ligne)
     while (std::isalnum(ligne[pos])) { value.push_back(ligne[pos++]); } // la boucle va s'arreter au premier espace qu'elle voit
     if (value == "ENTIER") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "BOOLEAN") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "REEL") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "TRUE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "FALSE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "print") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
@@ -75,6 +76,7 @@ Token Lexer::GetNextToken(std::string ligne)
         case '*': pos++; return Token(TokenType::MULT, "*", nbLigne + 1, pos);
         case '/': pos++; return Token(TokenType::DIV, "/", nbLigne + 1, pos);
         case ':': pos++; return Token(TokenType::COLON, ":", nbLigne + 1, pos);
+        case '.': pos++; return Token(TokenType::DOT, ".", nbLigne + 1, pos);
     }
 
     std::cerr << "[LEXER] ERR: Charactere " << ligne[pos] << " non defini" << std::endl;
@@ -132,6 +134,7 @@ void Lexer::printTokens(std::vector<Token> t)
         case TokenType::MULT: s = "Type: MULT, "; break;
         case TokenType::DIV: s = "Type: DIV, "; break;
         case TokenType::COLON: s = "Type: COLON, "; break;
+        case TokenType::DOT: s = "Type: DOT, "; break;
         case TokenType::END: s = "Type: END, "; break;
 
         }

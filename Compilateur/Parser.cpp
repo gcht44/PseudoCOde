@@ -53,7 +53,7 @@ std::string Parser::tokenTypeToStr(TokenType type)
 void Parser::err(std::string msg)
 {
 	std::cerr << "Ligne: " << TokenList[pos].li << " Colonne: " << TokenList[pos].col << std::endl;
-	std::cerr << "	[PARSER] ERR: " << msg << " au token " << tokenTypeToStr(TokenList[pos].type) << std::endl;
+	std::cerr << "	[PARSER] ERR: " << msg << " au token " << tokenTypeToStr(TokenList[pos].type) << "value: " << TokenList[pos].value << std::endl;
 	exit(1);
 }
 
@@ -98,7 +98,14 @@ std::unique_ptr<ASTNode> Parser::parseFactorAST()
 		return expr;
 	}
 	else if (match(TokenType::NUMBER)) { // Gère les nombres
-		std::unique_ptr<ASTNode> num = std::make_unique<IntNode>(this->TokenList[pos - 1].value);
+		std::unique_ptr<ASTNode> num;
+		if (match(TokenType::DOT))
+		{
+			if (!match(TokenType::NUMBER)) { err("Erreur de déclaration de REEL"); }
+			num = std::make_unique<ReelNode>(this->TokenList[pos - 3].value + this->TokenList[pos - 2].value + this->TokenList[pos - 1].value);
+			return num;
+		}
+		num = std::make_unique<IntNode>(this->TokenList[pos - 1].value);
 		// pos++;
 		return num;
 	}
@@ -154,23 +161,41 @@ bool Parser::parseVar()
 	if (match(TokenType::KEYWORD, "ENTIER"))
 	{
 		int currPos = pos;
+		std::string name = this->TokenList[pos].value;
 
-		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'var'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
+		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'ENTIER'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
 		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
 		this->programAST->addStatement(parseVarAST(currPos));
 		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }	
+		symbolTable.addVariable(name, Type::ENTIER);
+		return true;
+	}
+	else if (match(TokenType::KEYWORD, "REEL"))
+	{
+		int currPos = pos;
+		std::string name = this->TokenList[pos].value;
+
+		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'ENTIER'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
+		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
+		this->programAST->addStatement(parseVarAST(currPos));
+		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
+		symbolTable.addVariable(name, Type::REEL);
 		return true;
 	}
 	else if (match(TokenType::KEYWORD, "BOOLEAN"))
 	{
 		int currPos = pos;
+		std::string name = this->TokenList[pos].value;
 
-		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'var'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
+		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'ENTIER'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
 		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
 		this->programAST->addStatement(parseVarAST(currPos));
 		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
+		symbolTable.addVariable(name, Type::BOOL);
 		return true;
 	}
+	else { err("Token non attendu ici"); }
+
 		
 	return false;
 }
@@ -190,7 +215,7 @@ bool Parser::parsePrint()
 }
 
 bool Parser::parseStatement() {
-	return parseVar() ||  parsePrint() || parseAssignement();
+	return parsePrint() || parseAssignement();
 }
 
 bool Parser::parseProg()
