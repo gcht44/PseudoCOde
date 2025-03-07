@@ -145,30 +145,19 @@ std::unique_ptr<ASTNode> Parser::parsePrintAST()
 
 bool Parser::parseVar()
 {
-	int i = 0;
-	while (true) // Tant qu'il voit pas le mot clé debut, il parse les var
+
+	if (match(TokenType::KEYWORD, "var"))
 	{
-		if (i == 100) { err("Vous n'avez pas utilisé le mot clé VARIABLE ou DEBUT"); } // Sécurité pour les boucles infinies
+		int currPos = pos;
 
-		if (match(TokenType::KEYWORD, "var"))
-		{
-			int currPos = pos;
-
-			if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'var'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
-			if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
-			this->programAST->addStatement(parseVarAST(currPos));
-			if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
-			
-
-		}
-		else if (match(TokenType::KEYWORD, "DEBUT")) { break; }
-		else { err("On peut uniquement déclarer des variables ici"); }
-		i++;
+		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'var'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
+		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
+		this->programAST->addStatement(parseVarAST(currPos));
+		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }	
+		return true;
 	}
-	std::cout << this->TokenList[pos].value << " " << this->TokenList[pos + 1].value << std::endl;
-	if (!match(TokenType::COLON)) { err("':' attendu apres le mot clé DEBUT"); };
-	isVarParse = false;
-	return true;
+		
+	return false;
 }
 
 bool Parser::parsePrint()
@@ -195,7 +184,15 @@ bool Parser::parseProg()
 	{
 		if (match(TokenType::KEYWORD, "VARIABLE") && match(TokenType::COLON))
 		{
-			parseVar();
+			while (true)
+			{
+
+				parseVar();
+				if (match(TokenType::KEYWORD, "DEBUT")) { break; }
+				// else { err("On peut uniquement déclarer des variables ici"); }
+			}
+			if (!match(TokenType::COLON)) { err("':' attendu a la fin de DEBUT"); }
+			this->isVarParse = false;
 		}
 		else if (!this->isVarParse)
 		{

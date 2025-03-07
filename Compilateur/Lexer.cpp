@@ -25,7 +25,7 @@ Lexer::Lexer(std::string f)
         this->contenu.push_back(ligne);
     }
 
-    fichier.close(); // (Optionnel car le destructeur de ifstream le fait)
+    fichier.close(); 
 }
 
 Token Lexer::readIdentifierOrKeyword(std::string ligne)
@@ -128,6 +128,7 @@ void Lexer::printTokens(std::vector<Token> t)
         case TokenType::SUB: s = "Type: SUB, "; break;
         case TokenType::MULT: s = "Type: MULT, "; break;
         case TokenType::DIV: s = "Type: DIV, "; break;
+        case TokenType::COLON: s = "Type: COLON, "; break;
         case TokenType::END: s = "Type: END, "; break;
 
         }
