@@ -1,8 +1,7 @@
 VARIABLE:
-REEL x = 13.03;
+REEL x = 13.3;
 ENTIER z = 30;
-BOOLEAN y = TRUE;
 
 DEBUT:
-y = y + 2 * 4;
-print(y + x);
+z = z + 4;
+print(30.3 + x);

@@ -3,6 +3,22 @@
   "WorkspaceRootPath": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\ByteCode.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\ByteCode.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\AST.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\AST.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SemantiqueAnalize.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\SemantiqueAnalize.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -11,32 +27,36 @@
       "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\Parser.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Parser.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\Parser.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Lexer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\Lexer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\AST.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\test.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\test.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Lexer.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\Lexer.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\test.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\test.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SymbolTable.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\SymbolTable.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\AST.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Parser.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\Parser.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SymbolTable.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\SymbolTable.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SemantiqueAnalize.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\SemantiqueAnalize.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Lexer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\Lexer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -51,40 +71,118 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "SemantiqueAnalize.cpp",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SemantiqueAnalize.cpp",
-              "RelativeDocumentMoniker": "Compilateur\\SemantiqueAnalize.cpp",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SemantiqueAnalize.cpp",
-              "RelativeToolTip": "Compilateur\\SemantiqueAnalize.cpp",
-              "ViewState": "AgIAACEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "ByteCode.cpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.cpp",
+              "RelativeDocumentMoniker": "Compilateur\\ByteCode.cpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.cpp",
+              "RelativeToolTip": "Compilateur\\ByteCode.cpp",
+              "ViewState": "AgIAAJoAAAAAAAAAAAAuwKQAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-07T22:59:13.24Z",
+              "WhenOpened": "2025-03-09T19:23:03.722Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
+              "Title": "Lexer.hpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Lexer.hpp",
+              "RelativeDocumentMoniker": "Compilateur\\Lexer.hpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Lexer.hpp",
+              "RelativeToolTip": "Compilateur\\Lexer.hpp",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAuwDoAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-09T18:57:46.621Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "SymbolTable.hpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SymbolTable.hpp",
+              "RelativeDocumentMoniker": "Compilateur\\SymbolTable.hpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SymbolTable.hpp",
+              "RelativeToolTip": "Compilateur\\SymbolTable.hpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-09T12:12:31.653Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ByteCode.hpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.hpp",
+              "RelativeDocumentMoniker": "Compilateur\\ByteCode.hpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.hpp",
+              "RelativeToolTip": "Compilateur\\ByteCode.hpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-09T12:02:54.542Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SymbolTable.cpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SymbolTable.cpp",
+              "RelativeDocumentMoniker": "Compilateur\\SymbolTable.cpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SymbolTable.cpp",
+              "RelativeToolTip": "Compilateur\\SymbolTable.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-08T09:43:10.324Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "AST.hpp",
               "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.hpp",
               "RelativeDocumentMoniker": "Compilateur\\AST.hpp",
               "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.hpp",
               "RelativeToolTip": "Compilateur\\AST.hpp",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAB4AAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-03-07T22:36:42.499Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Lexer.hpp",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Lexer.hpp",
-              "RelativeDocumentMoniker": "Compilateur\\Lexer.hpp",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Lexer.hpp",
-              "RelativeToolTip": "Compilateur\\Lexer.hpp",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAABcAAAAIAAAAAAAAAA==",
+              "DocumentIndex": 12,
+              "Title": "Main.cpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Main.cpp",
+              "RelativeDocumentMoniker": "Compilateur\\Main.cpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Main.cpp",
+              "RelativeToolTip": "Compilateur\\Main.cpp",
+              "ViewState": "AgIAACQAAAAAAAAAAAAhwDEAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-07T22:30:25.341Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "SemantiqueAnalize.hpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SemantiqueAnalize.hpp",
+              "RelativeDocumentMoniker": "Compilateur\\SemantiqueAnalize.hpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SemantiqueAnalize.hpp",
+              "RelativeToolTip": "Compilateur\\SemantiqueAnalize.hpp",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABEAAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-07T22:32:44.968Z",
+              "WhenOpened": "2025-03-08T09:37:44.87Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Parser.cpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Parser.cpp",
+              "RelativeDocumentMoniker": "Compilateur\\Parser.cpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Parser.cpp",
+              "RelativeToolTip": "Compilateur\\Parser.cpp",
+              "ViewState": "AgIAAPYAAAAAAAAAAAAAAP4AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-08T09:40:23.672Z",
               "EditorCaption": ""
             },
             {
@@ -95,27 +193,53 @@
               "RelativeDocumentMoniker": "Compilateur\\test.txt",
               "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\test.txt",
               "RelativeToolTip": "Compilateur\\test.txt",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
               "WhenOpened": "2025-03-07T22:30:39.545Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Main.cpp",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Main.cpp",
-              "RelativeDocumentMoniker": "Compilateur\\Main.cpp",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Main.cpp",
-              "RelativeToolTip": "Compilateur\\Main.cpp",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "AST.cpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.cpp",
+              "RelativeDocumentMoniker": "Compilateur\\AST.cpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.cpp",
+              "RelativeToolTip": "Compilateur\\AST.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-07T22:30:25.341Z",
+              "WhenOpened": "2025-03-09T19:13:45.147Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
+              "Title": "SemantiqueAnalize.cpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SemantiqueAnalize.cpp",
+              "RelativeDocumentMoniker": "Compilateur\\SemantiqueAnalize.cpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\SemantiqueAnalize.cpp",
+              "RelativeToolTip": "Compilateur\\SemantiqueAnalize.cpp",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAABMAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-07T22:59:13.24Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Parser.hpp",
+              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Parser.hpp",
+              "RelativeDocumentMoniker": "Compilateur\\Parser.hpp",
+              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Parser.hpp",
+              "RelativeToolTip": "Compilateur\\Parser.hpp",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABUAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-03-07T20:40:53.489Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "Lexer.cpp",
               "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Lexer.cpp",
               "RelativeDocumentMoniker": "Compilateur\\Lexer.cpp",
@@ -123,47 +247,7 @@
               "RelativeToolTip": "Compilateur\\Lexer.cpp",
               "ViewState": "AgIAABsAAAAAAAAAAAAuwCQAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-07T22:25:10.355Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Parser.hpp",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Parser.hpp",
-              "RelativeDocumentMoniker": "Compilateur\\Parser.hpp",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Parser.hpp",
-              "RelativeToolTip": "Compilateur\\Parser.hpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-07T20:40:53.489Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Parser.cpp",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Parser.cpp",
-              "RelativeDocumentMoniker": "Compilateur\\Parser.cpp",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Parser.cpp",
-              "RelativeToolTip": "Compilateur\\Parser.cpp",
-              "ViewState": "AgIAAK4AAAAAAAAAAAAQwMIAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-07T20:40:37.921Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AST.cpp",
-              "DocumentMoniker": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.cpp",
-              "RelativeDocumentMoniker": "Compilateur\\AST.cpp",
-              "ToolTip": "C:\\Users\\Administrateur\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.cpp",
-              "RelativeToolTip": "Compilateur\\AST.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-07T20:40:08.126Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-07T22:25:10.355Z"
             }
           ]
         }

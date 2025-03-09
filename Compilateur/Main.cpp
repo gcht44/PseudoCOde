@@ -32,22 +32,30 @@ int main()
 	std::cout << "\n\n\n";
 
 
-	/*AnalizeSemantique as;
-	as.allAnalize(parser.getAST()->getTableAST());
+	AnalizeSemantique as;
+	as.allAnalize(parser.getAST()->getTableAST(), parser.getSymbolTable());
 
 
 	std::cout << "\n\n\n";
 
 
-	ByteCode bc;
-	bc.generateAllByteCode(parser.getAST()->getTableAST());
-	bc.printByteCode();
+	try {
+		ByteCode bc;
+		bc.generateAllByteCode(parser.getAST()->getTableAST(), parser.getSymbolTable());
+		bc.printByteCode();
 
+		std::cout << "\n\n\n";
 
-	std::cout << "\n\n\n";
+		std::cout << "Execute:\n";
+		bc.executeByteCode();
+	}
+	catch (const std::runtime_error& e) {
+		std::cerr << "Erreur runtime: " << e.what() << std::endl;
+	}
+	catch (const std::exception& e) {
+		std::cerr << "Erreur standard: " << e.what() << std::endl;
+	}
 
-	std::cout << "Execute:\n";
-	bc.executeByteCode();*/
 
 
 	return 0;

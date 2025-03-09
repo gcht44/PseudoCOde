@@ -5,12 +5,15 @@
 #include <vector>
 #include "SymbolTable.hpp"
 
+std::string printType(Type type);
+
 // Classe abstraite
 
 class ASTNode {
 public:
     virtual ~ASTNode() = default;
     virtual void print(int indent = 0) const = 0;
+    virtual Type checkType(SymbolTable& symbolTable) const = 0;
 };
 
 // Noeud pour un ENTIER
@@ -21,6 +24,7 @@ public:
     IntNode(std::string v) : value(v) {}
     void print(int indent = 0) const override;
     std::string getValue() const;
+    Type checkType(SymbolTable& symbolTable) const override;
 };
 
 // Noeud pour un REEL
@@ -31,6 +35,7 @@ public:
     ReelNode(std::string v) : value(v) {}
     void print(int indent = 0) const override;
     std::string getValue() const;
+    Type checkType(SymbolTable& symbolTable) const override;
 };
 
 // Noeud pour un BOOLEAN
@@ -41,6 +46,7 @@ public:
     BoolNode(std::string v) : value(v) {}
     void print(int indent = 0) const override;
     std::string getValue() const;
+    Type checkType(SymbolTable& symbolTable) const override;
 };
 
 // Noeud pour une variable (identifiant)
@@ -51,6 +57,7 @@ public:
     IdentifierNode(const std::string& n) : name(n) {}
     void print(int indent = 0) const override;
     std::string getName() const;
+    Type checkType(SymbolTable& symbolTable) const override;
 };
 
 // Noeud pour une opération binaire (ex: x + 2)
@@ -66,6 +73,7 @@ public:
     std::string getOp() const;
     const std::unique_ptr<ASTNode>& getLeft() const;
     const std::unique_ptr<ASTNode>& getRight() const;
+    Type checkType(SymbolTable& symbolTable) const override;
 };
 
 // Noeud pour une déclaration de variable (let x = ...)
@@ -79,6 +87,7 @@ public:
     void print(int indent = 0) const override;
     std::string getName() const;
     const std::unique_ptr<ASTNode>& getExpr() const;
+    Type checkType(SymbolTable& symbolTable) const override;
 };
 
 // Noeud pour une assignation (x = y + 1)
@@ -92,6 +101,7 @@ public:
     void print(int indent = 0) const override;
     std::string getName() const;
     const std::unique_ptr<ASTNode>& getExpr() const;
+    Type checkType(SymbolTable& symbolTable) const override;
 };
 
 // Noeud pour une instruction print (print x)
@@ -101,6 +111,7 @@ public:
     PrintNode(std::unique_ptr<ASTNode> expr) : expression(std::move(expr)) {}
     void print(int indent = 0) const override;
     const std::unique_ptr<ASTNode>& getExpr() const;
+    Type checkType(SymbolTable& symbolTable) const;
 };
 
 
@@ -113,6 +124,7 @@ public:
     void addStatement(std::unique_ptr<ASTNode> stmt);
     void print(int indent = 0) const override;  
     const std::vector<std::unique_ptr<ASTNode>>& getTableAST() const;
+    Type checkType(SymbolTable& symbolTable) const;
 };
 
 #endif

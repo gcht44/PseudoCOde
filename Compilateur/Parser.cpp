@@ -251,3 +251,8 @@ std::unique_ptr<ProgramNode>& Parser::getAST()
 {
 	return programAST;
 }
+
+SymbolTable& Parser::getSymbolTable()
+{
+	return symbolTable;
+}

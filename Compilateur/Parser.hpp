@@ -13,6 +13,7 @@ public:
 	Parser(std::vector<Token> tokens);
 	bool parseProg();
 	std::unique_ptr<ProgramNode>& getAST();
+	SymbolTable& getSymbolTable();
 private:
 	int pos;
 	std::vector<Token> TokenList;

@@ -11,11 +11,11 @@ private:
 	std::map<std::string, bool> symbolTable;
 	// const std::vector<std::unique_ptr<ASTNode>>& ASTTable;
 	void err(std::string msg);
-	bool analize(ASTNode* node);
+	bool analize(ASTNode* node, SymbolTable& symbolTable);
 	
 public:
 	AnalizeSemantique();
-	void allAnalize(const std::vector<std::unique_ptr<ASTNode>>& AST);
+	void allAnalize(const std::vector<std::unique_ptr<ASTNode>>& AST, SymbolTable& symbolTable);
 
 };
 

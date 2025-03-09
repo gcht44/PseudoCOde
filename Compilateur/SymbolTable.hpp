@@ -9,7 +9,7 @@ enum class Type {
     REEL,
     BOOL,
     STRING,
-    // Ajoute d'autres types au besoin
+    NONE,
 };
 
 struct VariableInfo {
