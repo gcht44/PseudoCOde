@@ -68,6 +68,20 @@ Type BoolNode::checkType(SymbolTable & symbolTable) const
     return Type::BOOL;
 }
 
+void StringNode::print(int indent) const
+{
+    printIndent(indent);
+    std::cout << "BOOLEAN: " << this->value << "\n";
+}
+std::string StringNode::getValue() const
+{
+    return this->value;
+}
+Type StringNode::checkType(SymbolTable& symbolTable) const
+{
+    return Type::STRING;
+}
+
 
 // Noeud pour une variable (identifiant)
 void IdentifierNode::print(int indent) const
@@ -119,6 +133,18 @@ Type BinaryOpNode::checkType(SymbolTable& symbolTable) const
             exit(1);
         }
         return leftType; // Retourne le type de l'expression
+    }
+    else if (op == "&&" || op == "||") 
+    {
+        if (leftType != Type::BOOL) 
+        {
+            throw "Erreur de type: opération logique sur des types non booléens";
+        }
+        return Type::BOOL; // Retourne le type de l'expression
+    }
+    else 
+    {
+        throw "Erreur: opérateur non supporté";
     }
 }
 

@@ -77,6 +77,8 @@ Token Lexer::GetNextToken(std::string ligne)
         case '/': pos++; return Token(TokenType::DIV, "/", nbLigne + 1, pos);
         case ':': pos++; return Token(TokenType::COLON, ":", nbLigne + 1, pos);
         case '.': pos++; return Token(TokenType::DOT, ".", nbLigne + 1, pos);
+        case ',': pos++; return Token(TokenType::COMMA, ",", nbLigne + 1, pos);
+        case '"': pos++; return Token(TokenType::QUOTE, "\"", nbLigne + 1, pos);
     }
 
     std::cerr << "[LEXER] ERR: Charactere " << ligne[pos] << " non defini" << std::endl;
@@ -135,6 +137,8 @@ void Lexer::printTokens(std::vector<Token> t)
         case TokenType::DIV: s = "Type: DIV, "; break;
         case TokenType::COLON: s = "Type: COLON, "; break;
         case TokenType::DOT: s = "Type: DOT, "; break;
+        case TokenType::COMMA: s = "Type: COMMA, "; break;
+        case TokenType::QUOTE: s = "Type: QUOTE, "; break;
         case TokenType::END: s = "Type: END, "; break;
 
         }

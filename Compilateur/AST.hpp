@@ -49,6 +49,17 @@ public:
     Type checkType(SymbolTable& symbolTable) const override;
 };
 
+// Noeud pour un STRING
+class StringNode : public ASTNode {
+private:
+    std::string value;
+public:
+    StringNode(std::string v) : value(v) {}
+    void print(int indent = 0) const override;
+    std::string getValue() const;
+    Type checkType(SymbolTable& symbolTable) const override;
+};
+
 // Noeud pour une variable (identifiant)
 class IdentifierNode : public ASTNode {
 private:

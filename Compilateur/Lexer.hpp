@@ -22,6 +22,8 @@ enum class TokenType {
     DIV,
     COLON,
     DOT,
+    COMMA,
+    QUOTE,
     END
 };
 

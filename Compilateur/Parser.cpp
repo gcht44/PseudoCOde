@@ -119,6 +119,14 @@ std::unique_ptr<ASTNode> Parser::parseFactorAST()
 		// pos++;
 		return bool_;
 	}
+	else if (match(TokenType::QUOTE))
+	{
+		std::string chaine;
+		while (!match(TokenType::QUOTE)) { chaine = chaine + " " + this->TokenList[pos].value; }
+
+		std::unique_ptr<ASTNode> str = std::make_unique<StringNode>(str);
+		return str;
+	}
 	else {
 		err("Token Inconnu");
 	}
@@ -194,6 +202,19 @@ bool Parser::parseVar()
 		symbolTable.addVariable(name, Type::BOOL);
 		return true;
 	}
+	else if (match(TokenType::KEYWORD, "STRING"))
+	{
+		int currPos = pos;
+		std::string name = this->TokenList[pos].value;
+
+		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'STRING'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
+		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
+		this->programAST->addStatement(parseVarAST(currPos));
+		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
+		symbolTable.addVariable(name, Type::BOOL);
+		return true;
+	}
+
 	else { err("Token non attendu ici"); }
 
 		

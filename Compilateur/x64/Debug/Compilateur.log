@@ -1,2 +1,36 @@
-﻿  ByteCode.cpp
-  Compilateur.vcxproj -> C:\Users\Administrateur\Documents\GitHub\PseudoCOde\x64\Debug\Compilateur.exe
+﻿  Main.cpp
+  Parser.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,35): error C2665: 'StringNode::StringNode' : aucune fonction surchargée n’a pu convertir tous les types d’arguments.
+  (compiler le fichier source 'Parser.cpp')
+      C:\Users\Administrateur\Documents\GitHub\PseudoCOde\Compilateur\AST.hpp(61,1):
+      est peut-être 'StringNode::StringNode(StringNode &&)'
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,35):
+          'StringNode::StringNode(StringNode &&)' : impossible de convertir l'argument 1 de 'std::unique_ptr<ASTNode,std::default_delete<ASTNode>>' en 'StringNode &&'
+              C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
+              Raison : impossible de convertir de 'std::unique_ptr<ASTNode,std::default_delete<ASTNode>>' en 'StringNode'
+              C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
+              Aucun opérateur de conversion définie par l'utilisateur disponible qui puisse effectuer cette conversion, ou l'opérateur ne peut pas être appelé
+      C:\Users\Administrateur\Documents\GitHub\PseudoCOde\Compilateur\AST.hpp(61,1):
+      ou       'StringNode::StringNode(const StringNode &)'
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,35):
+          'StringNode::StringNode(const StringNode &)' : impossible de convertir l'argument 1 de 'std::unique_ptr<ASTNode,std::default_delete<ASTNode>>' en 'const StringNode &'
+              C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
+              Raison : impossible de convertir de 'std::unique_ptr<ASTNode,std::default_delete<ASTNode>>' en 'const StringNode'
+              C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
+              Aucun opérateur de conversion définie par l'utilisateur disponible qui puisse effectuer cette conversion, ou l'opérateur ne peut pas être appelé
+      C:\Users\Administrateur\Documents\GitHub\PseudoCOde\Compilateur\AST.hpp(57,5):
+      ou       'StringNode::StringNode(std::string)'
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,35):
+          'StringNode::StringNode(std::string)' : impossible de convertir l'argument 1 de 'std::unique_ptr<ASTNode,std::default_delete<ASTNode>>' en 'std::string'
+              C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,56):
+              Aucun opérateur de conversion définie par l'utilisateur disponible qui puisse effectuer cette conversion, ou l'opérateur ne peut pas être appelé
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,35):
+      lors de la tentative de mise en correspondance de la liste des arguments '(std::unique_ptr<ASTNode,std::default_delete<ASTNode>>)'
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(3597,35):
+      le contexte d’instanciation du modèle (le plus ancien) est
+          C:\Users\Administrateur\Documents\GitHub\PseudoCOde\Compilateur\Parser.cpp(127,39):
+          voir la référence à l'instanciation de la fonction modèle 'std::unique_ptr<StringNode,std::default_delete<StringNode>> std::make_unique<StringNode,std::unique_ptr<ASTNode,std::default_delete<ASTNode>>&,0>(std::unique_ptr<ASTNode,std::default_delete<ASTNode>> &)' en cours de compilation
+  
+  SemantiqueAnalize.cpp
+  Génération de code en cours...
+C:\Users\Administrateur\Documents\GitHub\PseudoCOde\Compilateur\SemantiqueAnalize.cpp(83,1): warning C4715: 'AnalizeSemantique::analize' : les chemins de contrôle ne retournent pas tous une valeur

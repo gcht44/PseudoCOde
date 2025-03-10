@@ -1,6 +1,6 @@
 VARIABLE:
 REEL x = 13.3;
-ENTIER z = 30;
+STRING z = "caca caca";
 
 DEBUT:
 z = z + 4;

@@ -32,7 +32,7 @@ int main()
 	std::cout << "\n\n\n";
 
 
-	AnalizeSemantique as;
+	/*AnalizeSemantique as;
 	as.allAnalize(parser.getAST()->getTableAST(), parser.getSymbolTable());
 
 
@@ -56,7 +56,7 @@ int main()
 		std::cerr << "Erreur standard: " << e.what() << std::endl;
 	}
 
-
+	*/
 
 	return 0;
 }

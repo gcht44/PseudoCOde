@@ -80,6 +80,7 @@ bool AnalizeSemantique::analize(ASTNode* node, SymbolTable& symbolTable)
 		std::cerr << "[SEMANTIQUE ANALYSE] ERR Noeud Inconnu" << std::endl;
 		return false;
 	}
+	return false;
 }
 
 void AnalizeSemantique::allAnalize(const std::vector<std::unique_ptr<ASTNode>>& AST, SymbolTable& symbolTable)
