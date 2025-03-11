@@ -71,7 +71,7 @@ Type BoolNode::checkType(SymbolTable & symbolTable) const
 void StringNode::print(int indent) const
 {
     printIndent(indent);
-    std::cout << "BOOLEAN: " << this->value << "\n";
+    std::cout << "STRING: " << this->value << "\n";
 }
 std::string StringNode::getValue() const
 {

@@ -122,9 +122,9 @@ std::unique_ptr<ASTNode> Parser::parseFactorAST()
 	else if (match(TokenType::QUOTE))
 	{
 		std::string chaine;
-		while (!match(TokenType::QUOTE)) { chaine = chaine + " " + this->TokenList[pos].value; }
+		while (!match(TokenType::QUOTE)) { chaine = chaine + this->TokenList[pos++].value + " "; }
 
-		std::unique_ptr<ASTNode> str = std::make_unique<StringNode>(str);
+		std::unique_ptr<ASTNode> str = std::make_unique<StringNode>(chaine);
 		return str;
 	}
 	else {
@@ -211,11 +211,11 @@ bool Parser::parseVar()
 		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
 		this->programAST->addStatement(parseVarAST(currPos));
 		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
-		symbolTable.addVariable(name, Type::BOOL);
+		symbolTable.addVariable(name, Type::STRING);
 		return true;
 	}
 
-	else { err("Token non attendu ici"); }
+	else { err("Token non attendu ici ntm ntm"); }
 
 		
 	return false;

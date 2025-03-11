@@ -75,6 +75,10 @@ bool AnalizeSemantique::analize(ASTNode* node, SymbolTable& symbolTable)
 	{
 		return true;
 	}
+	else if (auto stringNode = dynamic_cast<const StringNode*>(node))
+	{
+		return true;
+	}
 	else
 	{
 		std::cerr << "[SEMANTIQUE ANALYSE] ERR Noeud Inconnu" << std::endl;

@@ -3,5 +3,4 @@ REEL x = 13.3;
 STRING z = "caca caca";
 
 DEBUT:
-z = z + 4;
-print(30.3 + x);
+print(z+"fdp");

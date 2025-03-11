@@ -35,6 +35,7 @@ Token Lexer::readIdentifierOrKeyword(std::string ligne)
     if (value == "ENTIER") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "BOOLEAN") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "REEL") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "STRING") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "TRUE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "FALSE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "print") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
@@ -81,7 +82,7 @@ Token Lexer::GetNextToken(std::string ligne)
         case '"': pos++; return Token(TokenType::QUOTE, "\"", nbLigne + 1, pos);
     }
 
-    std::cerr << "[LEXER] ERR: Charactere " << ligne[pos] << " non defini" << std::endl;
+    std::cerr << "[LEXER] ERR: Charactere " << ligne[pos] << "' (ASCII: " << (int)ligne[pos] << ") non defini" << std::endl;
     std::cerr << "Ligne: " << nbLigne << " Colonne: " << pos << std::endl;
     std::cerr << ligne << std::endl;
     exit(1);

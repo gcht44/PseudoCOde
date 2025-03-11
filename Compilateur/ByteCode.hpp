@@ -73,11 +73,19 @@ struct Instruction {
 
 class ByteCode {
 private:
-    std::vector<int> stackInt;
-    std::vector<float> stackReel;
     std::vector<Instruction> bytecode;
+
     std::map<std::string, int> varIntTable;
+    std::vector<int> stackInt;
+
     std::map<std::string, float> varReelTable;
+    std::vector<float> stackReel;
+    
+    std::map<std::string, bool> varBoolTable;
+    std::vector<bool> stackBool;
+
+    std::map<std::string, std::string> varStrTable;
+    std::vector<std::string> stackStr;
 
     void generateBytecode(const ASTNode* node, SymbolTable& symbolTable);
     void generateExpressionBytecode(const ASTNode* node, SymbolTable& symbolTable);
