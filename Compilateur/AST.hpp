@@ -125,6 +125,21 @@ public:
     Type checkType(SymbolTable& symbolTable) const;
 };
 
+// Noeud pour une instruction if 
+class IfNode : public ASTNode {
+public:
+    std::unique_ptr<ASTNode> condition; // La condition (expression)
+    std::vector<std::unique_ptr<ASTNode>> ifBlock; // Bloc de code si la condition est vraie
+    std::vector<std::unique_ptr<ASTNode>> elseBlock; // Bloc de code si la condition est fausse (optionnel)
+
+    IfNode(std::unique_ptr<ASTNode> cond, std::vector<std::unique_ptr<ASTNode>> ifBlk, std::vector<std::unique_ptr<ASTNode>> elseBlk = {})
+        : condition(std::move(cond)), ifBlock(std::move(ifBlk)), elseBlock(std::move(elseBlk)) {}
+
+    void print(int indent = 0) const override;
+    const std::unique_ptr<ASTNode>& getCond() const;
+    Type checkType(SymbolTable& symbolTable) const;
+};
+
 
 
 // Noeud racine contenant toutes les instructions

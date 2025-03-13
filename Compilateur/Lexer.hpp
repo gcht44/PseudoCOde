@@ -24,6 +24,10 @@ enum class TokenType {
     DOT,
     COMMA,
     QUOTE,
+    GREATHER_THAN,
+    LESS_THAN,
+    LEFT_BRACE,
+    RIGHT_BRACE,
     END
 };
 

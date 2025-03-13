@@ -88,6 +88,10 @@ void ByteCode::generateExpressionBytecode(const ASTNode* node, SymbolTable& symb
         {
             this->bytecode.push_back({ DIV, checktype });
         }
+        else if (binaryOp->getOp() == ".")
+        {
+            this->bytecode.push_back({ ADD, checktype });
+        }
     }
     else {
         std::cout << "Expression non supportée." << std::endl;
@@ -258,7 +262,7 @@ void ByteCode::executeByteCode()
             {
                 std::string nbStr1 = popStackString();
                 std::string nbStr2 = popStackString();
-                pushStackString(nbStr1 + nbStr2);
+                pushStackString(nbStr2 + nbStr1);
             }
             else { std::cerr << "[EXEC BYTECODE] ERR: ADD " << this->bytecode[i].arg << " Type non pris en charge" << std::endl; }
             break;

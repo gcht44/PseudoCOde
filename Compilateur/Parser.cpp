@@ -62,19 +62,19 @@ void Parser::err(std::string msg)
 var x = 2;
 x = 5;
 */
-bool Parser::parseAssignement()
+std::unique_ptr<ASTNode> Parser::parseAssignement()
 {
 
 	if (match(TokenType::IDENTIFIER))
 	{
 		int currPos = pos-1;
 		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
-		this->programAST->addStatement(parseAssignementAST(currPos));
+		std::unique_ptr<ASTNode> ASTassignement = parseAssignementAST(currPos);
 		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
 		// std::cout << TokenList[currPos].value << std::endl;
-		return true;
+		return ASTassignement;
 	}
-	return false;
+	// return false;
 }
 
 std::unique_ptr<ASTNode> Parser::parseTermAST()
@@ -135,7 +135,7 @@ std::unique_ptr<ASTNode> Parser::parseFactorAST()
 std::unique_ptr<ASTNode> Parser::parseExpressionAST() {
 
 	std::unique_ptr<ASTNode> left = parseTermAST();
-	while (match(TokenType::PLUS) || match(TokenType::SUB)) {
+	while (match(TokenType::PLUS) || match(TokenType::SUB) || match(TokenType::DOT)) {
 		std::string op = this->TokenList[pos-1].value; // Récupère l'opérateur '+'
 		std::unique_ptr<ASTNode> right = parseTermAST(); // Parse le terme suivant (b, puis c, puis d)
 		left = std::make_unique<BinaryOpNode>(op, std::move(left), std::move(right)); // Crée un nœud d'addition
@@ -163,7 +163,30 @@ std::unique_ptr<ASTNode> Parser::parsePrintAST()
 	return std::make_unique<PrintNode>(parseExpressionAST());
 }
 
-bool Parser::parseVar()
+std::unique_ptr<ASTNode> Parser::parseIfAST()
+{
+	// Parse la condition
+	std::unique_ptr<ASTNode> condition = parseExpressionAST();
+
+	// Parse le bloc if
+	std::vector<std::unique_ptr<ASTNode>> ifBlock;
+	if (!match(TokenType::LEFT_BRACE)) { err("'{' attendu après la condition"); }
+	while (!match(TokenType::RIGHT_BRACE)) {
+		ifBlock.push_back(parseStatement());
+	}
+
+	// Parse le bloc if
+	std::vector<std::unique_ptr<ASTNode>> elseBlock;
+	if (match(TokenType::KEYWORD, "SINON")) 
+	{
+		if (!match(TokenType::LEFT_BRACE)) { err("'{' attendu après 'SINON'"); }
+		while (!match(TokenType::RIGHT_BRACE)) { elseBlock.push_back(parseStatement()); }
+	}
+
+	return std::make_unique<IfNode>(std::move(condition), std::move(ifBlock), std::move(elseBlock)
+}
+
+std::unique_ptr<ASTNode> Parser::parseVar()
 {
 
 	if (match(TokenType::KEYWORD, "ENTIER"))
@@ -173,10 +196,10 @@ bool Parser::parseVar()
 
 		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'ENTIER'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
 		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
-		this->programAST->addStatement(parseVarAST(currPos));
+		std::unique_ptr<ASTNode> ASTvar = parseVarAST(currPos);
 		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }	
 		symbolTable.addVariable(name, Type::ENTIER);
-		return true;
+		return ASTvar;
 	}
 	else if (match(TokenType::KEYWORD, "REEL"))
 	{
@@ -185,10 +208,10 @@ bool Parser::parseVar()
 
 		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'ENTIER'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
 		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
-		this->programAST->addStatement(parseVarAST(currPos));
+		std::unique_ptr<ASTNode> ASTvar = parseVarAST(currPos);
 		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
 		symbolTable.addVariable(name, Type::REEL);
-		return true;
+		return ASTvar;
 	}
 	else if (match(TokenType::KEYWORD, "BOOLEAN"))
 	{
@@ -197,10 +220,10 @@ bool Parser::parseVar()
 
 		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'ENTIER'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
 		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
-		this->programAST->addStatement(parseVarAST(currPos));
+		std::unique_ptr<ASTNode> ASTvar = parseVarAST(currPos);
 		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
 		symbolTable.addVariable(name, Type::BOOL);
-		return true;
+		return ASTvar;
 	}
 	else if (match(TokenType::KEYWORD, "STRING"))
 	{
@@ -209,34 +232,55 @@ bool Parser::parseVar()
 
 		if (!match(TokenType::IDENTIFIER)) { err("Identifiant attendu apres 'STRING'"); } // Par exemple ici on verifie que le token après la decaration de la var est bien un id
 		if (!match(TokenType::EQUALS)) { err("'=' attendu apres l'identifiant"); }
-		this->programAST->addStatement(parseVarAST(currPos));
+		std::unique_ptr<ASTNode> ASTvar = parseVarAST(currPos);
 		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
 		symbolTable.addVariable(name, Type::STRING);
-		return true;
+		return ASTvar;
 	}
 
 	else { err("Token non attendu ici ntm ntm"); }
 
 		
-	return false;
 }
 
-bool Parser::parsePrint()
+std::unique_ptr<ASTNode> Parser::parsePrint()
 {
 	if (match(TokenType::KEYWORD, "print"))
 	{
  		int currPos = pos+1;
 		if (!match(TokenType::LPAREN)) { err("'(' attendu apres 'print'"); }
-		this->programAST->addStatement(parsePrintAST());
+		std::unique_ptr<ASTNode> ASTprint = parsePrintAST();
 		if (!match(TokenType::RPAREN)) { err("')' attendu apres 'print'"); }
 		if (!match(TokenType::SEMICOLON)) { err("';' attendu a la fin de la declaration"); }
-		return true;
+		return ASTprint;
 	}
-	return false;
 }
 
-bool Parser::parseStatement() {
-	return parsePrint() || parseAssignement();
+std::unique_ptr<ASTNode> Parser::parseIf()
+{
+	if (match(TokenType::KEYWORD, "SI"))
+	{
+
+	}
+}
+
+std::unique_ptr<ASTNode> Parser::parseStatement() {
+	if (this->TokenList[pos].value == "SI")
+	{
+		return parseIf();
+	}
+	else if (this->TokenList[pos].value == "print")
+	{
+		return parsePrint();
+	}
+	else if (match(TokenType::IDENTIFIER))
+	{
+		return parseAssignement();
+	}
+	else
+	{
+		err("Keyword indefini");
+	}
 }
 
 bool Parser::parseProg()
@@ -248,7 +292,7 @@ bool Parser::parseProg()
 			while (true)
 			{
 
-				parseVar();
+				this->programAST->addStatement(parseVar());
 				if (match(TokenType::KEYWORD, "DEBUT")) { break; }
 				// else { err("On peut uniquement déclarer des variables ici"); }
 			}
@@ -257,7 +301,7 @@ bool Parser::parseProg()
 		}
 		else if (!this->isVarParse)
 		{
-			if (!parseStatement()) { err("Invalid statement"); };
+			this->programAST->addStatement(parseStatement());
 		}
 		else
 		{

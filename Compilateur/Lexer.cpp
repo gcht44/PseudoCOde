@@ -41,6 +41,10 @@ Token Lexer::readIdentifierOrKeyword(std::string ligne)
     if (value == "print") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "VARIABLE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "DEBUT") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "ET") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "OU") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "SI") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "SINON") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     return Token(TokenType::IDENTIFIER, value, nbLigne + 1, pos);
 }
 
@@ -55,11 +59,10 @@ Token Lexer::GetNextToken(std::string ligne)
 {
     // Token token;
     std::vector<Token> TokenList;
-
+    int nbSpace = 0;
     // if (nbLigne >= this->contenu.size()) return Token(TokenType::END, "");
     
-    while (std::isspace(ligne[pos])) { pos++; }
-
+    while (std::isspace(ligne[pos])) { pos++; nbSpace++; }
 
     char c = ligne[pos];
 
@@ -80,6 +83,10 @@ Token Lexer::GetNextToken(std::string ligne)
         case '.': pos++; return Token(TokenType::DOT, ".", nbLigne + 1, pos);
         case ',': pos++; return Token(TokenType::COMMA, ",", nbLigne + 1, pos);
         case '"': pos++; return Token(TokenType::QUOTE, "\"", nbLigne + 1, pos);
+        case '>': pos++; return Token(TokenType::GREATHER_THAN, ">", nbLigne + 1, pos);
+        case '<': pos++; return Token(TokenType::LESS_THAN, "<", nbLigne + 1, pos);
+        case '{': pos++; return Token(TokenType::LEFT_BRACE, "{", nbLigne + 1, pos);
+        case '}': pos++; return Token(TokenType::RIGHT_BRACE, "}", nbLigne + 1, pos);
     }
 
     std::cerr << "[LEXER] ERR: Charactere " << ligne[pos] << "' (ASCII: " << (int)ligne[pos] << ") non defini" << std::endl;

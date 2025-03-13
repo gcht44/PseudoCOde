@@ -127,12 +127,21 @@ Type BinaryOpNode::checkType(SymbolTable& symbolTable) const
     if (leftType != rightType) { std::cerr << "[AST] ERR: Erreur de type: les opérandes doivent être du même type (" << printType(leftType) << this->op << printType(rightType) << ")" << std::endl; exit(1); }
     if (op == "+" || op == "-" || op == "*" || op == "/") 
     {
-        if (leftType != Type::ENTIER && leftType != Type::REEL) 
+        if (leftType != Type::ENTIER && leftType != Type::REEL)
         {
             std::cerr << "[AST] ERR: Erreur de type: opération arithmétique sur des types non numériques" << std::endl; 
             exit(1);
         }
         return leftType; // Retourne le type de l'expression
+    }
+    else if (op == ".")
+    {
+        if (leftType != Type::STRING)
+        {
+            std::cerr << "[AST] ERR: Erreur de type: Concaténation possible seulement sur des types STRING" << std::endl;
+            exit(1);
+        }
+        return leftType;
     }
     else if (op == "&&" || op == "||") 
     {
@@ -206,7 +215,6 @@ void PrintNode::print(int indent) const
     std::cout << "Print\n";
     expression->print(indent + 1);
 }
-
 const std::unique_ptr<ASTNode>& PrintNode::getExpr() const 
 {
     return this->expression;
@@ -215,6 +223,33 @@ Type PrintNode::checkType(SymbolTable& symbolTable) const
 {
     return this->expression->checkType(symbolTable);
 }
+
+
+// Noeud pour une instruction if (print x)
+void IfNode::print(int indent) const
+{
+    printIndent(indent);
+    std::cout << "SI";
+    condition->print();
+    thenBranch->print();
+    if (elseBranch) {
+        std::cout << " SINON ";
+        elseBranch->print();
+    }
+}
+const std::unique_ptr<ASTNode>& IfNode::getCond() const
+{
+    return this->condition;
+}
+Type IfNode::checkType(SymbolTable& symbolTable) const
+{
+    return this->condition->checkType(symbolTable);
+}
+
+
+
+
+
 
 // Noeud racine contenant toutes les instructions
 void ProgramNode::addStatement(std::unique_ptr<ASTNode> stmt) 
