@@ -39,6 +39,32 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
         this->bytecode.push_back({ PRINT, print->checkType(symbolTable) });
 
     }
+    else if (auto if_ = dynamic_cast<const IfNode*>(node)) {
+        generateExpressionBytecode(if_->getCond().get(), symbolTable);
+
+        int elseLabel = this->bytecode.size(); // Marque l'emplacement du saut
+        this->bytecode.push_back({ JUMP_IF_FALSE, std::string{std::to_string(elseLabel)} });
+        for (int i = 0; i < if_->getIfBlock().size(); i++)
+        {
+            generateBytecode(if_->getIfBlock()[i].get(), symbolTable);
+        }
+
+        // Ajouter un saut inconditionnel (JUMP) pour éviter le bloc else
+        int endIfLabel = this->bytecode.size();
+        this->bytecode.push_back({ JUMP, std::string{std::to_string(endIfLabel)} });
+        this->bytecode[elseLabel].arg = std::to_string(endIfLabel);
+
+        // Générer le bytecode pour le bloc else (si présent)
+        if (!if_->elseBlock.empty()) 
+        {
+            this->bytecode[elseLabel].arg = std::to_string(this->bytecode.size()); // Mettre à jour le saut conditionnel
+            for (int i = 0; i < if_->getElseBlock().size(); i++)
+            {
+                generateBytecode(if_->getElseBlock()[i].get(), symbolTable);
+            }
+        }
+        this->bytecode[endIfLabel].arg = std::to_string(this->bytecode.size());
+    }
     else {
         std::cerr << "erreur dans le noeud" << std::endl;
     }
@@ -70,6 +96,8 @@ void ByteCode::generateExpressionBytecode(const ASTNode* node, SymbolTable& symb
     }
     else if (auto binaryOp = dynamic_cast<const BinaryOpNode*>(node)) {
         Type checktype = binaryOp->checkType(symbolTable);
+        Type operandType = binaryOp->getLeft()->checkType(symbolTable);
+
         generateExpressionBytecode(binaryOp->getLeft().get(), symbolTable);
         generateExpressionBytecode(binaryOp->getRight().get(), symbolTable);
         if (binaryOp->getOp() == "+") 
@@ -92,6 +120,31 @@ void ByteCode::generateExpressionBytecode(const ASTNode* node, SymbolTable& symb
         {
             this->bytecode.push_back({ ADD, checktype });
         }
+        else if (binaryOp->getOp() == "<")
+        {
+            this->bytecode.push_back({ LESS, operandType });
+        }
+        else if (binaryOp->getOp() == "<=")
+        {
+            this->bytecode.push_back({ LESS_EQUAL, operandType });
+        }
+        else if (binaryOp->getOp() == ">")
+        {
+            this->bytecode.push_back({ GREATER, operandType });
+        }
+        else if (binaryOp->getOp() == ">=")
+        {
+            this->bytecode.push_back({ GREATER_EQUAL, operandType });
+        }
+        else if (binaryOp->getOp() == "!=")
+        {
+            this->bytecode.push_back({ NOT_EQUAL, operandType });
+        }
+        else if (binaryOp->getOp() == "==")
+        {
+            this->bytecode.push_back({ EQUAL, operandType });
+        }
+
     }
     else {
         std::cout << "Expression non supportée." << std::endl;
@@ -111,6 +164,7 @@ void ByteCode::printByteCode()
 {
     for (int i = 0; i < this->bytecode.size() ; i++)
     {
+        std::cout << "[" << i << "] ";
         switch (bytecode[i].opcode) {
         case PUSH_CONST:
             std::cout << "PUSH_CONST ";
@@ -136,6 +190,34 @@ void ByteCode::printByteCode()
             break;
         case DIV:
             std::cout << "DIV" << "\n";
+            break;
+        case LESS:
+            std::cout << "LESS " << "\n";
+            break;
+        case LESS_EQUAL:
+            std::cout << "LESS_EQUAL" << "\n";
+            break;
+        case GREATER:
+            std::cout << "GREATER" << "\n";
+            break;
+        case GREATER_EQUAL:
+            std::cout << "GREATER_EQUAL" << "\n";
+            break;
+        case NOT_EQUAL:
+            std::cout << "NOT_EQUAL" << "\n";
+            break;
+        case EQUAL:
+            std::cout << "EQUAL" << "\n";
+            break;
+
+        case JUMP_IF_FALSE:
+            std::cout << "JUMP_IF_FALSE " << bytecode[i].arg << "\n";
+            break;
+        case JUMP:
+            std::cout << "JUMP " << bytecode[i].arg << "\n";
+            break;
+        case ENDIF:
+            std::cout << "ENDIF " << "\n";
             break;
         }
     }
@@ -310,6 +392,156 @@ void ByteCode::executeByteCode()
                 pushStackFloat(nbReel1 / nbReel2);
             }
             else { std::cerr << "[EXEC BYTECODE] ERR: DIV " << this->bytecode[i].arg << " Type non pris en charge" << std::endl; }
+            break;
+        case LESS:
+            if (this->bytecode[i].type == Type::ENTIER)
+            {
+                int rightInt = popStackInt();
+                int leftInt = popStackInt();
+                pushStackBool(leftInt < rightInt);
+            }
+            else if (this->bytecode[i].type == Type::REEL)
+            {
+                float rightReel = popStackReel();
+                float leftReel = popStackReel();
+                pushStackBool(leftReel < rightReel);
+            }
+            else if (this->bytecode[i].type == Type::BOOL)
+            {
+                bool rightBool = popStackBool();
+                bool leftBool = popStackBool();
+                pushStackBool(leftBool < rightBool);
+            }
+            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
+            break;
+        case LESS_EQUAL:
+            if (this->bytecode[i].type == Type::ENTIER)
+            {
+                int rightInt = popStackInt();
+                int leftInt = popStackInt();
+                pushStackBool(leftInt <= rightInt);
+            }
+            else if (this->bytecode[i].type == Type::REEL)
+            {
+                float rightReel = popStackReel();
+                float leftReel = popStackReel();
+                pushStackBool(leftReel <= rightReel);
+            }
+            else if (this->bytecode[i].type == Type::BOOL)
+            {
+                bool rightBool = popStackBool();
+                bool leftBool = popStackBool();
+                pushStackBool(leftBool <= rightBool);
+            }
+            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
+            break;
+        case GREATER:
+            if (this->bytecode[i].type == Type::ENTIER)
+            {
+                int rightInt = popStackInt();
+                int leftInt = popStackInt();
+                pushStackBool(leftInt > rightInt);
+            }
+            else if (this->bytecode[i].type == Type::REEL)
+            {
+                float rightReel = popStackReel();
+                float leftReel = popStackReel();
+                pushStackBool(leftReel > rightReel);
+            }
+            else if (this->bytecode[i].type == Type::BOOL)
+            {
+                bool rightBool = popStackBool();
+                bool leftBool = popStackBool();
+                pushStackBool(leftBool > rightBool);
+            }
+            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
+            break;
+        case GREATER_EQUAL:
+            if (this->bytecode[i].type == Type::ENTIER)
+            {
+                int rightInt = popStackInt();
+                int leftInt = popStackInt();
+                pushStackBool(leftInt >= rightInt);
+            }
+            else if (this->bytecode[i].type == Type::REEL)
+            {
+                float rightReel = popStackReel();
+                float leftReel = popStackReel();
+                pushStackBool(leftReel >= rightReel);
+            }
+            else if (this->bytecode[i].type == Type::BOOL)
+            {
+                bool rightBool = popStackBool();
+                bool leftBool = popStackBool();
+                pushStackBool(leftBool >= rightBool);
+            }
+            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
+            break;
+        
+        case NOT_EQUAL:
+            if (this->bytecode[i].type == Type::ENTIER)
+            {
+                int rightInt = popStackInt();
+                int leftInt = popStackInt();
+                pushStackBool(leftInt != rightInt);
+            }
+            else if (this->bytecode[i].type == Type::REEL)
+            {
+                float rightReel = popStackReel();
+                float leftReel = popStackReel();
+                pushStackBool(leftReel != rightReel);
+            }
+            else if (this->bytecode[i].type == Type::BOOL)
+            {
+                bool rightBool = popStackBool();
+                bool leftBool = popStackBool();
+                pushStackBool(leftBool != rightBool);
+            }
+            else if (this->bytecode[i].type == Type::STRING)
+            {
+                std::string rightStr = popStackString();
+                std::string leftStr = popStackString();
+                pushStackBool(leftStr != rightStr);
+            }
+            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
+            break;
+        case EQUAL:
+            if (this->bytecode[i].type == Type::ENTIER)
+            {
+                int rightInt = popStackInt();
+                int leftInt = popStackInt();
+                pushStackBool(leftInt == rightInt);
+            }
+            else if (this->bytecode[i].type == Type::REEL)
+            {
+                float rightReel = popStackReel();
+                float leftReel = popStackReel();
+                pushStackBool(leftReel == rightReel);
+            }
+            else if (this->bytecode[i].type == Type::BOOL)
+            {
+                bool rightBool = popStackBool();
+                bool leftBool = popStackBool();
+                pushStackBool(leftBool == rightBool);
+            }
+            else if (this->bytecode[i].type == Type::STRING)
+            {
+                std::string rightStr = popStackString();
+                std::string leftStr = popStackString();
+                pushStackBool(leftStr == rightStr);
+            }
+            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
+            break;
+
+        case JUMP_IF_FALSE:
+            if (!popStackBool())
+            {
+                i = std::stoi(bytecode[i].arg) - 1;
+                break;
+            }
+            break;
+        case JUMP:
+            i = std::stoi(bytecode[i].arg) - 1;
             break;
         case PRINT:
             if (this->bytecode[i].type == Type::ENTIER)

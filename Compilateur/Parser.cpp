@@ -141,6 +141,13 @@ std::unique_ptr<ASTNode> Parser::parseExpressionAST() {
 		left = std::make_unique<BinaryOpNode>(op, std::move(left), std::move(right)); // Crée un nœud d'addition
 	}
 	
+	while (match(TokenType::GREATHER) || match(TokenType::LESS) || match(TokenType::GREATHER_EQUAL) ||
+		match(TokenType::LESS_EQUAL) || match(TokenType::EQUAL_EQUAL) || match(TokenType::NOT_EQUAL)) {
+		std::string op = this->TokenList[pos - 1].value; // Récupère l'opérateur de comparaison
+		std::unique_ptr<ASTNode> right = parseTermAST(); // Parse le terme suivant
+		left = std::make_unique<BinaryOpNode>(op, std::move(left), std::move(right)); // Crée un nœud binaire
+	}
+
 	return left;
 }
 
@@ -154,7 +161,6 @@ std::unique_ptr<ASTNode> Parser::parseVarAST(int currPos)
 std::unique_ptr<ASTNode> Parser::parseAssignementAST(int currPos)
 {
 	std::string name = this->TokenList[currPos].value;
-	currPos += 2;
 	return std::make_unique<AssignmentNode>(name, parseExpressionAST());
 }
 
@@ -183,7 +189,7 @@ std::unique_ptr<ASTNode> Parser::parseIfAST()
 		while (!match(TokenType::RIGHT_BRACE)) { elseBlock.push_back(parseStatement()); }
 	}
 
-	return std::make_unique<IfNode>(std::move(condition), std::move(ifBlock), std::move(elseBlock)
+	return std::make_unique<IfNode>(std::move(condition), std::move(ifBlock), std::move(elseBlock));
 }
 
 std::unique_ptr<ASTNode> Parser::parseVar()
@@ -258,10 +264,12 @@ std::unique_ptr<ASTNode> Parser::parsePrint()
 
 std::unique_ptr<ASTNode> Parser::parseIf()
 {
+	std::unique_ptr<ASTNode> ASTif;
 	if (match(TokenType::KEYWORD, "SI"))
 	{
-
+		ASTif = parseIfAST();
 	}
+	return ASTif;
 }
 
 std::unique_ptr<ASTNode> Parser::parseStatement() {
@@ -275,10 +283,12 @@ std::unique_ptr<ASTNode> Parser::parseStatement() {
 	}
 	else if (match(TokenType::IDENTIFIER))
 	{
+		pos--;
 		return parseAssignement();
 	}
 	else
 	{
+		std::cout << pos << std::endl;
 		err("Keyword indefini");
 	}
 }

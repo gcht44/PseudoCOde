@@ -20,6 +20,7 @@ private:
 	std::unique_ptr<ProgramNode> programAST;
 	SymbolTable symbolTable;
 	bool isVarParse;
+	int currentIndent;
 
 	std::unique_ptr<ASTNode> parseVarAST(int currPos);
 	std::unique_ptr<ASTNode> parseExpressionAST();

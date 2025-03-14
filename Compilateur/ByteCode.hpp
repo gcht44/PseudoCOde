@@ -12,14 +12,25 @@
 #include <iomanip>
 
 enum Opcode {
-    PUSH_CONST = 2,
-    PUSH_VAR = 4,
-    STORE_VAR = 5,
-    ADD = 7,
-    SUB = 9,
-    MULT = 11,
-    DIV = 13,
-    PRINT = 15,
+    PUSH_CONST,     // Envoie une constante dans la pile
+    PUSH_VAR,       // Envoie la valeur d'une variable dans la pile
+    STORE_VAR,      // Stock une variable dans la table correspondant au type
+    ADD,            // Opérateur +
+    SUB,            // Opérateur -
+    MULT,           // Opérateur *
+    DIV,            // Opérateur /
+    PRINT,          // Affiche une variable ou une constante à l'ecran
+    IF,             // Début d'une condition
+    ELSE,           // Bloc else
+    ENDIF,          // Fin d'une condition
+    JUMP,           // Saut inconditionnel
+    JUMP_IF_FALSE,  // Saut conditionnel (si la condition est fausse)
+    GREATER,        // Opérateur >
+    LESS,           // Opérateur <
+    GREATER_EQUAL,  // Opérateur >=
+    LESS_EQUAL,     // Opérateur <=
+    EQUAL,          // Opérateur ==
+    NOT_EQUAL       // Opérateur !=
 };
 
 struct ValueVisitor {
@@ -60,8 +71,8 @@ struct Value {
 
 struct Instruction {
     Opcode opcode;
-    Type type;
     std::string arg;  // Argument optionnel (nom de variable pour PUSH_VAR et STORE_VAR)
+    Type type;
     Value value;
 
     // Instruction(Opcode op) : opcode(op), value() {}

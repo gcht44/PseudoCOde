@@ -1,0 +1,10 @@
+VARIABLE:
+ENTIER x = 41;
+ENTIER z = 40;
+
+DEBUT:
+SI x <= z
+	print("x est plus petit ou egal a z");
+
+SINON:
+	print("x est plus grand a z");

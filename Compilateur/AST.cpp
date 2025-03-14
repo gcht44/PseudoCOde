@@ -143,6 +143,9 @@ Type BinaryOpNode::checkType(SymbolTable& symbolTable) const
         }
         return leftType;
     }
+    else if (op == ">" || op == "<" || op == ">=" || op == "<=" || op == "==" || op == "!=") {
+        return Type::BOOL;
+    }
     else if (op == "&&" || op == "||") 
     {
         if (leftType != Type::BOOL) 
@@ -229,21 +232,46 @@ Type PrintNode::checkType(SymbolTable& symbolTable) const
 void IfNode::print(int indent) const
 {
     printIndent(indent);
-    std::cout << "SI";
-    condition->print();
-    thenBranch->print();
-    if (elseBranch) {
-        std::cout << " SINON ";
-        elseBranch->print();
+    std::cout << "Si:\n";
+    condition->print(indent); 
+
+   // Afficher le bloc if
+   printIndent(indent);
+   std::cout << "ifBlock: " << std::endl;
+   for (int i = 0; i < ifBlock.size(); i++) {
+       ifBlock[i]->print(indent + 1);
+    }
+    // std::cout << "}" << std::endl;
+
+    // Afficher le bloc else (s'il existe)
+    if (!elseBlock.empty()) {
+        std::cout << "SINON: " << std::endl;
+        for (int i = 0; i < elseBlock.size(); i++) {
+            elseBlock[i]->print(indent + 1);
+        }
+        std::cout << std::string(indent, ' ') << "}" << std::endl;
     }
 }
+
 const std::unique_ptr<ASTNode>& IfNode::getCond() const
 {
     return this->condition;
 }
+const std::vector<std::unique_ptr<ASTNode>>& IfNode::getIfBlock() const
+{
+    return this->ifBlock;
+}
+const std::vector<std::unique_ptr<ASTNode>>& IfNode::getElseBlock() const
+{
+    return this->elseBlock;
+}
 Type IfNode::checkType(SymbolTable& symbolTable) const
 {
-    return this->condition->checkType(symbolTable);
+    // Vérifie que la condition est un booléen
+    if (condition->checkType(symbolTable) != Type::BOOL) {
+        throw std::runtime_error("La condition doit être un booléen");
+    }
+    return Type::NONE; // Une condition n'a pas de type de retour
 }
 
 

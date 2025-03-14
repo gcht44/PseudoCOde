@@ -137,6 +137,8 @@ public:
 
     void print(int indent = 0) const override;
     const std::unique_ptr<ASTNode>& getCond() const;
+    const std::vector<std::unique_ptr<ASTNode>>& getIfBlock() const;
+    const std::vector<std::unique_ptr<ASTNode>>& getElseBlock() const;
     Type checkType(SymbolTable& symbolTable) const;
 };
 

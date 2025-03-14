@@ -1,6 +1,13 @@
 VARIABLE:
-REEL x = 13.3;
-STRING z = "caca caca";
+ENTIER x = 41;
+ENTIER z = 40;
 
 DEBUT:
-print(z+"fdp");
+SI x <= z
+{
+	print("x est plus petit ou egal a z");
+}
+SINON
+{
+	print("x est plus grand a z");
+}

@@ -24,9 +24,13 @@ enum class TokenType {
     DOT,
     COMMA,
     QUOTE,
-    GREATHER_THAN,
-    LESS_THAN,
+    GREATHER,
+    GREATHER_EQUAL,
+    LESS,
+    LESS_EQUAL,
+    NOT_EQUAL,
     LEFT_BRACE,
+    EQUAL_EQUAL,
     RIGHT_BRACE,
     END
 };
@@ -50,15 +54,15 @@ public:
     void printTokens(std::vector<Token> t); // Debug function
 
 private:
-    std::vector<std::string> contenu;
+    std::string contenu;
     // std::vector<Token> TokenList;
     int pos;
     int nbLigne;
 
     bool isVide(const std::string& ligne);
-    Token readIdentifierOrKeyword(std::string ligne);
-    Token readNumber(std::string ligne);
-    Token GetNextToken(std::string ligne);
+    Token readIdentifierOrKeyword();
+    Token readNumber();
+    Token GetNextToken();
 
 };
 

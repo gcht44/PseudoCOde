@@ -39,7 +39,23 @@ bool AnalizeSemantique::analize(ASTNode* node, SymbolTable& symbolTable)
 			err("Variable " + assignment->getName() + " non déclaré.");
 		}
 	}
-
+	else if (auto ifNode = dynamic_cast<const IfNode*>(node))
+	{
+		analize(ifNode->getCond().get(), symbolTable);
+		auto& ifBlockVect = ifNode->getIfBlock();
+		for (int i = 0; i < ifBlockVect.size(); i++)
+		{
+			analize(ifBlockVect[i].get(), symbolTable);
+		}
+		auto& elseBlockVect = ifNode->getElseBlock();
+		if (!elseBlockVect.empty())
+		{
+			for (int i = 0; i < elseBlockVect.size(); i++)
+			{
+				analize(elseBlockVect[i].get(), symbolTable);
+			}
+		}
+	}
 	else if (auto identifier = dynamic_cast<const IdentifierNode*>(node))
 	{
 		// std::cout << "Identifier" << std::endl;
