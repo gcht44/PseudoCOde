@@ -129,19 +129,32 @@ public:
 class IfNode : public ASTNode {
 public:
     std::unique_ptr<ASTNode> condition; // La condition (expression)
-    std::vector<std::unique_ptr<ASTNode>> ifBlock; // Bloc de code si la condition est vraie
-    std::vector<std::unique_ptr<ASTNode>> elseBlock; // Bloc de code si la condition est fausse (optionnel)
+    std::unique_ptr<ASTNode> ifBlock; // Bloc de code si la condition est vraie
+    std::unique_ptr<ASTNode> elseBlock; // Bloc de code si la condition est fausse (optionnel)
 
-    IfNode(std::unique_ptr<ASTNode> cond, std::vector<std::unique_ptr<ASTNode>> ifBlk, std::vector<std::unique_ptr<ASTNode>> elseBlk = {})
+    IfNode(std::unique_ptr<ASTNode> cond, std::unique_ptr<ASTNode> ifBlk, std::unique_ptr<ASTNode> elseBlk = nullptr)
         : condition(std::move(cond)), ifBlock(std::move(ifBlk)), elseBlock(std::move(elseBlk)) {}
 
     void print(int indent = 0) const override;
     const std::unique_ptr<ASTNode>& getCond() const;
-    const std::vector<std::unique_ptr<ASTNode>>& getIfBlock() const;
-    const std::vector<std::unique_ptr<ASTNode>>& getElseBlock() const;
+    const std::unique_ptr<ASTNode>& getIfBlock() const;
+    const std::unique_ptr<ASTNode>& getElseBlock() const;
     Type checkType(SymbolTable& symbolTable) const;
 };
 
+// Noeud pour une instruction block
+class BlockNode : public ASTNode {
+public:
+    std::vector<std::unique_ptr<ASTNode>> Block; 
+
+    BlockNode(std::vector<std::unique_ptr<ASTNode>> block)
+        : Block(std::move(block)) {
+    }
+
+    void print(int indent = 0) const override;
+    const std::vector<std::unique_ptr<ASTNode>>& getBlock() const;
+    Type checkType(SymbolTable& symbolTable) const { return Type::NONE; }
+};
 
 
 // Noeud racine contenant toutes les instructions

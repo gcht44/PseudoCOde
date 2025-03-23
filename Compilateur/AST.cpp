@@ -238,18 +238,15 @@ void IfNode::print(int indent) const
    // Afficher le bloc if
    printIndent(indent);
    std::cout << "ifBlock: " << std::endl;
-   for (int i = 0; i < ifBlock.size(); i++) {
-       ifBlock[i]->print(indent + 1);
-    }
-    // std::cout << "}" << std::endl;
+   ifBlock->print(indent + 1);
+
 
     // Afficher le bloc else (s'il existe)
-    if (!elseBlock.empty()) {
-        std::cout << "SINON: " << std::endl;
-        for (int i = 0; i < elseBlock.size(); i++) {
-            elseBlock[i]->print(indent + 1);
-        }
-        std::cout << std::string(indent, ' ') << "}" << std::endl;
+    if (elseBlock != nullptr) 
+    {
+        printIndent(indent);
+        std::cout << "elseBlock: " << std::endl;
+        elseBlock->print(indent + 1);
     }
 }
 
@@ -257,11 +254,11 @@ const std::unique_ptr<ASTNode>& IfNode::getCond() const
 {
     return this->condition;
 }
-const std::vector<std::unique_ptr<ASTNode>>& IfNode::getIfBlock() const
+const std::unique_ptr<ASTNode>& IfNode::getIfBlock() const
 {
     return this->ifBlock;
 }
-const std::vector<std::unique_ptr<ASTNode>>& IfNode::getElseBlock() const
+const std::unique_ptr<ASTNode>& IfNode::getElseBlock() const
 {
     return this->elseBlock;
 }
@@ -274,7 +271,18 @@ Type IfNode::checkType(SymbolTable& symbolTable) const
     return Type::NONE; // Une condition n'a pas de type de retour
 }
 
-
+void BlockNode::print(int indent) const
+{
+    printIndent(indent);
+    std::cout << "BlockNode: " << std::endl;
+    for (int i = 0; i < Block.size(); i++) {
+        Block[i]->print(indent + 1);
+    }
+}
+const std::vector<std::unique_ptr<ASTNode>>& BlockNode::getBlock() const
+{
+    return this->Block;
+}
 
 
 

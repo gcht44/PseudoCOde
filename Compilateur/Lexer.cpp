@@ -1,186 +1,356 @@
 #include "Lexer.hpp"
 
-// TODO: Changer le systéme de lecture de ligne par ligne en tout d'un coup
+bool Lexer::IsEOF() const 
+{
+    return pos >= contenu.length();
+}
 
-bool Lexer::isVide(const std::string& ligne) {
-    for (char ch : ligne) {
-        if (!std::isspace(ch)) {
-            return false; // La ligne contient un caractère non-espace
+void Lexer::SkipWhitespace() {
+    while (!IsEOF() && std::isspace(CurrentChar())) 
+    {
+        if (CurrentChar() == '\n') {
+            nbLigne++;
+        }
+        NextChar();
+    }
+}
+
+char Lexer::CurrentChar() const 
+{
+    if (pos < contenu.length()) 
+    {
+        return contenu[pos];
+    }
+    return '\0'; // Caractère nul pour indiquer la fin du fichier
+}
+
+char Lexer::NextChar()  
+{
+    if (pos < contenu.length()) 
+    {
+        return contenu[++pos];
+    }
+    return '\0'; // Caractère nul pour indiquer la fin du fichier
+}
+
+bool Lexer::isVide(const std::string& line) const 
+{
+    for (char c : line) 
+    {
+        if (!std::isspace(c)) 
+        {
+            return false;
         }
     }
-    return true; // La ligne est vide ou ne contient que des espaces
+    return true;
 }
 
-Lexer::Lexer(std::string f) 
+int Lexer::calculateIndentation(const std::string& line) const 
 {
-    this->pos = 0;
-    this->nbLigne = 1;
-	std::ifstream fichier(f); // Ouvre le fichier en lecture
-    if (!fichier) {
-        std::cerr << "Erreur : impossible d'ouvrir le fichier." << std::endl;
+    int spaces = 0;
+    for (char c : line) {
+        if (c == ' ') {
+            spaces++;
+        }
+        else if (c == '\t') {
+            spaces += INDENT_SIZE; // Une indent vaut IDENT_SIZE
+        }
+        else {
+            break;
+        }
     }
 
-    std::stringstream buffer;
-    buffer << fichier.rdbuf();
-
-    // Récupérer le contenu du stringstream dans une std::string
-    this->contenu = buffer.str();
-
-    // Remplacer les sauts de ligne par "\n"
-    for (size_t pos = 0; (pos = contenu.find('\n', pos)) != std::string::npos; ++pos) {
-        contenu.replace(pos, 1, "\\n");
+    // Vérifier que l'indentation est un multiple de INDENT_SIZE
+    if (spaces % INDENT_SIZE != 0) {
+        std::cerr << "Erreur: Indentation incorrecte à la ligne " << nbLigne << std::endl;
+        // Vous pourriez lancer une exception ici
     }
 
-
-    fichier.close(); 
+    return spaces / INDENT_SIZE; // Retourner le niveau d'indentation
 }
 
-Token Lexer::readIdentifierOrKeyword()
+std::vector<Token> Lexer::handleIndentation(const std::string& line) 
 {
-    std::string value;
-    while (std::isalnum(contenu[pos])) { value.push_back(contenu[pos++]); } // la boucle va s'arreter au premier espace qu'elle voit
-    if (value == "ENTIER") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "BOOLEAN") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "REEL") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "STRING") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "TRUE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "FALSE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "print") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "VARIABLE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "DEBUT") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "ET") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "OU") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "SI") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "SINON") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    return Token(TokenType::IDENTIFIER, value, nbLigne + 1, pos);
+    std::vector<Token> indentTokens;
+
+    if (isVide(line)) {
+        return indentTokens; // Ignorer les lignes vides
+    }
+
+    int lineIndent = calculateIndentation(line);
+
+    if (lineIndent > currentIndent) 
+    {
+        // Vérifier que l'indentation augmente d'un seul niveau à la fois
+        if (lineIndent - currentIndent > 1) 
+        {
+            std::cerr << "Erreur: Augmentation d'indentation trop importante à la ligne " << nbLigne << std::endl;
+            // Vous pourriez lancer une exception ici
+        }
+
+        // Augmentation de l'indentation
+        indentStack.push(currentIndent);
+        currentIndent = lineIndent;
+        indentTokens.push_back(Token(TokenType::INDENT, "", nbLigne, pos));
+    }
+    else if (lineIndent < currentIndent) 
+    {
+        // Diminution de l'indentation
+        while (!indentStack.empty() && lineIndent < currentIndent) 
+        {
+            currentIndent = indentStack.top();
+            indentStack.pop();
+            indentTokens.push_back(Token(TokenType::DEDENT, "", nbLigne, 0));
+        }
+
+        // Vérifier si l'indentation correspond à un niveau précédent
+        if (lineIndent != currentIndent) 
+        {
+            std::cerr << "Erreur: Indentation incohérente à la ligne " << nbLigne << std::endl;
+            // Vous pourriez lancer une exception ici
+        }
+    }
+
+    return indentTokens;
 }
 
-Token Lexer::readNumber()
-{
-    std::string value;
-    while (std::isdigit(contenu[pos])) { value.push_back(contenu[pos++]); }
-    return Token(TokenType::NUMBER, value, nbLigne + 1, pos);
+std::vector<Token> Lexer::Tokenise() {
+    std::vector<Token> tokens;
+    indentStack = std::stack<int>();
+    indentStack.push(0);
+    currentIndent = 0;
+    pos = 0; // Position globale dans tout le contenu
+    nbLigne = 1;
+
+    std::istringstream stream(contenu);
+    std::string line;
+    size_t contentPos = 0; // Pour suivre la position dans le contenu complet
+
+    while (std::getline(stream, line)) {
+        // Gérer les indentations
+        std::vector<Token> indentTokens = handleIndentation(line);
+        tokens.insert(tokens.end(), indentTokens.begin(), indentTokens.end());
+
+        // Traiter les tokens de la ligne non vide
+        if (!isVide(line)) {
+            int indentSize = calculateIndentation(line) * INDENT_SIZE;
+            pos = contentPos; // Position absolue dans contenu
+
+            size_t linePos = indentSize; // Position relative dans la ligne
+            while (linePos < line.length()) {
+                Token token = GetNextToken();
+                if (token.type != TokenType::END) {
+                    tokens.push_back(token);
+                    linePos = pos - contentPos; // Mettre à jour la position relative
+                }
+                else {
+                    break;
+                }
+            }
+
+            // Ajouter un token NEWLINE à la fin de chaque ligne non vide
+            tokens.push_back(Token(TokenType::NEWLINE, "\\n", nbLigne, line.length()));
+        }
+
+        contentPos += line.length() + 1; // +1 pour le caractère de nouvelle ligne
+        nbLigne++;
+    }
+
+    // Ajouter les DEDENT manquants à la fin du fichier
+    while (currentIndent > 0) {
+        currentIndent = indentStack.top();
+        indentStack.pop();
+        tokens.push_back(Token(TokenType::DEDENT, "", nbLigne, 0));
+    }
+
+    tokens.push_back(Token(TokenType::END, "", nbLigne, 0));
+    return tokens;
 }
 
+// Implémentation des autres méthodes du lexer...
 Token Lexer::GetNextToken()
 {
-    // Token token;
-    std::vector<Token> TokenList;
-    int nbSpace = 0;
-    if (pos >= this->contenu.size()) { pos++; return Token(TokenType::END, "", nbLigne, pos); }
+    // Cette méthode reconnaît les différents tokens
+    // comme les identifiants, nombres, chaînes, opérateurs, etc.
 
-    while (std::isspace(contenu[pos])) { pos++; nbSpace++; }
-    char c = contenu[pos];
+    // Exemple simplifié:
+    if (IsEOF())
+    {
+        return Token(TokenType::END, "", nbLigne, pos);
+    }
 
-    if (std::isalpha(c)) return readIdentifierOrKeyword(); // dès qu'on voit une lettre on part du principe que cest soit un id ou un keyword on fera la diff dans readIdentifierOrKeyword()
-    if (std::isdigit(c)) return readNumber(); // dès qu'on voit un chiffre on part du principe que cest un nombre
+    char c = CurrentChar();
+
+    // Ignorer les espaces (mais pas les sauts de ligne qui sont gérés séparément)
+    if (std::isspace(c) && c != '\n')
+    {
+        SkipWhitespace();
+        return GetNextToken();
+    }
+
+    // Identifier ou mot-clé
+    if (std::isalpha(c) || c == '_')
+    {
+        return ProcessIdentifier();
+    }
+
+    // Nombre
+    if (std::isdigit(c))
+    {
+        return ProcessNumber();
+    }
+
+    // Chaîne
+    if (c == '"' || c == '\'')
+    {
+        return ProcessString();
+    }
 
     switch (c)
     {
-        case ';': pos++; return Token(TokenType::SEMICOLON, ";", nbLigne + 1, pos);
-        case '(': pos++; return Token(TokenType::LPAREN, "(", nbLigne + 1, pos);
-        case ')': pos++; return Token(TokenType::RPAREN, ")", nbLigne + 1, pos);
-        case '+': pos++; return Token(TokenType::PLUS, "+", nbLigne + 1, pos);
-        case '-': pos++; return Token(TokenType::SUB, "-", nbLigne + 1, pos);
-        case '*': pos++; return Token(TokenType::MULT, "*", nbLigne + 1, pos);
-        case '/': pos++; return Token(TokenType::DIV, "/", nbLigne + 1, pos);
-        case ':': pos++; return Token(TokenType::COLON, ":", nbLigne + 1, pos);
-        case '.': pos++; return Token(TokenType::DOT, ".", nbLigne + 1, pos);
-        case ',': pos++; return Token(TokenType::COMMA, ",", nbLigne + 1, pos);
-        case '"': pos++; return Token(TokenType::QUOTE, "\"", nbLigne + 1, pos);
-        case '{': pos++; return Token(TokenType::LEFT_BRACE, "{", nbLigne + 1, pos);
-        case '}': pos++; return Token(TokenType::RIGHT_BRACE, "}", nbLigne + 1, pos);
+    case ';': pos++; return Token(TokenType::SEMICOLON, ";", nbLigne + 1, pos);
+    case '(': pos++; return Token(TokenType::LPAREN, "(", nbLigne + 1, pos);
+    case ')': pos++; return Token(TokenType::RPAREN, ")", nbLigne + 1, pos);
+    case '+': pos++; return Token(TokenType::PLUS, "+", nbLigne + 1, pos);
+    case '-': pos++; return Token(TokenType::MINUS, "-", nbLigne + 1, pos);
+    case '*': pos++; return Token(TokenType::MULTIPLY, "*", nbLigne + 1, pos);
+    case '/': pos++; return Token(TokenType::DIVIDE, "/", nbLigne + 1, pos);
+    case ':': pos++; return Token(TokenType::COLON, ":", nbLigne + 1, pos);
+    case '.': pos++; return Token(TokenType::DOT, ".", nbLigne + 1, pos);
+    case ',': pos++; return Token(TokenType::COMMA, ",", nbLigne + 1, pos);
 
-        case '=': 
-            pos++; 
-            if (contenu[pos] == '=') { pos++; return Token(TokenType::EQUAL_EQUAL, "==", nbLigne, pos); }
-            return Token(TokenType::EQUALS, "=", nbLigne + 1, pos);
+    case '=':
+        if (NextChar() == '=') { pos++; return Token(TokenType::EQUAL_EQUAL, "==", nbLigne, pos); }
+        return Token(TokenType::EQUAL, "=", nbLigne + 1, pos);
 
-        case '>': 
-            pos++;
-            if (contenu[pos] == '=') { pos++; return Token(TokenType::GREATHER_EQUAL, ">=", nbLigne, pos); }
-            return Token(TokenType::GREATHER, ">", nbLigne + 1, pos);
+    case '>':
+        pos++;
+        if (NextChar() == '=') { pos++; return Token(TokenType::GREATER_EQUAL, ">=", nbLigne, pos); }
+        return Token(TokenType::GREATER, ">", nbLigne + 1, pos);
 
-        case '<': 
-            pos++; 
-            if (contenu[pos] == '=') { pos++; return Token(TokenType::LESS_EQUAL, "<=", nbLigne, pos); }
-            return Token(TokenType::LESS, "<", nbLigne + 1, pos);
-        case '!':
-            pos++;
-            if (contenu[pos] == '=') { pos++; return Token(TokenType::NOT_EQUAL, "!=", nbLigne, pos); }
-            break;
-        case '\\':
-            pos++;
-            if (contenu[pos] == 'n') { pos++; nbLigne++; return GetNextToken(); }
-            break;
+    case '<':
+        pos++;
+        if (NextChar() == '=') { pos++; return Token(TokenType::LESS_EQUAL, "<=", nbLigne, pos); }
+        return Token(TokenType::LESS, "<", nbLigne + 1, pos);
+    case '!':
+        pos++;
+        if (NextChar() == '=') { pos++; return Token(TokenType::NOT_EQUAL, "!=", nbLigne, pos); }
+        break;
+
+        // Token non reconnu
+        std::string unknown(1, c);
+        NextChar(); // Avancer
+        return Token(TokenType::END, unknown, nbLigne, pos - 1);
+
+
     }
-
-    std::cerr << "[LEXER] ERR: Charactere " << contenu[pos] << "(ASCII: " << (int)contenu[pos] << ") non defini" << std::endl;
-    std::cerr << "Ligne: " << nbLigne << " Colonne: " << pos << std::endl;
-    std::cerr << contenu[pos] << std::endl;
-    exit(1);
 }
 
-std::vector<Token> Lexer::Tokenise()
+
+Token Lexer::ProcessNumber() 
 {
-    std::vector<Token> TokensList; 
-    int i = 0;
-    /*while (true)
-    {
-        // if (isVide(contenu[nbLigne])) this->nbLigne++;
-        
-        Token token = GetNextToken(contenu);
-        TokensList.push_back(token);
-        if (token.type == TokenType::END) break;
-        if (this->pos >= this->contenu[nbLigne].size())
-        {
-            this->pos = 0;
-            this->nbLigne++;
+    std::string value;
+    while (!IsEOF() && std::isdigit(contenu[pos])) { value.push_back(CurrentChar()); NextChar(); }
+    return Token(TokenType::NUMBER, value, nbLigne, pos);
+}
+
+Token Lexer::ProcessString()
+{
+    char quote = CurrentChar();
+    std::string str;
+    int startCol = pos + 1;
+
+    NextChar(); // Skip the opening quote
+
+    while (!IsEOF() && CurrentChar() != quote) {
+        if (CurrentChar() == '\\') {
+            NextChar(); // Skip the backslash
+            if (!IsEOF()) {
+                str += CurrentChar();
+            }
         }
-    }*/
-    // std::cout << contenu.size() << std::endl;
-    while (pos <= contenu.size())
-    {
-        TokensList.push_back(GetNextToken());
-        // std::cout << pos << std::endl;
+        else {
+            str += CurrentChar();
+        }
+        NextChar();
     }
 
-    return TokensList;
+    if (CurrentChar() == quote) {
+        NextChar(); // Skip the closing quote
+    }
+    else {
+        // Handle unterminated string error
+        std::cerr << "Error: Unterminated string at line " << nbLigne << std::endl;
+    }
+
+    return Token(TokenType::STRING, str, nbLigne, startCol);
 }
 
-void Lexer::printTokens(std::vector<Token> t)
+Token Lexer::ProcessIdentifier()
 {
-    for (int i = 0; i < t.size(); i++)
+    std::string value;
+    while (!IsEOF() && std::isalpha(contenu[pos])) { value.push_back(CurrentChar()); NextChar(); } // la boucle va s'arreter au premier espace qu'elle voit
+    if (value == "ENTIER") return Token(TokenType::INT, value, nbLigne + 1, pos);
+    if (value == "BOOLEAN") return Token(TokenType::BOOL, value, nbLigne + 1, pos);
+    if (value == "REEL") return Token(TokenType::FLOAT, value, nbLigne + 1, pos);
+    if (value == "STRING") return Token(TokenType::STRINGVAR, value, nbLigne + 1, pos);
+    /*if (value == "TRUE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "FALSE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);*/
+    if (value == "ecrire") return Token(TokenType::PRINT, value, nbLigne + 1, pos);
+    if (value == "VARIABLE") return Token(TokenType::VARIABLE, value, nbLigne + 1, pos);
+    if (value == "DEBUT") return Token(TokenType::DEBUT, value, nbLigne + 1, pos);
+    /*if (value == "ET") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
+    if (value == "OU") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);*/
+    if (value == "SI") return Token(TokenType::IF, value, nbLigne + 1, pos);
+    if (value == "SINON") return Token(TokenType::ELSE, value, nbLigne + 1, pos);
+    if (value == "FIN") return Token(TokenType::FIN, value, nbLigne + 1, pos);
+    if (value == "FINSI") return Token(TokenType::FINSI, value, nbLigne + 1, pos);
+    return Token(TokenType::NAME, value, nbLigne + 1, pos);
+}
+
+
+void Lexer::printTokens(std::vector<Token> tokenList)
+{
+    for (int i = 0; i < tokenList.size(); i++)
     {
         std::string s;
-        switch (t[i].type)
+        switch (tokenList[i].type)
         {
-        case TokenType::EQUALS: s = "Type: EQUALS, "; break;
-        case TokenType::IDENTIFIER: s = "Type: IDENTIFIER, "; break;
-        case TokenType::KEYWORD: s = "Type: KEYWORD, "; break;
-        case TokenType::LPAREN: s = "Type: LPAREN, "; break;
-        case TokenType::NUMBER: s = "Type: NUMBER, "; break;
-        case TokenType::PLUS: s = "Type: PLUS, "; break;
-        case TokenType::RPAREN: s = "Type: RPAREN, "; break;
-        case TokenType::SEMICOLON: s = "Type: SEMICOLON, "; break;
-        case TokenType::SUB: s = "Type: SUB, "; break;
-        case TokenType::MULT: s = "Type: MULT, "; break;
-        case TokenType::DIV: s = "Type: DIV, "; break;
-        case TokenType::COLON: s = "Type: COLON, "; break;
-        case TokenType::DOT: s = "Type: DOT, "; break;
-        case TokenType::COMMA: s = "Type: COMMA, "; break;
-        case TokenType::QUOTE: s = "Type: QUOTE, "; break;
-        case TokenType::LESS: s = "Type: LESS, "; break;
-        case TokenType::LESS_EQUAL: s = "Type: LESS_EQUAL, "; break;
-        case TokenType::GREATHER: s = "Type: GREATHER, "; break;
-        case TokenType::GREATHER_EQUAL: s = "Type: GREATHER_EQUAL, "; break;
-        case TokenType::NOT_EQUAL: s = "Type: NOT_EQUAL, "; break;
-        case TokenType::RIGHT_BRACE: s = "Type: RIGHT_BRACE, "; break;
-        case TokenType::LEFT_BRACE: s = "Type: LEFT_BRACE, "; break;
-        case TokenType::END: s = "Type: END, "; break;
-
+        case TokenType::EQUAL: s = "Type: EQUALS, "; break;
+        case TokenType::NAME: s = "Type: NAME, Value:" + tokenList[i].value; break;
+        case TokenType::IF: s = "Type: IF"; break;
+        case TokenType::ELSE: s = "Type: ELSE"; break;
+        case TokenType::INDENT: s = "Type: INDENT"; break;
+        case TokenType::DEDENT: s = "Type: DEDENT"; break;
+        case TokenType::LPAREN: s = "Type: LPAREN"; break;
+        case TokenType::NUMBER: s = "Type: NUMBER, " + tokenList[i].value; break;
+        case TokenType::PLUS: s = "Type: PLUS"; break;
+        case TokenType::RPAREN: s = "Type: RPAREN"; break;
+        case TokenType::SEMICOLON: s = "Type: SEMICOLON"; break;
+        case TokenType::MINUS: s = "Type: MINUS"; break;
+        case TokenType::MULTIPLY: s = "Type: MULTIPLY"; break;
+        case TokenType::DIVIDE: s = "Type: DIVIDE"; break;
+        case TokenType::COLON: s = "Type: COLON"; break;
+        case TokenType::DOT: s = "Type: DOT"; break;
+        case TokenType::COMMA: s = "Type: COMMA"; break;
+        case TokenType::LESS: s = "Type: LESS"; break;
+        case TokenType::LESS_EQUAL: s = "Type: LESS_EQUAL"; break;
+        case TokenType::GREATER: s = "Type: GREATER"; break;
+        case TokenType::GREATER_EQUAL: s = "Type: GREATER_EQUAL"; break;
+        case TokenType::NOT_EQUAL: s = "Type: NOT_EQUAL"; break;
+        case TokenType::NEWLINE: s = "Type: NEWLINE"; break;
+        case TokenType::INT: s = "Type: INT"; break;
+        case TokenType::STRING: s = "Type: STRING, Value: " + tokenList[i].value; break;
+        case TokenType::STRINGVAR: s = "Type: STRINGVAR"; break;
+        case TokenType::DEBUT: s = "Type: DEBUT"; break;
+        case TokenType::VARIABLE: s = "Type: VARIABLE"; break;
+        case TokenType::PRINT: s = "Type: PRINT"; break;
+        case TokenType::END: s = "Type: END"; break;
+        default:
+            s = "Token non implémenter dans le print Value: " + tokenList[i].value;
+            break;
         }
 
-        std::clog << "[" << i << "] " << s << "Value: " << t[i].value << std::endl;
+        std::clog << "[" << i << "] " << s << std::endl;
     }
 }

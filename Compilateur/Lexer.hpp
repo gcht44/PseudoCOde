@@ -2,67 +2,75 @@
 #define LEXER_HPP
 
 #include <iostream>
-#include <vector>
-#include <fstream>
 #include <string>
+#include <vector>
+#include <stack>
 #include <sstream>
-#include <cctype>
 
 enum class TokenType {
-    KEYWORD,
-    IDENTIFIER,
-    EQUALS,
+    // Tokens existants
+    NAME,
     NUMBER,
-    SEMICOLON,
-    LPAREN,
-    RPAREN,
-    PLUS,
-    SUB,
-    MULT,
-    DIV,
-    COLON,
-    DOT,
-    COMMA,
-    QUOTE,
-    GREATHER,
-    GREATHER_EQUAL,
-    LESS,
-    LESS_EQUAL,
-    NOT_EQUAL,
-    LEFT_BRACE,
-    EQUAL_EQUAL,
-    RIGHT_BRACE,
+    STRING,
+    // Opérateurs
+    PLUS, MINUS, MULTIPLY, DIVIDE,
+    // Comparaisons
+    EQUAL, NOT_EQUAL, LESS, LESS_EQUAL, GREATER, GREATER_EQUAL, EQUAL_EQUAL,
+    // Parenthèses, crochets, etc.
+    LPAREN, RPAREN, LBRACKET, RBRACKET,
+    // Ponctuation
+    COMMA, COLON, SEMICOLON, DOT,
+    // Mots-clés
+    IF, ELSE, INT, STRINGVAR, FLOAT, BOOL, PRINT, VARIABLE, DEBUT, FIN, FINSI,
+    // Indentation
+    INDENT, DEDENT, NEWLINE,
+    // Fin de fichier
     END
 };
 
-struct Token {
+class Token {
+public:
     TokenType type;
     std::string value;
-    int li;
-    int col;
-    Token(TokenType type, std::string value, int li, int col) : type(type), value(std::move(value)), li(li), col(col) {}
+    int line;
+    int column;
+
+    Token(TokenType t, const std::string& v, int l, int c)
+        : type(t), value(v), line(l), column(c) {}
 };
 
-
-class Lexer
-{
-
+class Lexer {
 public:
-    Lexer(std::string f); 
-    // bool loadFile(std::string f);
+    Lexer(const std::string& source) : contenu(source), pos(0), nbLigne(1), currentIndent(0) {
+        indentStack.push(0); // Niveau d'indentation initial
+    }
+
     std::vector<Token> Tokenise();
-    void printTokens(std::vector<Token> t); // Debug function
+    void printTokens(std::vector<Token> tokenList);
 
 private:
     std::string contenu;
-    // std::vector<Token> TokenList;
-    int pos;
+    size_t pos;
     int nbLigne;
+    int currentIndent;
+    std::stack<int> indentStack;
+    const int INDENT_SIZE = 4; // Taille d'une unité d'indentation (2 espaces)
 
-    bool isVide(const std::string& ligne);
-    Token readIdentifierOrKeyword();
-    Token readNumber();
     Token GetNextToken();
+    char CurrentChar() const;
+    char NextChar();
+    bool IsEOF() const;
+    void SkipWhitespace();
+    bool isVide(const std::string& line) const;
+
+    // Méthodes pour l'indentation
+    int calculateIndentation(const std::string& line) const;
+    std::vector<Token> handleIndentation(const std::string& line);
+
+    // Méthodes pour les différents types de tokens
+    Token ProcessIdentifier();
+    Token ProcessNumber();
+    Token ProcessString();
 
 };
 

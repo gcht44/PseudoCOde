@@ -1,10 +1,2 @@
-﻿  Lexer.cpp
-  Parser.cpp
-  Génération de code en cours...
-C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Parser.cpp(51,1): warning C4715: 'Parser::tokenTypeToStr' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Parser.cpp(78,1): warning C4715: 'Parser::parseAssignement' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Parser.cpp(133,1): warning C4715: 'Parser::parseFactorAST' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Parser.cpp(263,1): warning C4715: 'Parser::parsePrint' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Parser.cpp(250,1): warning C4715: 'Parser::parseVar' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Parser.cpp(294,1): warning C4715: 'Parser::parseStatement' : les chemins de contrôle ne retournent pas tous une valeur
+﻿  Parser.cpp
   Compilateur.vcxproj -> C:\Users\gabch\Documents\GitHub\PseudoCOde\x64\Debug\Compilateur.exe

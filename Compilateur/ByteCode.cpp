@@ -44,10 +44,8 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
 
         int elseLabel = this->bytecode.size(); // Marque l'emplacement du saut
         this->bytecode.push_back({ JUMP_IF_FALSE, std::string{std::to_string(elseLabel)} });
-        for (int i = 0; i < if_->getIfBlock().size(); i++)
-        {
-            generateBytecode(if_->getIfBlock()[i].get(), symbolTable);
-        }
+        generateBytecode(if_->getIfBlock().get(), symbolTable);
+        
 
         // Ajouter un saut inconditionnel (JUMP) pour éviter le bloc else
         int endIfLabel = this->bytecode.size();
@@ -55,15 +53,19 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
         this->bytecode[elseLabel].arg = std::to_string(endIfLabel);
 
         // Générer le bytecode pour le bloc else (si présent)
-        if (!if_->elseBlock.empty()) 
+        if (if_->elseBlock != nullptr) 
         {
             this->bytecode[elseLabel].arg = std::to_string(this->bytecode.size()); // Mettre à jour le saut conditionnel
-            for (int i = 0; i < if_->getElseBlock().size(); i++)
-            {
-                generateBytecode(if_->getElseBlock()[i].get(), symbolTable);
-            }
+            generateBytecode(if_->getElseBlock().get(), symbolTable);
         }
         this->bytecode[endIfLabel].arg = std::to_string(this->bytecode.size());
+    }
+    else if (auto block = dynamic_cast<const BlockNode*>(node)) 
+    {
+        for (int i = 0; i < block->getBlock().size(); i++)
+        {
+            generateBytecode(block->getBlock()[i].get(), symbolTable);
+        }
     }
     else {
         std::cerr << "erreur dans le noeud" << std::endl;

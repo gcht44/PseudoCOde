@@ -21,23 +21,22 @@ private:
 	SymbolTable symbolTable;
 	bool isVarParse;
 	int currentIndent;
+	// SymbolTable symbolTable;
 
-	std::unique_ptr<ASTNode> parseVarAST(int currPos);
+	int getTokenPrecedence();
+	std::unique_ptr<ASTNode> parseBinOpRHS(int ExprPrec, std::unique_ptr<ASTNode> LHS);
 	std::unique_ptr<ASTNode> parseExpressionAST();
 	std::unique_ptr<ASTNode> parseTermAST();
 	std::unique_ptr<ASTNode> parseFactorAST();
-	std::unique_ptr<ASTNode> parseAssignementAST(int currPos);
-	std::unique_ptr<ASTNode> parsePrintAST();
-	std::unique_ptr<ASTNode> parseBlock();
-	std::unique_ptr<ASTNode> parseIfAST();
+	std::unique_ptr<BlockNode> parseBlock();
 
-	std::unique_ptr<ASTNode> parseVar();
 	std::unique_ptr<ASTNode> parseIf();
 	bool match(TokenType type);
 	bool match(TokenType type, std::string valWaiting);
 	void err(std::string msg);
 	std::string tokenTypeToStr(TokenType token);
 	std::unique_ptr<ASTNode> parseAssignement();
+	std::unique_ptr<ASTNode> parseVar();
 	std::unique_ptr<ASTNode> parseStatement();
 	std::unique_ptr<ASTNode> parsePrint();
 };

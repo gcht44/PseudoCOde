@@ -43,17 +43,20 @@ bool AnalizeSemantique::analize(ASTNode* node, SymbolTable& symbolTable)
 	{
 		analize(ifNode->getCond().get(), symbolTable);
 		auto& ifBlockVect = ifNode->getIfBlock();
-		for (int i = 0; i < ifBlockVect.size(); i++)
-		{
-			analize(ifBlockVect[i].get(), symbolTable);
-		}
+			analize(ifBlockVect.get(), symbolTable);
+
 		auto& elseBlockVect = ifNode->getElseBlock();
-		if (!elseBlockVect.empty())
+		if (elseBlockVect != nullptr)
 		{
-			for (int i = 0; i < elseBlockVect.size(); i++)
-			{
-				analize(elseBlockVect[i].get(), symbolTable);
-			}
+			analize(elseBlockVect.get(), symbolTable);
+		}
+	}
+	else if (auto blockNode = dynamic_cast<const BlockNode*>(node))
+	{
+		auto& block = blockNode->getBlock();
+		for (int i = 0; i < block.size(); i++)
+		{
+			analize(block[i].get(), symbolTable);
 		}
 	}
 	else if (auto identifier = dynamic_cast<const IdentifierNode*>(node))
