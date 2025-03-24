@@ -142,6 +142,21 @@ public:
     Type checkType(SymbolTable& symbolTable) const;
 };
 
+class TantQueNode : public ASTNode {
+public:
+    std::unique_ptr<ASTNode> condition; // La condition (expression)
+    std::unique_ptr<ASTNode> tantqueBlock; // Bloc de code si la condition est vraie
+
+    TantQueNode(std::unique_ptr<ASTNode> cond, std::unique_ptr<ASTNode> tantqueBlk)
+        : condition(std::move(cond)), tantqueBlock(std::move(tantqueBlk)) {
+    }
+
+    void print(int indent = 0) const override;
+    const std::unique_ptr<ASTNode>& getCond() const;
+    const std::unique_ptr<ASTNode>& getTantQueBlock() const;
+    Type checkType(SymbolTable& symbolTable) const;
+};
+
 // Noeud pour une instruction block
 class BlockNode : public ASTNode {
 public:

@@ -51,6 +51,12 @@ bool AnalizeSemantique::analize(ASTNode* node, SymbolTable& symbolTable)
 			analize(elseBlockVect.get(), symbolTable);
 		}
 	}
+	else if (auto tantQueNode = dynamic_cast<const TantQueNode*>(node))
+	{
+		analize(tantQueNode->getCond().get(), symbolTable);
+		auto& TantQueBlockVect = tantQueNode->getTantQueBlock();
+		analize(TantQueBlockVect.get(), symbolTable);
+	}
 	else if (auto blockNode = dynamic_cast<const BlockNode*>(node))
 	{
 		auto& block = blockNode->getBlock();

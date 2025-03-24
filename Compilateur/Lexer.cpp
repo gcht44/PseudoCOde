@@ -205,7 +205,7 @@ Token Lexer::GetNextToken()
     {
         return ProcessString();
     }
-
+    // std::cout << c << std::endl;
     switch (c)
     {
     case ';': pos++; return Token(TokenType::SEMICOLON, ";", nbLigne + 1, pos);
@@ -224,16 +224,13 @@ Token Lexer::GetNextToken()
         return Token(TokenType::EQUAL, "=", nbLigne + 1, pos);
 
     case '>':
-        pos++;
         if (NextChar() == '=') { pos++; return Token(TokenType::GREATER_EQUAL, ">=", nbLigne, pos); }
         return Token(TokenType::GREATER, ">", nbLigne + 1, pos);
 
     case '<':
-        pos++;
         if (NextChar() == '=') { pos++; return Token(TokenType::LESS_EQUAL, "<=", nbLigne, pos); }
         return Token(TokenType::LESS, "<", nbLigne + 1, pos);
     case '!':
-        pos++;
         if (NextChar() == '=') { pos++; return Token(TokenType::NOT_EQUAL, "!=", nbLigne, pos); }
         break;
 
@@ -290,22 +287,24 @@ Token Lexer::ProcessIdentifier()
 {
     std::string value;
     while (!IsEOF() && std::isalpha(contenu[pos])) { value.push_back(CurrentChar()); NextChar(); } // la boucle va s'arreter au premier espace qu'elle voit
-    if (value == "ENTIER") return Token(TokenType::INT, value, nbLigne + 1, pos);
-    if (value == "BOOLEAN") return Token(TokenType::BOOL, value, nbLigne + 1, pos);
-    if (value == "REEL") return Token(TokenType::FLOAT, value, nbLigne + 1, pos);
-    if (value == "STRING") return Token(TokenType::STRINGVAR, value, nbLigne + 1, pos);
-    /*if (value == "TRUE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "FALSE") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);*/
-    if (value == "ecrire") return Token(TokenType::PRINT, value, nbLigne + 1, pos);
-    if (value == "VARIABLE") return Token(TokenType::VARIABLE, value, nbLigne + 1, pos);
-    if (value == "DEBUT") return Token(TokenType::DEBUT, value, nbLigne + 1, pos);
+    if (value == "ENTIER") return Token(TokenType::INT, value, nbLigne, pos);
+    if (value == "BOOLEAN") return Token(TokenType::BOOL, value, nbLigne, pos);
+    if (value == "REEL") return Token(TokenType::FLOAT, value, nbLigne, pos);
+    if (value == "STRING") return Token(TokenType::STRINGVAR, value, nbLigne, pos);
+    if (value == "TRUE") return Token(TokenType::TRUE, value, nbLigne, pos);
+    if (value == "FALSE") return Token(TokenType::FALSE, value, nbLigne, pos);
+    if (value == "ecrire") return Token(TokenType::PRINT, value, nbLigne, pos);
+    if (value == "VARIABLE") return Token(TokenType::VARIABLE, value, nbLigne, pos);
+    if (value == "DEBUT") return Token(TokenType::DEBUT, value, nbLigne, pos);
     /*if (value == "ET") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
     if (value == "OU") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);*/
-    if (value == "SI") return Token(TokenType::IF, value, nbLigne + 1, pos);
-    if (value == "SINON") return Token(TokenType::ELSE, value, nbLigne + 1, pos);
-    if (value == "FIN") return Token(TokenType::FIN, value, nbLigne + 1, pos);
-    if (value == "FINSI") return Token(TokenType::FINSI, value, nbLigne + 1, pos);
-    return Token(TokenType::NAME, value, nbLigne + 1, pos);
+    if (value == "SI") return Token(TokenType::IF, value, nbLigne, pos);
+    if (value == "SINON") return Token(TokenType::ELSE, value, nbLigne, pos);
+    if (value == "FIN") return Token(TokenType::FIN, value, nbLigne, pos);
+    if (value == "TANTQUE") return Token(TokenType::TANTQUE, value, nbLigne, pos);
+    if (value == "FINTANTQUE") return Token(TokenType::FINTANTQUE, value, nbLigne, pos);
+    if (value == "FINSI") return Token(TokenType::FINSI, value, nbLigne, pos);
+    return Token(TokenType::NAME, value, nbLigne, pos);
 }
 
 
@@ -330,6 +329,7 @@ void Lexer::printTokens(std::vector<Token> tokenList)
         case TokenType::MINUS: s = "Type: MINUS"; break;
         case TokenType::MULTIPLY: s = "Type: MULTIPLY"; break;
         case TokenType::DIVIDE: s = "Type: DIVIDE"; break;
+        case TokenType::EQUAL_EQUAL: s = "Type: EQUAL_EQUAL"; break;
         case TokenType::COLON: s = "Type: COLON"; break;
         case TokenType::DOT: s = "Type: DOT"; break;
         case TokenType::COMMA: s = "Type: COMMA"; break;
@@ -345,6 +345,7 @@ void Lexer::printTokens(std::vector<Token> tokenList)
         case TokenType::DEBUT: s = "Type: DEBUT"; break;
         case TokenType::VARIABLE: s = "Type: VARIABLE"; break;
         case TokenType::PRINT: s = "Type: PRINT"; break;
+        case TokenType::TANTQUE: s = "Type: TANTQUE"; break;
         case TokenType::END: s = "Type: END"; break;
         default:
             s = "Token non implémenter dans le print Value: " + tokenList[i].value;

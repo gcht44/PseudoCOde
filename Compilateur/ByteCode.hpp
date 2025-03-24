@@ -25,6 +25,7 @@ enum Opcode {
     ENDIF,          // Fin d'une condition
     JUMP,           // Saut inconditionnel
     JUMP_IF_FALSE,  // Saut conditionnel (si la condition est fausse)
+    JUMP_IF_TRUE,   // Saut conditionnel (si la condition est vraie)
     GREATER,        // Opérateur >
     LESS,           // Opérateur <
     GREATER_EQUAL,  // Opérateur >=

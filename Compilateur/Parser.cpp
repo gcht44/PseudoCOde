@@ -86,6 +86,10 @@ std::unique_ptr<ASTNode> Parser::parseStatement() {
     {
         return parseIf();
     }
+    else if (type == TokenType::TANTQUE)
+    {
+        return parseTantQue();
+    }
     else 
     {
         err("Instruction non reconnue: " + TokenList[pos].value);
@@ -350,6 +354,29 @@ std::unique_ptr<ASTNode> Parser::parseExpressionAST() {
     return parseBinOpRHS(0, std::move(LHS));
 }
 
+std::unique_ptr<ASTNode> Parser::parseTantQue()
+{
+    if (!match(TokenType::TANTQUE)) { err("Attendu: mot clé TANTQUE"); }
+
+    auto condition = parseExpressionAST();
+    if (!condition) {
+        err("Expression de condition invalide");
+        return nullptr;
+    }
+    
+    if (!match(TokenType::COLON)) { err("Attendu: ':' (" + tokenTypeToStr(TokenList[pos].type) + " value: " + TokenList[pos].value + ")"); }
+    if (!match(TokenType::NEWLINE)) { err("Attendu: nouvelle ligne après 'then'"); }
+
+    auto tantqueBlock = parseBlock();
+    if (!tantqueBlock) {
+        return nullptr;
+    }
+    if (!match(TokenType::FINTANTQUE)) { err("Attendu: Mot clé FIN"); }
+    pos++;
+
+    return std::make_unique<TantQueNode>(std::move(condition), std::move(tantqueBlock));
+}
+
 std::unique_ptr<ASTNode> Parser::parseBinOpRHS(int ExprPrec, std::unique_ptr<ASTNode> LHS) {
     while (true) {
         int TokPrec = getTokenPrecedence();
@@ -397,6 +424,7 @@ int Parser::getTokenPrecedence() {
         return 20;
     case TokenType::EQUAL:
     case TokenType::NOT_EQUAL:
+    case TokenType::EQUAL_EQUAL:
     case TokenType::LESS:
     case TokenType::LESS_EQUAL:
     case TokenType::GREATER:
@@ -439,6 +467,12 @@ std::unique_ptr<ASTNode> Parser::parseFactorAST() {
 
         return std::make_unique<StringNode>(value);
     }
+    else if (type == TokenType::TRUE || type == TokenType::FALSE) {
+        std::string value = TokenList[pos].value;
+        pos++; // Consommer la chaîne
+
+        return std::make_unique<BoolNode>(value);
+    }
     else if (type == TokenType::LPAREN) {
         pos++; // Consommer '('
 
@@ -455,7 +489,7 @@ std::unique_ptr<ASTNode> Parser::parseFactorAST() {
         return expr;
     }
     else {
-        err("Expression attendue, trouvé: " + TokenList[pos].value);
+        err("Expression attendue, trouvé: " + tokenTypeToStr(TokenList[pos].type));
         return nullptr;
     }
 }
@@ -505,6 +539,14 @@ std::string Parser::tokenTypeToStr(TokenType token) {
     case TokenType::INDENT: return "indentation";
     case TokenType::DEDENT: return "désindentation";
     case TokenType::NEWLINE: return "nouvelle ligne";
+
+    case TokenType::FIN: return "fin";
+    case TokenType::FINTANTQUE: return "fin tant que";
+    case TokenType::FINSI: return "fin si";
+
+    case TokenType::TANTQUE: return "tant que";
+    case TokenType::EQUAL_EQUAL: return "egal egal";
+    case TokenType::NOT_EQUAL: return "pas egal";
     default: return "token inconnu";
     }
 }

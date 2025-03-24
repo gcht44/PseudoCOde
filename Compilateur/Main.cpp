@@ -10,7 +10,7 @@
 int main()
 {
 	// Lire le contenu du fichier
-	const std::string filename = "test1.txt";
+	const std::string filename = "test.txt";
 	std::ifstream file(filename);
 	if (!file) {
 		std::cerr << "Impossible d'ouvrir le fichier: " << filename << std::endl;

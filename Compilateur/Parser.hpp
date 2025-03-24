@@ -37,6 +37,7 @@ private:
 	std::string tokenTypeToStr(TokenType token);
 	std::unique_ptr<ASTNode> parseAssignement();
 	std::unique_ptr<ASTNode> parseVar();
+	std::unique_ptr<ASTNode> parseTantQue();
 	std::unique_ptr<ASTNode> parseStatement();
 	std::unique_ptr<ASTNode> parsePrint();
 };

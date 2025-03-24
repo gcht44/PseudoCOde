@@ -228,7 +228,7 @@ Type PrintNode::checkType(SymbolTable& symbolTable) const
 }
 
 
-// Noeud pour une instruction if (print x)
+// Noeud pour une instruction if
 void IfNode::print(int indent) const
 {
     printIndent(indent);
@@ -270,6 +270,37 @@ Type IfNode::checkType(SymbolTable& symbolTable) const
     }
     return Type::NONE; // Une condition n'a pas de type de retour
 }
+
+// Noeud pour une instruction if
+void TantQueNode::print(int indent) const
+{
+    printIndent(indent);
+    std::cout << "TANTQUE:\n";
+    condition->print(indent);
+
+    // Afficher le bloc if
+    printIndent(indent);
+    std::cout << "TantQueBlock: " << std::endl;
+    tantqueBlock->print(indent + 1);
+}
+const std::unique_ptr<ASTNode>& TantQueNode::getCond() const
+{
+    return this->condition;
+}
+const std::unique_ptr<ASTNode>& TantQueNode::getTantQueBlock() const
+{
+    return this->tantqueBlock;
+}
+Type TantQueNode::checkType(SymbolTable& symbolTable) const
+{
+    // Vérifie que la condition est un booléen
+    if (condition->checkType(symbolTable) != Type::BOOL) {
+        throw std::runtime_error("La condition doit être un booléen");
+    }
+    return Type::NONE; // Une condition n'a pas de type de retour
+}
+
+
 
 void BlockNode::print(int indent) const
 {

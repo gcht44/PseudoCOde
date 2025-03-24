@@ -12,6 +12,8 @@ enum class TokenType {
     NAME,
     NUMBER,
     STRING,
+    TRUE,
+    FALSE,
     // Opérateurs
     PLUS, MINUS, MULTIPLY, DIVIDE,
     // Comparaisons
@@ -21,7 +23,7 @@ enum class TokenType {
     // Ponctuation
     COMMA, COLON, SEMICOLON, DOT,
     // Mots-clés
-    IF, ELSE, INT, STRINGVAR, FLOAT, BOOL, PRINT, VARIABLE, DEBUT, FIN, FINSI,
+    IF, ELSE, INT, STRINGVAR, FLOAT, BOOL, PRINT, VARIABLE, DEBUT, FIN, FINSI, TANTQUE, FINTANTQUE,
     // Indentation
     INDENT, DEDENT, NEWLINE,
     // Fin de fichier

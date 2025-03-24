@@ -60,6 +60,17 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
         }
         this->bytecode[endIfLabel].arg = std::to_string(this->bytecode.size());
     }
+    else if (auto tantque = dynamic_cast<const TantQueNode*>(node)) {
+        int condLabel = this->bytecode.size();
+        generateExpressionBytecode(tantque->getCond().get(), symbolTable);
+
+        int tantqueLabel = this->bytecode.size(); // Marque l'emplacement du saut
+        this->bytecode.push_back({ JUMP_IF_TRUE, std::string{std::to_string(tantqueLabel)} });
+
+        generateBytecode(tantque->getTantQueBlock().get(), symbolTable);
+        this->bytecode.push_back({ JUMP, std::string{std::to_string(condLabel)} });
+        this->bytecode[tantqueLabel].arg = std::to_string(this->bytecode.size());
+    }
     else if (auto block = dynamic_cast<const BlockNode*>(node)) 
     {
         for (int i = 0; i < block->getBlock().size(); i++)
@@ -214,6 +225,9 @@ void ByteCode::printByteCode()
 
         case JUMP_IF_FALSE:
             std::cout << "JUMP_IF_FALSE " << bytecode[i].arg << "\n";
+            break;
+        case JUMP_IF_TRUE:
+            std::cout << "JUMP_IF_TRUE " << bytecode[i].arg << "\n";
             break;
         case JUMP:
             std::cout << "JUMP " << bytecode[i].arg << "\n";
@@ -537,6 +551,13 @@ void ByteCode::executeByteCode()
 
         case JUMP_IF_FALSE:
             if (!popStackBool())
+            {
+                i = std::stoi(bytecode[i].arg) - 1;
+                break;
+            }
+            break;
+        case JUMP_IF_TRUE:
+            if (popStackBool())
             {
                 i = std::stoi(bytecode[i].arg) - 1;
                 break;

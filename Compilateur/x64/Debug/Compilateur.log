@@ -1,2 +1,6 @@
-﻿  Parser.cpp
+﻿  ByteCode.cpp
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(45,23): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(51,24): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(64,23): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(67,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
   Compilateur.vcxproj -> C:\Users\gabch\Documents\GitHub\PseudoCOde\x64\Debug\Compilateur.exe
