@@ -64,9 +64,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="test.txt">
+    <Text Include="tantque.txt">
       <Filter>Fichiers sources</Filter>
     </Text>
-    <Text Include="test1.txt" />
+    <Text Include="condition.txt" />
+    <Text Include="pour.txt" />
+    <Text Include="variable.txt" />
   </ItemGroup>
 </Project>

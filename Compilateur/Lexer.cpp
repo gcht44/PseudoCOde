@@ -221,7 +221,7 @@ Token Lexer::GetNextToken()
 
     case '=':
         if (NextChar() == '=') { pos++; return Token(TokenType::EQUAL_EQUAL, "==", nbLigne, pos); }
-        return Token(TokenType::EQUAL, "=", nbLigne + 1, pos);
+        break;
 
     case '>':
         if (NextChar() == '=') { pos++; return Token(TokenType::GREATER_EQUAL, ">=", nbLigne, pos); }
@@ -229,6 +229,7 @@ Token Lexer::GetNextToken()
 
     case '<':
         if (NextChar() == '=') { pos++; return Token(TokenType::LESS_EQUAL, "<=", nbLigne, pos); }
+        if (contenu[pos] == '-') { pos++; return Token(TokenType::EQUAL, "<=", nbLigne, pos); }
         return Token(TokenType::LESS, "<", nbLigne + 1, pos);
     case '!':
         if (NextChar() == '=') { pos++; return Token(TokenType::NOT_EQUAL, "!=", nbLigne, pos); }
@@ -304,6 +305,10 @@ Token Lexer::ProcessIdentifier()
     if (value == "TANTQUE") return Token(TokenType::TANTQUE, value, nbLigne, pos);
     if (value == "FINTANTQUE") return Token(TokenType::FINTANTQUE, value, nbLigne, pos);
     if (value == "FINSI") return Token(TokenType::FINSI, value, nbLigne, pos);
+    if (value == "POUR") return Token(TokenType::POUR, value, nbLigne, pos);
+    if (value == "DE") return Token(TokenType::DE, value, nbLigne, pos);
+    if (value == "A") return Token(TokenType::A, value, nbLigne, pos);
+    if (value == "FINPOUR") return Token(TokenType::FINPOUR, value, nbLigne, pos);
     return Token(TokenType::NAME, value, nbLigne, pos);
 }
 

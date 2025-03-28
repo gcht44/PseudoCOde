@@ -10,7 +10,7 @@
 int main()
 {
 	// Lire le contenu du fichier
-	const std::string filename = "test.txt";
+	const std::string filename = "pour.txt";
 	std::ifstream file(filename);
 	if (!file) {
 		std::cerr << "Impossible d'ouvrir le fichier: " << filename << std::endl;
@@ -25,7 +25,6 @@ int main()
 	Lexer lexer(contenu);
 
 	std::vector<Token> TokenList = lexer.Tokenise();
-	std::cout << TokenList.size();
 
 	lexer.printTokens(TokenList);
 	std::clog << "[LEXER] Tokenisation OK" << std::endl;

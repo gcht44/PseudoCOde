@@ -60,7 +60,8 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
         }
         this->bytecode[endIfLabel].arg = std::to_string(this->bytecode.size());
     }
-    else if (auto tantque = dynamic_cast<const TantQueNode*>(node)) {
+    else if (auto tantque = dynamic_cast<const TantQueNode*>(node)) 
+    {
         int condLabel = this->bytecode.size();
         generateExpressionBytecode(tantque->getCond().get(), symbolTable);
 
@@ -70,6 +71,25 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
         generateBytecode(tantque->getTantQueBlock().get(), symbolTable);
         this->bytecode.push_back({ JUMP, std::string{std::to_string(condLabel)} });
         this->bytecode[tantqueLabel].arg = std::to_string(this->bytecode.size());
+    }
+    else if (auto pour = dynamic_cast<const PourNode*>(node))
+    {
+        int debutJmp = this->bytecode.size();
+        generateExpressionBytecode(pour->getValDebut().get(), symbolTable);
+        this->bytecode.push_back({ STORE_VAR, std::string{pour->getValInit() }, Type::ENTIER});
+        int blockPourLabel = this->bytecode.size();
+
+        generateBytecode(pour->getPourBlock().get(), symbolTable);
+
+        this->bytecode.push_back({ PUSH_VAR, std::string{pour->getValInit()}, Type::ENTIER });
+        this->bytecode.push_back({ PUSH_CONST, Value{1} });
+        this->bytecode.push_back({ ADD, Type::ENTIER });
+        this->bytecode.push_back({ STORE_VAR, std::string{pour->getValInit() }, Type::ENTIER });
+        generateExpressionBytecode(pour->getValFin().get(), symbolTable);
+        this->bytecode.push_back({ PUSH_VAR, std::string{pour->getValInit()}, Type::ENTIER });
+        this->bytecode.push_back({ EQUAL, Type::ENTIER });
+        this->bytecode.push_back({ JUMP_IF_FALSE, std::string{std::to_string(blockPourLabel)} });
+        // Rajouter +1 a la valeur de fin car de 0 a 10 va de 0 a 9
     }
     else if (auto block = dynamic_cast<const BlockNode*>(node)) 
     {

@@ -23,7 +23,9 @@ enum class TokenType {
     // Ponctuation
     COMMA, COLON, SEMICOLON, DOT,
     // Mots-clés
-    IF, ELSE, INT, STRINGVAR, FLOAT, BOOL, PRINT, VARIABLE, DEBUT, FIN, FINSI, TANTQUE, FINTANTQUE,
+    IF, ELSE, INT, STRINGVAR, FLOAT, BOOL, PRINT, VARIABLE, DEBUT, TANTQUE, POUR, DE, A,
+    // FIN
+    FIN, FINSI, FINTANTQUE, FINPOUR,
     // Indentation
     INDENT, DEDENT, NEWLINE,
     // Fin de fichier

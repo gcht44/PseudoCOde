@@ -146,7 +146,7 @@ Type BinaryOpNode::checkType(SymbolTable& symbolTable) const
     else if (op == ">" || op == "<" || op == ">=" || op == "<=" || op == "==" || op == "!=") {
         return Type::BOOL;
     }
-    else if (op == "&&" || op == "||") 
+    else if (op == "ET" || op == "OU") // Pas encore implémenter 
     {
         if (leftType != Type::BOOL) 
         {
@@ -271,7 +271,7 @@ Type IfNode::checkType(SymbolTable& symbolTable) const
     return Type::NONE; // Une condition n'a pas de type de retour
 }
 
-// Noeud pour une instruction if
+// Noeud pour une instruction TANTQUE
 void TantQueNode::print(int indent) const
 {
     printIndent(indent);
@@ -296,6 +296,48 @@ Type TantQueNode::checkType(SymbolTable& symbolTable) const
     // Vérifie que la condition est un booléen
     if (condition->checkType(symbolTable) != Type::BOOL) {
         throw std::runtime_error("La condition doit être un booléen");
+    }
+    return Type::NONE; // Une condition n'a pas de type de retour
+}
+
+
+
+// Noeud pour une instruction POUR
+void PourNode::print(int indent) const
+{
+    printIndent(indent);
+    std::cout << "TANTQUE: ";
+    this->nameVarInit;
+    this->valDebut->print(indent);
+    this->valFin->print(indent);
+
+    // Afficher le bloc if
+    printIndent(indent);
+    std::cout << "PourBlock: " << std::endl;
+    this->pourBlock->print(indent + 1);
+}
+const std::string& PourNode::getValInit() const
+{
+    return this->nameVarInit;
+}
+const std::unique_ptr<ASTNode>& PourNode::getValDebut() const
+{
+    return this->valDebut;
+}
+const std::unique_ptr<ASTNode>& PourNode::getValFin() const
+{
+    return this->valFin;
+}
+const std::unique_ptr<ASTNode>& PourNode::getPourBlock() const
+{
+    return this->pourBlock;
+}
+Type PourNode::checkType(SymbolTable& symbolTable) const
+{
+    Type varType = symbolTable.getVariableType(this->nameVarInit);
+    // Vérifie que la condition est un booléen
+    if (((valDebut->checkType(symbolTable) != Type::ENTIER) && (valFin->checkType(symbolTable) != Type::ENTIER)) != (varType != Type::ENTIER)) {
+        throw std::runtime_error("Type attendu : ENTIER");
     }
     return Type::NONE; // Une condition n'a pas de type de retour
 }

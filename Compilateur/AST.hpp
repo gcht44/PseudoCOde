@@ -157,6 +157,26 @@ public:
     Type checkType(SymbolTable& symbolTable) const;
 };
 
+class PourNode : public ASTNode {
+public:
+    // std::unique_ptr<ASTNode> varInit;
+    std::string nameVarInit;
+    std::unique_ptr<ASTNode> valDebut; 
+    std::unique_ptr<ASTNode> valFin;
+    std::unique_ptr<ASTNode> pourBlock; // Bloc de code si la condition est vraie
+
+    PourNode(std::string varIn, std::unique_ptr<ASTNode> valDeb, std::unique_ptr<ASTNode> valFn, std::unique_ptr<ASTNode> pourBlk)
+        : nameVarInit(varIn), valDebut(std::move(valDeb)), valFin(std::move(valFn)), pourBlock(std::move(pourBlk)) {
+    }
+
+    void print(int indent = 0) const override;
+    const std::string& getValInit() const;
+    const std::unique_ptr<ASTNode>& getValDebut() const;
+    const std::unique_ptr<ASTNode>& getValFin() const;
+    const std::unique_ptr<ASTNode>& getPourBlock() const;
+    Type checkType(SymbolTable& symbolTable) const;
+};
+
 // Noeud pour une instruction block
 class BlockNode : public ASTNode {
 public:

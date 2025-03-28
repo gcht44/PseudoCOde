@@ -90,6 +90,10 @@ std::unique_ptr<ASTNode> Parser::parseStatement() {
     {
         return parseTantQue();
     }
+    else if (type == TokenType::POUR)
+    {
+        return parsePour();
+    }
     else 
     {
         err("Instruction non reconnue: " + TokenList[pos].value);
@@ -375,6 +379,40 @@ std::unique_ptr<ASTNode> Parser::parseTantQue()
     pos++;
 
     return std::make_unique<TantQueNode>(std::move(condition), std::move(tantqueBlock));
+}
+
+std::unique_ptr<ASTNode> Parser::parsePour()
+{
+    std::unique_ptr<ASTNode> numOrName1 = nullptr;
+    std::unique_ptr<ASTNode> numOrName2 = nullptr;
+
+    if (!match(TokenType::POUR)) { err("Attendu: mot clé POUR"); }
+    if (!match(TokenType::NAME)) { err("Attendu: variable"); }
+    std::string var = TokenList[pos - 1].value;
+    if (!match(TokenType::DE)) { err("Attendu: mot clé 'DE'"); }
+
+
+    if (match(TokenType::NUMBER)) { numOrName1 = std::make_unique<IntNode>(TokenList[pos - 1].value); }
+    else if (match(TokenType::NAME)) { numOrName1 = std::make_unique<IdentifierNode>(TokenList[pos - 1].value); }
+    else { err("Attendu: NUMBER ou variable"); }
+
+    if (!match(TokenType::A)) { err("Attendu: mot clé 'A'"); }
+
+    if (match(TokenType::NUMBER)) { numOrName2 = std::make_unique<IntNode>(TokenList[pos - 1].value); }
+    else if (match(TokenType::NAME)) { numOrName2 = std::make_unique<IdentifierNode>(TokenList[pos - 1].value); }
+    else { err("Attendu: NUMBER ou variable"); }
+
+    if (!match(TokenType::COLON)) { err("Attendu: ':' (" + tokenTypeToStr(TokenList[pos].type) + " value: " + TokenList[pos].value + ")"); }
+    if (!match(TokenType::NEWLINE)) { err("Attendu: nouvelle ligne après"); }
+
+    auto pourBlock = parseBlock();
+    if (!pourBlock) {
+        return nullptr;
+    }
+    if (!match(TokenType::FINPOUR)) { err("Attendu: Mot clé FIN"); }
+    pos++;
+
+   return std::make_unique<PourNode>(std::move(var), std::move(numOrName1), std::move(numOrName2), std::move(pourBlock));
 }
 
 std::unique_ptr<ASTNode> Parser::parseBinOpRHS(int ExprPrec, std::unique_ptr<ASTNode> LHS) {

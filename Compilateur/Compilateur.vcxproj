@@ -151,8 +151,10 @@
     <ClInclude Include="SymbolTable.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="test.txt" />
-    <Text Include="test1.txt" />
+    <Text Include="pour.txt" />
+    <Text Include="tantque.txt" />
+    <Text Include="condition.txt" />
+    <Text Include="variable.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
