@@ -343,6 +343,56 @@ Type PourNode::checkType(SymbolTable& symbolTable) const
 }
 
 
+// Noeud pour une instruction TABLEAU
+void ArrayDeclarationNode::print(int indent) const
+{
+    printIndent(indent);
+    std::cout << "TABLEAU: ";
+    for (int i = 0; i < this->elements.size(); i++) {
+        this->elements[i]->print(indent + 1);
+    }
+
+}
+const std::string& ArrayDeclarationNode::getName() const
+{
+    return this->name;
+}
+const std::vector<std::unique_ptr<ASTNode>>& ArrayDeclarationNode::getElems() const
+{
+    return this->elements;
+}
+Type ArrayDeclarationNode::checkType(SymbolTable& symbolTable) const
+{
+    Type prevType = symbolTable.getVariableType(this->name);
+    for (int i = 0; i < this->elements.size(); i++) {
+        if (prevType != elements[i]->checkType(symbolTable))
+        {
+            std::cerr << "[AST]: Erreur de type dans le tableau";
+            exit(1);
+        }
+    }
+    return prevType; 
+}
+
+
+
+void ArrayAccesNode::print(int indent = 0) const
+{
+    printIndent(indent);
+    std::cout << "ArrayAccessNode: \n";
+    printIndent(indent + 1);
+    std::cout << "Name: " + this->name;
+
+
+}
+const std::string& ArrayAccesNode::getName() const
+{
+
+}
+const std::unique_ptr<ASTNode>& ArrayAccesNode::getIndex() const
+{
+
+}
 
 void BlockNode::print(int indent) const
 {

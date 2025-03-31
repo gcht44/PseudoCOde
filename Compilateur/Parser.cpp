@@ -196,8 +196,10 @@ std::unique_ptr<ASTNode> Parser::parseIf() {
     return std::make_unique<IfNode>(std::move(condition), std::move(thenBlock), std::move(elseBlock));
 }
 
-std::unique_ptr<ASTNode> Parser::parseAssignement() {
-    if (pos >= TokenList.size() || TokenList[pos].type != TokenType::NAME) {
+std::unique_ptr<ASTNode> Parser::parseAssignement() 
+{
+    if (pos >= TokenList.size() || TokenList[pos].type != TokenType::NAME) 
+    {
         err("Attendu: nom de variable");
         return nullptr;
     }
@@ -205,7 +207,8 @@ std::unique_ptr<ASTNode> Parser::parseAssignement() {
     std::string varName = TokenList[pos].value;
     pos++; // Consommer le nom
 
-    if (!match(TokenType::EQUAL)) {
+    if (!match(TokenType::EQUAL)) 
+    {
         err("Attendu: '='");
         return nullptr;
     }
@@ -218,7 +221,8 @@ std::unique_ptr<ASTNode> Parser::parseAssignement() {
     if (!match(TokenType::SEMICOLON)) { err("Attendu: ';' après l'assignation"); }
 
     // Après l'assignation, on s'attend à un NEWLINE
-    if (!match(TokenType::NEWLINE)) {
+    if (!match(TokenType::NEWLINE)) 
+    {
         err("Attendu: nouvelle ligne après assignation");
         // On continue quand même
     }
@@ -227,12 +231,14 @@ std::unique_ptr<ASTNode> Parser::parseAssignement() {
     return std::make_unique<VarDeclarationNode>(varName, std::move(expr));
 }
 
-std::unique_ptr<ASTNode> Parser::parseVar() {
+std::unique_ptr<ASTNode> Parser::parseVar() 
+{
     std::string varName;
     std::unique_ptr<ASTNode> expr;
     if (match(TokenType::INT))
     {
-        if (pos >= TokenList.size() || TokenList[pos].type != TokenType::NAME) {
+        if (pos >= TokenList.size() || TokenList[pos].type != TokenType::NAME) 
+        {
             err("Attendu: nom de variable");
             return nullptr;
         }
@@ -240,21 +246,24 @@ std::unique_ptr<ASTNode> Parser::parseVar() {
         varName = TokenList[pos].value;
         pos++; // Consommer le nom
 
-        if (!match(TokenType::EQUAL)) {
+        if (!match(TokenType::EQUAL)) 
+        {
             err("Attendu: '='");
             return nullptr;
         }
 
         expr = parseExpressionAST();
-        if (!expr) {
+        if (!expr) 
+        {
             err("Expression invalide dans l'assignation");
             return nullptr;
         }
-        symbolTable.addVariable(varName, Type::ENTIER);
+        symbolTable.addVariable(varName, Type::ENTIER );
     }
     else if (match(TokenType::FLOAT))
     {
-        if (pos >= TokenList.size() || TokenList[pos].type != TokenType::NAME) {
+        if (pos >= TokenList.size() || TokenList[pos].type != TokenType::NAME) 
+        {
             err("Attendu: nom de variable");
             return nullptr;
         }
@@ -262,13 +271,15 @@ std::unique_ptr<ASTNode> Parser::parseVar() {
         varName = TokenList[pos].value;
         pos++; // Consommer le nom
 
-        if (!match(TokenType::EQUAL)) {
+        if (!match(TokenType::EQUAL)) 
+        {
             err("Attendu: '='");
             return nullptr;
         }
 
         expr = parseExpressionAST();
-        if (!expr) {
+        if (!expr) 
+        {
             err("Expression invalide dans l'assignation");
             return nullptr;
         }
@@ -276,7 +287,8 @@ std::unique_ptr<ASTNode> Parser::parseVar() {
     }
     else if (match(TokenType::BOOL))
     {
-        if (pos >= TokenList.size() || TokenList[pos].type != TokenType::NAME) {
+        if (pos >= TokenList.size() || TokenList[pos].type != TokenType::NAME) 
+        {
             err("Attendu: nom de variable");
             return nullptr;
         }
@@ -284,13 +296,15 @@ std::unique_ptr<ASTNode> Parser::parseVar() {
         varName = TokenList[pos].value;
         pos++; // Consommer le nom
 
-        if (!match(TokenType::EQUAL)) {
+        if (!match(TokenType::EQUAL)) 
+        {
             err("Attendu: '='");
             return nullptr;
         }
 
         expr = parseExpressionAST();
-        if (!expr) {
+        if (!expr) 
+        {
             err("Expression invalide dans l'assignation");
             return nullptr;
         }
@@ -298,7 +312,8 @@ std::unique_ptr<ASTNode> Parser::parseVar() {
     }
     else if (match(TokenType::STRINGVAR))
     {
-        if (pos >= TokenList.size() || TokenList[pos].type != TokenType::NAME) {
+        if (pos >= TokenList.size() || TokenList[pos].type != TokenType::NAME) 
+        {
             err("Attendu: nom de variable");
             return nullptr;
         }
@@ -306,20 +321,23 @@ std::unique_ptr<ASTNode> Parser::parseVar() {
         varName = TokenList[pos].value;
         pos++; // Consommer le nom
 
-        if (!match(TokenType::EQUAL)) {
+        if (!match(TokenType::EQUAL)) 
+        {
             err("Attendu: '='");
             return nullptr;
         }
 
         expr = parseExpressionAST();
-        if (!expr) {
+        if (!expr) 
+        {
             err("Expression invalide dans l'assignation");
             return nullptr;
         }
         symbolTable.addVariable(varName, Type::STRING);
     }
     if (!match(TokenType::SEMICOLON)) { err("Attendu: ';' après la ligne"); }
-    if (!match(TokenType::NEWLINE)) {
+    if (!match(TokenType::NEWLINE)) 
+    {
         err("Attendu: nouvelle ligne après assignation");
         // On continue quand même
     }
@@ -329,19 +347,23 @@ std::unique_ptr<ASTNode> Parser::parseVar() {
 }
 
 
-std::unique_ptr<ASTNode> Parser::parsePrint() {
-    if (!match(TokenType::PRINT)) {
+std::unique_ptr<ASTNode> Parser::parsePrint() 
+{
+    if (!match(TokenType::PRINT)) 
+    {
         err("Attendu: 'ecrire'");
         return nullptr;
     }
 
     auto expr = parseExpressionAST();
-    if (!expr) {
+    if (!expr) 
+    {
         err("Expression invalide dans print");
         return nullptr;
     }
     if (!match(TokenType::SEMICOLON)) { err("Attendu: ';' à la fin de la ligne"); }
-    if (!match(TokenType::NEWLINE)) {
+    if (!match(TokenType::NEWLINE)) 
+    {
         err("Attendu: nouvelle ligne après print");
         // On continue quand même
     }

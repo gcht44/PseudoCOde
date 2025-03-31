@@ -218,6 +218,8 @@ Token Lexer::GetNextToken()
     case ':': pos++; return Token(TokenType::COLON, ":", nbLigne + 1, pos);
     case '.': pos++; return Token(TokenType::DOT, ".", nbLigne + 1, pos);
     case ',': pos++; return Token(TokenType::COMMA, ",", nbLigne + 1, pos);
+    case '[': pos++; return Token(TokenType::LBRACKET, "[", nbLigne + 1, pos);
+    case ']': pos++; return Token(TokenType::RBRACKET, "]", nbLigne + 1, pos);
 
     case '=':
         if (NextChar() == '=') { pos++; return Token(TokenType::EQUAL_EQUAL, "==", nbLigne, pos); }
@@ -309,6 +311,7 @@ Token Lexer::ProcessIdentifier()
     if (value == "DE") return Token(TokenType::DE, value, nbLigne, pos);
     if (value == "A") return Token(TokenType::A, value, nbLigne, pos);
     if (value == "FINPOUR") return Token(TokenType::FINPOUR, value, nbLigne, pos);
+    if (value == "TABLEAU") return Token(TokenType::TABLEAU, value, nbLigne, pos);
     return Token(TokenType::NAME, value, nbLigne, pos);
 }
 
@@ -343,6 +346,7 @@ void Lexer::printTokens(std::vector<Token> tokenList)
         case TokenType::GREATER: s = "Type: GREATER"; break;
         case TokenType::GREATER_EQUAL: s = "Type: GREATER_EQUAL"; break;
         case TokenType::NOT_EQUAL: s = "Type: NOT_EQUAL"; break;
+        case TokenType::TABLEAU: s = "Type: TABLEAU"; break;
         case TokenType::NEWLINE: s = "Type: NEWLINE"; break;
         case TokenType::INT: s = "Type: INT"; break;
         case TokenType::STRING: s = "Type: STRING, Value: " + tokenList[i].value; break;
@@ -351,6 +355,13 @@ void Lexer::printTokens(std::vector<Token> tokenList)
         case TokenType::VARIABLE: s = "Type: VARIABLE"; break;
         case TokenType::PRINT: s = "Type: PRINT"; break;
         case TokenType::TANTQUE: s = "Type: TANTQUE"; break;
+        case TokenType::POUR: s = "Type: POUR"; break;
+        case TokenType::DE: s = "Type: DE"; break;
+        case TokenType::A: s = "Type: A"; break;
+        case TokenType::FINPOUR: s = "Type: FINPOUR"; break;
+        case TokenType::LBRACKET: s = "Type: LBRACKET"; break;
+        case TokenType::RBRACKET: s = "Type: RBRACKET"; break;
+        case TokenType::FIN: s = "Type: FIN"; break;
         case TokenType::END: s = "Type: END"; break;
         default:
             s = "Token non implémenter dans le print Value: " + tokenList[i].value;

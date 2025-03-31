@@ -177,6 +177,37 @@ public:
     Type checkType(SymbolTable& symbolTable) const;
 };
 
+
+class ArrayDeclarationNode : public ASTNode {
+public:
+    std::string name;
+    std::vector <std::unique_ptr<ASTNode>> elements;
+
+    ArrayDeclarationNode(std::string n, std::vector<std::unique_ptr<ASTNode>> elems)
+        : name(n), elements(std::move(elems)) {
+    }
+
+    void print(int indent = 0) const override;
+    const std::string& getName() const;
+    const std::vector<std::unique_ptr<ASTNode>>& getElems() const;
+    Type checkType(SymbolTable& symbolTable) const;
+};
+
+class ArrayAccesNode : public ASTNode {
+public:
+    std::string name;
+    std::unique_ptr<ASTNode> index;
+
+    ArrayAccesNode(std::string n, std::unique_ptr<ASTNode> i)
+        : name(n), index(std::move(i)) {
+    }
+
+    void print(int indent = 0) const override;
+    const std::string& getName() const;
+    const std::unique_ptr<ASTNode>& getIndex() const;
+    Type checkType(SymbolTable& symbolTable) const {}
+};
+
 // Noeud pour une instruction block
 class BlockNode : public ASTNode {
 public:

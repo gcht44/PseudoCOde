@@ -10,7 +10,7 @@
 int main()
 {
 	// Lire le contenu du fichier
-	const std::string filename = "pour.txt";
+	const std::string filename = "tableaux.txt";
 	std::ifstream file(filename);
 	if (!file) {
 		std::cerr << "Impossible d'ouvrir le fichier: " << filename << std::endl;
@@ -33,7 +33,7 @@ int main()
 	std::cout << "\n\n\n";
 	
 
-	Parser parser(TokenList);
+	/*Parser parser(TokenList);
 	if (parser.parseProg())
 	{
 		std::clog << "[PARSER] Analyse Synthaxique OK" << std::endl;
@@ -70,7 +70,7 @@ int main()
 	}
 	catch (const std::exception& e) {
 		std::cerr << "Erreur standard: " << e.what() << std::endl;
-	}
+	}*/
 	
 	
 

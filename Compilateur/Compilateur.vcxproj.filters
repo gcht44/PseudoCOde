@@ -70,5 +70,6 @@
     <Text Include="condition.txt" />
     <Text Include="pour.txt" />
     <Text Include="variable.txt" />
+    <Text Include="tableaux.txt" />
   </ItemGroup>
 </Project>

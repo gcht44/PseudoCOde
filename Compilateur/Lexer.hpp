@@ -23,7 +23,7 @@ enum class TokenType {
     // Ponctuation
     COMMA, COLON, SEMICOLON, DOT,
     // Mots-clés
-    IF, ELSE, INT, STRINGVAR, FLOAT, BOOL, PRINT, VARIABLE, DEBUT, TANTQUE, POUR, DE, A,
+    IF, ELSE, INT, STRINGVAR, FLOAT, BOOL, PRINT, VARIABLE, DEBUT, TANTQUE, POUR, DE, A, TABLEAU,
     // FIN
     FIN, FINSI, FINTANTQUE, FINPOUR,
     // Indentation

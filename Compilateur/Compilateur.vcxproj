@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="pour.txt" />
+    <Text Include="tableaux.txt" />
     <Text Include="tantque.txt" />
     <Text Include="condition.txt" />
     <Text Include="variable.txt" />
