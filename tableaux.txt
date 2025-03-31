@@ -1,0 +1,8 @@
+VARIABLE:
+	ENTIER i <- 0;
+	TABLEAU ENTIER test[5] <- [ 1,2,3,4,5 ];
+DEBUT:
+	POUR i DE 0 A 6:
+		ecrire(test[i]);
+	FINPOUR
+FIN
