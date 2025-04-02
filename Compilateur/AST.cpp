@@ -361,8 +361,18 @@ const std::vector<std::unique_ptr<ASTNode>>& ArrayDeclarationNode::getElems() co
 {
     return this->elements;
 }
+const int& ArrayDeclarationNode::getIndex() const
+{
+    return 0;
+}
 Type ArrayDeclarationNode::checkType(SymbolTable& symbolTable) const
 {
+    if (this->index->checkType(symbolTable) != Type::ENTIER)
+    {
+        std::cerr << "[AST]: La taille du tableau spécifier n'est pas un ENTIER";
+        exit(1);
+    }
+
     Type prevType = symbolTable.getVariableType(this->name);
     for (int i = 0; i < this->elements.size(); i++) {
         if (prevType != elements[i]->checkType(symbolTable))
@@ -376,23 +386,23 @@ Type ArrayDeclarationNode::checkType(SymbolTable& symbolTable) const
 
 
 
-void ArrayAccesNode::print(int indent = 0) const
+void ArrayAccesNode::print(int indent) const
 {
     printIndent(indent);
     std::cout << "ArrayAccessNode: \n";
-    printIndent(indent + 1);
+    printIndent(indent);
     std::cout << "Name: " + this->name;
-
-
 }
 const std::string& ArrayAccesNode::getName() const
 {
-
+    return this->name;
 }
 const std::unique_ptr<ASTNode>& ArrayAccesNode::getIndex() const
 {
-
+    return this->index;
 }
+
+
 
 void BlockNode::print(int indent) const
 {

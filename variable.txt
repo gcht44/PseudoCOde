@@ -1,5 +1,0 @@
-VARIABLE:
-	ENTIER i <- 0;
-DEBUT:
-	ecrire(i);
-FIN

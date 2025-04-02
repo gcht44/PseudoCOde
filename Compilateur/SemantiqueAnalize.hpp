@@ -12,7 +12,8 @@ private:
 	// const std::vector<std::unique_ptr<ASTNode>>& ASTTable;
 	void err(std::string msg);
 	bool analize(ASTNode* node, SymbolTable& symbolTable);
-	
+	std::map<std::string, int> indexTable;
+
 public:
 	AnalizeSemantique();
 	void allAnalize(const std::vector<std::unique_ptr<ASTNode>>& AST, SymbolTable& symbolTable);

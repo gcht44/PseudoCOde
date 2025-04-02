@@ -67,6 +67,21 @@ bool AnalizeSemantique::analize(ASTNode* node, SymbolTable& symbolTable)
 
 		pourNode->checkType(symbolTable);
 	}
+	else if (auto ArrayDecl = dynamic_cast<const ArrayDeclarationNode*>(node))
+	{
+		ArrayDecl->checkType(symbolTable);
+	}
+	else if (auto ArrayAcces = dynamic_cast<const ArrayAccesNode*>(node))
+	{
+		if (symbolTable.getVariableType(ArrayAcces->getName()) == Type::NONE)
+		{
+			err("Tableau " + ArrayAcces->getName() + " non déclaré.");
+		}
+		if ((!dynamic_cast<const IntNode*>(ArrayAcces->getIndex().get())) && (ArrayAcces->getIndex()->checkType(symbolTable) != Type::ENTIER))
+		{
+			err("L'index doit etre un entier");
+		}
+	}
 	else if (auto blockNode = dynamic_cast<const BlockNode*>(node))
 	{
 		auto& block = blockNode->getBlock();

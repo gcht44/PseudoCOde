@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include "Lexer.hpp"
 #include "AST.hpp"
 #include "SymbolTable.hpp"
@@ -21,7 +22,6 @@ private:
 	SymbolTable symbolTable;
 	bool isVarParse;
 	int currentIndent;
-	// SymbolTable symbolTable;
 
 	int getTokenPrecedence();
 	std::unique_ptr<ASTNode> parseBinOpRHS(int ExprPrec, std::unique_ptr<ASTNode> LHS);
@@ -41,6 +41,8 @@ private:
 	std::unique_ptr<ASTNode> parsePour();
 	std::unique_ptr<ASTNode> parseStatement();
 	std::unique_ptr<ASTNode> parsePrint();
+	std::unique_ptr<ASTNode> parseArrayDeclaration();
+	std::unique_ptr<ASTNode> parseArrayAcces();
 };
 
 #endif

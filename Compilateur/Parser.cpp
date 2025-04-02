@@ -24,6 +24,10 @@ bool Parser::parseProg() {
                 {
                     continue;
                 }
+                else if (auto arrayDecl = dynamic_cast<const ArrayDeclarationNode*>(varDecl->getBlock()[i].get()))
+                {
+                    continue;
+                }
                 err("Vous pouvez seulement declarer des variables ici");
             }
             // Ajouter une manière de verifier qu'ily a seulement des declarations de variable
@@ -69,10 +73,17 @@ std::unique_ptr<ASTNode> Parser::parseStatement() {
 
     TokenType type = TokenList[pos].type;
 
-
-    if (type == TokenType::NAME) 
+    if (type == TokenType::NAME && TokenList[pos + 1].type == TokenType::LBRACKET)
+    {
+        return parseArrayAcces();
+    }
+    else if (type == TokenType::NAME) 
     {
         return parseAssignement();
+    }
+    if (type == TokenType::TABLEAU)
+    {
+        return parseArrayDeclaration();
     }
     else if (type == TokenType::PRINT) 
     {
@@ -99,6 +110,107 @@ std::unique_ptr<ASTNode> Parser::parseStatement() {
         err("Instruction non reconnue: " + TokenList[pos].value);
         return nullptr;
     }
+}
+
+std::unique_ptr<ASTNode> Parser::parseArrayAcces()
+{
+    std::string varName = TokenList[pos].value;
+    if (!match(TokenType::NAME)) { err("Attendu: nom de variable attendu"); return nullptr; }
+    if (!match(TokenType::LBRACKET)) { err("Attendu: '['"); return nullptr; }
+    auto expr = parseExpressionAST();
+    if (!match(TokenType::RBRACKET)) { err("Attendu: ']'"); return nullptr; }
+    if (match(TokenType::EQUAL)) 
+    { 
+        // Ajouter l'assignation à un index 
+    }
+    return std::make_unique<ArrayAccesNode>(varName, std::move(expr));
+}
+
+std::unique_ptr<ASTNode> Parser::parseArrayDeclaration()
+{
+    if (!match(TokenType::TABLEAU)) { err("Attendu: mot clé 'TABLEAU'"); }
+    std::string varName;
+    std::unique_ptr<ASTNode> expr;
+    std::vector<std::unique_ptr<ASTNode>> elems;
+
+    if (match(TokenType::INT))
+    {
+        varName = TokenList[pos].value;
+        if (!match(TokenType::NAME)) { err("Attendu: nom de variable manquant ou invalide"); return nullptr; }
+        if (!match(TokenType::LBRACKET)) { err("Attendu: '['"); return nullptr; }
+        expr = parseExpressionAST();
+        if (!match(TokenType::RBRACKET)) { err("Attendu: ']'"); return nullptr; }
+
+        if (!match(TokenType::EQUAL)) { err("Attendu: '='"); return nullptr; }
+        if (!match(TokenType::LBRACKET)) { err("Attendu: '['"); return nullptr; }
+        while (TokenList[pos].type != TokenType::RBRACKET)
+        {
+            elems.push_back(std::move(std::make_unique<IntNode>(TokenList[pos++].value)));
+            if (!match(TokenType::COMMA)) 
+            { 
+                if (match(TokenType::RBRACKET)) { break; }
+                err("Attendu: ','"); return nullptr; 
+            }
+        }
+        if (!match(TokenType::SEMICOLON)) { err("Attendu: ';' après l'assignation"); }
+        symbolTable.addVariable(varName, Type::ENTIER);
+    }
+    else if (match(TokenType::STRING))
+    {
+        varName = TokenList[pos].value;
+        if (!match(TokenType::NAME)) { err("Attendu: nom de variable manquant ou invalide"); return nullptr; }
+        if (!match(TokenType::LBRACKET)) { err("Attendu: '['"); return nullptr; }
+        expr = parseExpressionAST();
+        if (!match(TokenType::RBRACKET)) { err("Attendu: ']'"); return nullptr; }
+
+        if (!match(TokenType::EQUAL)) { err("Attendu: '='"); return nullptr; }
+        if (!match(TokenType::LBRACKET)) { err("Attendu: '['"); return nullptr; }
+        while (TokenList[pos].type == TokenType::RBRACKET)
+        {
+            elems.push_back(std::move(std::make_unique<StringNode>(TokenList[pos++].value)));
+            if (!match(TokenType::COMMA)) { err("Attendu: ','"); return nullptr; }
+        }
+        if (!match(TokenType::SEMICOLON)) { err("Attendu: ';' après l'assignation"); }
+        symbolTable.addVariable(varName, Type::STRING);
+
+    }
+    else if (match(TokenType::FLOAT))
+    {
+        varName = TokenList[pos].value;
+        if (!match(TokenType::NAME)) { err("Attendu: nom de variable manquant ou invalide"); return nullptr; }
+        if (!match(TokenType::LBRACKET)) { err("Attendu: '['"); return nullptr; }
+        expr = parseExpressionAST();
+        if (!match(TokenType::RBRACKET)) { err("Attendu: ']'"); return nullptr; }
+
+        if (!match(TokenType::EQUAL)) { err("Attendu: '='"); return nullptr; }
+        if (!match(TokenType::LBRACKET)) { err("Attendu: '['"); return nullptr; }
+        while (TokenList[pos].type == TokenType::RBRACKET)
+        {
+            elems.push_back(std::move(std::make_unique<ReelNode>(TokenList[pos++].value)));
+            if (!match(TokenType::COMMA)) { err("Attendu: ','"); return nullptr; }
+        }
+        if (!match(TokenType::SEMICOLON)) { err("Attendu: ';' après l'assignation"); }
+        symbolTable.addVariable(varName, Type::REEL);
+    }
+    else if (match(TokenType::BOOL))
+    {
+        varName = TokenList[pos].value;
+        if (!match(TokenType::NAME)) { err("Attendu: nom de variable manquant ou invalide"); return nullptr; }
+        if (!match(TokenType::LBRACKET)) { err("Attendu: '['"); return nullptr; }
+        expr = parseExpressionAST();
+        if (!match(TokenType::RBRACKET)) { err("Attendu: ']'"); return nullptr; }
+
+        if (!match(TokenType::EQUAL)) { err("Attendu: '='"); return nullptr; }
+        if (!match(TokenType::LBRACKET)) { err("Attendu: '['"); return nullptr; }
+        while (TokenList[pos].type == TokenType::RBRACKET)
+        {
+            elems.push_back(std::move(std::make_unique<BoolNode>(TokenList[pos++].value)));
+            if (!match(TokenType::COMMA)) { err("Attendu: ','"); return nullptr; }
+        }
+        if (!match(TokenType::SEMICOLON)) { err("Attendu: ';' après l'assignation"); }
+        symbolTable.addVariable(varName, Type::BOOL);
+    }
+    return std::make_unique<ArrayDeclarationNode>(varName, std::move(expr) ,std::move(elems));
 }
 
 std::unique_ptr<BlockNode> Parser::parseBlock() {
@@ -510,15 +622,18 @@ std::unique_ptr<ASTNode> Parser::parseFactorAST() {
     if (type == TokenType::NAME) {
         std::string name = TokenList[pos].value;
         pos++; // Consommer le nom
-
-        // Assurez-vous que le constructeur IdentifierNode prend les bons arguments
+        if (match(TokenType::LBRACKET))
+        {
+            auto i = parseExpressionAST();
+            pos++;
+            return std::make_unique<ArrayAccesNode>(name, std::move(i));
+        }
         return std::make_unique<IdentifierNode>(name);
     }
     else if (type == TokenType::NUMBER) {
         std::string value = TokenList[pos].value;
         pos++; // Consommer le nombre
 
-        // Assurez-vous que le constructeur IntNode prend les bons arguments
         return std::make_unique<IntNode>(value);
     }
     else if (type == TokenType::STRING) {

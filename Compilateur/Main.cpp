@@ -33,7 +33,7 @@ int main()
 	std::cout << "\n\n\n";
 	
 
-	/*Parser parser(TokenList);
+	Parser parser(TokenList);
 	if (parser.parseProg())
 	{
 		std::clog << "[PARSER] Analyse Synthaxique OK" << std::endl;
@@ -63,14 +63,14 @@ int main()
 		std::cout << "\n\n\n";
 
 		std::cout << "Execute:\n";
-		bc.executeByteCode();
+		// bc.executeByteCode();
 	}
 	catch (const std::runtime_error& e) {
 		std::cerr << "Erreur runtime: " << e.what() << std::endl;
 	}
 	catch (const std::exception& e) {
 		std::cerr << "Erreur standard: " << e.what() << std::endl;
-	}*/
+	}
 	
 	
 

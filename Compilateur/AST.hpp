@@ -181,15 +181,17 @@ public:
 class ArrayDeclarationNode : public ASTNode {
 public:
     std::string name;
-    std::vector <std::unique_ptr<ASTNode>> elements;
+    std::unique_ptr<ASTNode> index;
+    std::vector<std::unique_ptr<ASTNode>> elements;
 
-    ArrayDeclarationNode(std::string n, std::vector<std::unique_ptr<ASTNode>> elems)
-        : name(n), elements(std::move(elems)) {
+    ArrayDeclarationNode(std::string n, std::unique_ptr<ASTNode> i,std::vector<std::unique_ptr<ASTNode>> elems)
+        : name(n), index(std::move(i)), elements(std::move(elems)) {
     }
 
     void print(int indent = 0) const override;
     const std::string& getName() const;
     const std::vector<std::unique_ptr<ASTNode>>& getElems() const;
+    const int& getIndex() const;
     Type checkType(SymbolTable& symbolTable) const;
 };
 
@@ -205,7 +207,7 @@ public:
     void print(int indent = 0) const override;
     const std::string& getName() const;
     const std::unique_ptr<ASTNode>& getIndex() const;
-    Type checkType(SymbolTable& symbolTable) const {}
+    Type checkType(SymbolTable& symbolTable) const { return Type::NONE; }
 };
 
 // Noeud pour une instruction block

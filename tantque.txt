@@ -1,8 +1,0 @@
-VARIABLE:
-	ENTIER i <- 0;
-DEBUT:
-	TANTQUE i == 10:
-		ecrire(i);
-		i <- i + 1;
-	FINTANTQUE
-FIN

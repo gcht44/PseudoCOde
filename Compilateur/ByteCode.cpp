@@ -22,7 +22,7 @@
 
 ByteCode::ByteCode()
 {
-
+    this->nextIdArray = 0;
 }
 
 void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
@@ -91,6 +91,24 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
         this->bytecode.push_back({ JUMP_IF_FALSE, std::string{std::to_string(blockPourLabel)} });
         // Rajouter +1 a la valeur de fin car de 0 a 10 va de 0 a 9
     }
+    else if (auto arrayDecl = dynamic_cast<const ArrayDeclarationNode*>(node)) {
+        int size = arrayDecl->elements.size();
+
+        for (int i = 0; i < arrayDecl->getElems().size(); i++)
+        {
+            generateExpressionBytecode(arrayDecl->getElems()[i].get(), symbolTable);
+        }
+
+        this->bytecode.push_back({ PUSH_ARRAY, std::string{std::to_string(size)}, arrayDecl->checkType(symbolTable) });
+        this->bytecode.push_back({ STORE_TAB_VAR, std::string{arrayDecl->name}, arrayDecl->checkType(symbolTable) });
+    }
+    else if (auto arrayAccess = dynamic_cast<const ArrayAccesNode*>(node)) {
+        // Charger l’index
+        generateExpressionBytecode(arrayAccess->index.get(), symbolTable);
+
+        // Charger le tableau
+        this->bytecode.push_back({ LOAD_FROM_ARRAY, arrayAccess->name });
+    }
     else if (auto block = dynamic_cast<const BlockNode*>(node)) 
     {
         for (int i = 0; i < block->getBlock().size(); i++)
@@ -119,6 +137,13 @@ void ByteCode::generateExpressionBytecode(const ASTNode* node, SymbolTable& symb
         {
             this->bytecode.push_back({ PUSH_CONST, Value{false} });
         }
+    }
+    else if (auto arrayAccess = dynamic_cast<const ArrayAccesNode*>(node)) {
+        // Charger l’index
+        generateExpressionBytecode(arrayAccess->index.get(), symbolTable);
+
+        // Charger le tableau
+        this->bytecode.push_back({ LOAD_FROM_ARRAY, arrayAccess->name });
     }
     else if (auto str = dynamic_cast<const StringNode*>(node)) {
         this->bytecode.push_back({ PUSH_CONST, Value{str->getValue()} });
@@ -252,6 +277,18 @@ void ByteCode::printByteCode()
         case JUMP:
             std::cout << "JUMP " << bytecode[i].arg << "\n";
             break;
+        case PUSH_ARRAY:
+            std::cout << "PUSH_ARRAY " << bytecode[i].arg << "\n";
+            break;
+        case LOAD_FROM_ARRAY:
+            std::cout << "LOAD_FROM_ARRAY " << bytecode[i].arg << "\n";
+            break;
+        case STORE_IN_ARRAY:
+            std::cout << "STORE_IN_ARRAY " << bytecode[i].arg << "\n";
+            break;
+        case STORE_TAB_VAR:
+            std::cout << "STORE_TAB_VAR " << bytecode[i].arg << "\n";
+            break;
         case ENDIF:
             std::cout << "ENDIF " << "\n";
             break;
@@ -362,6 +399,20 @@ void ByteCode::executeByteCode()
             else if (this->bytecode[i].type == Type::BOOL)   { this->varBoolTable[this->bytecode[i].arg] = popStackBool();  } 
             else if (this->bytecode[i].type == Type::STRING) { this->varStrTable[this->bytecode[i].arg] = popStackString(); } 
             else { std::cerr << "[EXEC BYTECODE] ERR: STORE_VAR " << this->bytecode[i].arg << " Type inconnu" << std::endl; }
+            break;
+        case PUSH_ARRAY:
+            if (this->bytecode[i].type == Type::ENTIER)
+            {
+                std::vector<int> tempInt;
+            }
+            break;
+        case STORE_TAB_VAR:
+            if (this->bytecode[i].type == Type::ENTIER) 
+            { 
+                std::vector<int> tempInt;
+
+                this->varArrayIntTable[this->bytecode[i].arg];
+            }
             break;
         case ADD:
             if (this->bytecode[i].type == Type::ENTIER)
