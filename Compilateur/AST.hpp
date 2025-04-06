@@ -191,7 +191,7 @@ public:
     void print(int indent = 0) const override;
     const std::string& getName() const;
     const std::vector<std::unique_ptr<ASTNode>>& getElems() const;
-    const int& getIndex() const;
+    const std::unique_ptr<ASTNode>& getIndex() const;
     Type checkType(SymbolTable& symbolTable) const;
 };
 
@@ -207,7 +207,7 @@ public:
     void print(int indent = 0) const override;
     const std::string& getName() const;
     const std::unique_ptr<ASTNode>& getIndex() const;
-    Type checkType(SymbolTable& symbolTable) const { return Type::NONE; }
+    Type checkType(SymbolTable& symbolTable) const;
 };
 
 // Noeud pour une instruction block

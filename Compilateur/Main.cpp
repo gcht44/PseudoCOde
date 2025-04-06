@@ -6,10 +6,12 @@
 #include "Parser.hpp"
 #include "SemantiqueAnalize.hpp"
 #include "ByteCode.hpp"
+#include "Debugger.hpp"
 
 int main()
 {
-	// Lire le contenu du fichier
+	std::string arg = "debug"; // temporaire
+
 	const std::string filename = "tableaux.txt";
 	std::ifstream file(filename);
 	if (!file) {
@@ -22,57 +24,112 @@ int main()
 	std::string contenu = buffer.str();
 	file.close();
 
-	Lexer lexer(contenu);
 
-	std::vector<Token> TokenList = lexer.Tokenise();
+	if (arg != "debug")
+	{
+		Lexer lexer(contenu);
 
-	lexer.printTokens(TokenList);
-	std::clog << "[LEXER] Tokenisation OK" << std::endl;
+		std::vector<Token> TokenList = lexer.Tokenise();
+
+		lexer.printTokens(TokenList);
+		std::clog << "[LEXER] Tokenisation OK" << std::endl;
 
 
-	std::cout << "\n\n\n";
+		std::cout << "\n\n\n";
 	
 
-	Parser parser(TokenList);
-	if (parser.parseProg())
-	{
-		std::clog << "[PARSER] Analyse Synthaxique OK" << std::endl;
-	}
-	else
-	{
-		std::cerr << "[PARSER] ERR: Échec de l'analyse synthaxique" << std::endl;
-	}
-	parser.getAST()->print();
+		Parser parser(TokenList);
+		if (parser.parseProg())
+		{
+			std::clog << "[PARSER] Analyse Synthaxique OK" << std::endl;
+		}
+		else
+		{
+			std::cerr << "[PARSER] ERR: Échec de l'analyse synthaxique" << std::endl;
+		}
+		parser.getAST()->print();
 
-
-	std::cout << "\n\n\n";
-
-
-	AnalizeSemantique as;
-	as.allAnalize(parser.getAST()->getTableAST(), parser.getSymbolTable());
-
-
-	std::cout << "\n\n\n";
-
-
-	try {
-		ByteCode bc;
-		bc.generateAllByteCode(parser.getAST()->getTableAST(), parser.getSymbolTable());
-		bc.printByteCode();
 
 		std::cout << "\n\n\n";
 
-		std::cout << "Execute:\n";
-		// bc.executeByteCode();
-	}
-	catch (const std::runtime_error& e) {
-		std::cerr << "Erreur runtime: " << e.what() << std::endl;
-	}
-	catch (const std::exception& e) {
-		std::cerr << "Erreur standard: " << e.what() << std::endl;
-	}
-	
-	
 
+		AnalizeSemantique as;
+		as.allAnalize(parser.getAST()->getTableAST(), parser.getSymbolTable());
+
+
+		std::cout << "\n\n\n";
+
+
+		try {
+			ByteCode bc;
+			bc.generateAllByteCode(parser.getAST()->getTableAST(), parser.getSymbolTable());
+			bc.printByteCode();
+
+			std::cout << "\n\n\n";
+
+
+			std::cout << "Execute:\n";
+			bc.executeByteCode();
+		}
+		catch (const std::runtime_error& e) {
+			std::cerr << "Erreur runtime: " << e.what() << std::endl;
+		}
+		catch (const std::exception& e) {
+			std::cerr << "Erreur standard: " << e.what() << std::endl;
+		}
+	}
+	else
+	{
+		Lexer lexer(contenu);
+
+		std::vector<Token> TokenList = lexer.Tokenise();
+
+		lexer.printTokens(TokenList);
+		std::clog << "[LEXER] Tokenisation OK" << std::endl;
+
+
+		std::cout << "\n\n\n";
+
+
+		Parser parser(TokenList);
+		if (parser.parseProg())
+		{
+			std::clog << "[PARSER] Analyse Synthaxique OK" << std::endl;
+		}
+		else
+		{
+			std::cerr << "[PARSER] ERR: Échec de l'analyse synthaxique" << std::endl;
+		}
+		parser.getAST()->print();
+
+
+		std::cout << "\n\n\n";
+
+
+		AnalizeSemantique as;
+		as.allAnalize(parser.getAST()->getTableAST(), parser.getSymbolTable());
+
+
+		std::cout << "\n\n\n";
+
+
+		try {
+			ByteCode bc;
+			bc.generateAllByteCode(parser.getAST()->getTableAST(), parser.getSymbolTable());
+			bc.printByteCode();
+
+			std::cout << "\n\n\n";
+
+
+			std::cout << "Execute:\n";
+			bc.executeByteCode();
+		}
+		catch (const std::runtime_error& e) {
+			std::cerr << "Erreur runtime: " << e.what() << std::endl;
+		}
+		catch (const std::exception& e) {
+			std::cerr << "Erreur standard: " << e.what() << std::endl;
+		}
+	}
 	return 0;
 }

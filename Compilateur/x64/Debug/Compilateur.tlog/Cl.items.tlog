@@ -1,5 +1,6 @@
 C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\AST.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Debug\AST.obj
 C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Debug\ByteCode.obj
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Debugger.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Debug\Debugger.obj
 C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Lexer.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Debug\Lexer.obj
 C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Main.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Debug\Main.obj
 C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Parser.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Debug\Parser.obj

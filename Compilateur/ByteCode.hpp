@@ -3,6 +3,7 @@
 
 #include "AST.hpp"
 #include "SymbolTable.hpp"
+#include "FixedSizeVector.hpp"
 
 #include <iostream>
 #include <map>
@@ -33,10 +34,9 @@ enum Opcode {
     LESS_EQUAL,     // Opérateur <=
     EQUAL,          // Opérateur ==
     NOT_EQUAL,      // Opérateur !=
-    PUSH_ARRAY,
-    LOAD_FROM_ARRAY,
-    STORE_IN_ARRAY,
-    STORE_TAB_VAR,
+    LOAD_ARRAY,
+    STORE_ARRAY,
+    NEW_ARRAY,
 };
 
 struct ValueVisitor {
@@ -90,7 +90,7 @@ struct Instruction {
 
 class ByteCode {
 private:
-    int nextIdArray;
+    // int nextIdArray;
 
     std::vector<Instruction> bytecode;
 
@@ -106,10 +106,10 @@ private:
     std::map<std::string, std::string> varStrTable;
     std::vector<std::string> stackStr;
 
-    std::map<std::string, std::vector<int>> varArrayIntTable;
-    std::map<std::string, std::vector<float>> varArrayFloatTable;
-    std::map<std::string, std::vector<bool>> varArrayBoolTable;
-    std::map<std::string, std::vector<std::string>> varArrayStrTable;
+    std::map<std::string, FixedSizeVector<int>> varArrayIntTable;
+    std::map<std::string, FixedSizeVector<float>> varArrayFloatTable;
+    std::map<std::string, FixedSizeVector<bool>> varArrayBoolTable;
+    std::map<std::string, FixedSizeVector<std::string>> varArrayStrTable;
 
 
     void generateBytecode(const ASTNode* node, SymbolTable& symbolTable);

@@ -347,7 +347,10 @@ Type PourNode::checkType(SymbolTable& symbolTable) const
 void ArrayDeclarationNode::print(int indent) const
 {
     printIndent(indent);
-    std::cout << "TABLEAU: ";
+    std::cout << "TABLEAU: \n";
+    std::cout << "Index: ";
+    this->index->print(indent);
+    std::cout << "\n";
     for (int i = 0; i < this->elements.size(); i++) {
         this->elements[i]->print(indent + 1);
     }
@@ -361,9 +364,9 @@ const std::vector<std::unique_ptr<ASTNode>>& ArrayDeclarationNode::getElems() co
 {
     return this->elements;
 }
-const int& ArrayDeclarationNode::getIndex() const
+const std::unique_ptr<ASTNode>& ArrayDeclarationNode::getIndex() const
 {
-    return 0;
+    return this->index;
 }
 Type ArrayDeclarationNode::checkType(SymbolTable& symbolTable) const
 {
@@ -401,7 +404,10 @@ const std::unique_ptr<ASTNode>& ArrayAccesNode::getIndex() const
 {
     return this->index;
 }
-
+Type ArrayAccesNode::checkType(SymbolTable& symbolTable) const
+{ 
+    return symbolTable.getVariableType(this->name);;
+}
 
 
 void BlockNode::print(int indent) const

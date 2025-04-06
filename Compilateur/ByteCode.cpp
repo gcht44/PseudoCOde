@@ -20,10 +20,7 @@
 
 */
 
-ByteCode::ByteCode()
-{
-    this->nextIdArray = 0;
-}
+ByteCode::ByteCode() {}
 
 void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
     if (auto varDecl = dynamic_cast<const VarDeclarationNode*>(node)) {
@@ -92,22 +89,21 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
         // Rajouter +1 a la valeur de fin car de 0 a 10 va de 0 a 9
     }
     else if (auto arrayDecl = dynamic_cast<const ArrayDeclarationNode*>(node)) {
-        int size = arrayDecl->elements.size();
+        int size = arrayDecl->getElems().size();
 
-        for (int i = 0; i < arrayDecl->getElems().size(); i++)
+        // if (size > arrayDecl->getIndex()) { std::cerr << "Erreur: Taille du tableau trop petite"; }
+
+        generateExpressionBytecode(arrayDecl->getIndex().get(), symbolTable);
+        this->bytecode.push_back({ NEW_ARRAY, std::string{arrayDecl->name}, arrayDecl->checkType(symbolTable) });
+
+        for (int i = 0; i < size; i++)
         {
+            this->bytecode.push_back({ PUSH_CONST, Value{i} });
             generateExpressionBytecode(arrayDecl->getElems()[i].get(), symbolTable);
+            this->bytecode.push_back({ STORE_ARRAY, std::string{arrayDecl->name}, arrayDecl->checkType(symbolTable) });
         }
 
-        this->bytecode.push_back({ PUSH_ARRAY, std::string{std::to_string(size)}, arrayDecl->checkType(symbolTable) });
-        this->bytecode.push_back({ STORE_TAB_VAR, std::string{arrayDecl->name}, arrayDecl->checkType(symbolTable) });
-    }
-    else if (auto arrayAccess = dynamic_cast<const ArrayAccesNode*>(node)) {
-        // Charger l’index
-        generateExpressionBytecode(arrayAccess->index.get(), symbolTable);
-
-        // Charger le tableau
-        this->bytecode.push_back({ LOAD_FROM_ARRAY, arrayAccess->name });
+        // this->bytecode.push_back({ PUSH_ARRAY, std::string{std::to_string(size)}, arrayDecl->checkType(symbolTable) });
     }
     else if (auto block = dynamic_cast<const BlockNode*>(node)) 
     {
@@ -139,11 +135,8 @@ void ByteCode::generateExpressionBytecode(const ASTNode* node, SymbolTable& symb
         }
     }
     else if (auto arrayAccess = dynamic_cast<const ArrayAccesNode*>(node)) {
-        // Charger l’index
-        generateExpressionBytecode(arrayAccess->index.get(), symbolTable);
-
-        // Charger le tableau
-        this->bytecode.push_back({ LOAD_FROM_ARRAY, arrayAccess->name });
+        generateExpressionBytecode(arrayAccess->getIndex().get(), symbolTable);
+        this->bytecode.push_back({ LOAD_ARRAY, std::string{arrayAccess->getName()}, arrayAccess->checkType(symbolTable) });
     }
     else if (auto str = dynamic_cast<const StringNode*>(node)) {
         this->bytecode.push_back({ PUSH_CONST, Value{str->getValue()} });
@@ -277,17 +270,14 @@ void ByteCode::printByteCode()
         case JUMP:
             std::cout << "JUMP " << bytecode[i].arg << "\n";
             break;
-        case PUSH_ARRAY:
-            std::cout << "PUSH_ARRAY " << bytecode[i].arg << "\n";
+        case LOAD_ARRAY:
+            std::cout << "LOAD_ARRAY " << bytecode[i].arg << "\n";
             break;
-        case LOAD_FROM_ARRAY:
-            std::cout << "LOAD_FROM_ARRAY " << bytecode[i].arg << "\n";
+        case STORE_ARRAY:
+            std::cout << "STORE_ARRAY " << bytecode[i].arg << "\n";
             break;
-        case STORE_IN_ARRAY:
-            std::cout << "STORE_IN_ARRAY " << bytecode[i].arg << "\n";
-            break;
-        case STORE_TAB_VAR:
-            std::cout << "STORE_TAB_VAR " << bytecode[i].arg << "\n";
+        case NEW_ARRAY:
+            std::cout << "NEW_ARRAY " << bytecode[i].arg << "\n";
             break;
         case ENDIF:
             std::cout << "ENDIF " << "\n";
@@ -400,18 +390,66 @@ void ByteCode::executeByteCode()
             else if (this->bytecode[i].type == Type::STRING) { this->varStrTable[this->bytecode[i].arg] = popStackString(); } 
             else { std::cerr << "[EXEC BYTECODE] ERR: STORE_VAR " << this->bytecode[i].arg << " Type inconnu" << std::endl; }
             break;
-        case PUSH_ARRAY:
+        case LOAD_ARRAY:
             if (this->bytecode[i].type == Type::ENTIER)
             {
-                std::vector<int> tempInt;
+                pushStackInt(this->varArrayIntTable[this->bytecode[i].arg][popStackInt()]);
+            }
+            if (this->bytecode[i].type == Type::REEL)
+            {
+                pushStackFloat(this->varArrayFloatTable[this->bytecode[i].arg][popStackInt()]);
+            }
+            if (this->bytecode[i].type == Type::STRING)
+            {
+                pushStackString(this->varArrayStrTable[this->bytecode[i].arg][popStackInt()]);
+            }
+            if (this->bytecode[i].type == Type::BOOL)
+            {
+                pushStackInt(this->varArrayBoolTable[this->bytecode[i].arg][popStackInt()]);
             }
             break;
-        case STORE_TAB_VAR:
+        case STORE_ARRAY:
+            if (this->bytecode[i].type == Type::ENTIER)
+            {
+                this->varArrayIntTable[this->bytecode[i].arg].set_at(popStackInt(), popStackInt());
+            }
+            if (this->bytecode[i].type == Type::REEL)
+            {
+                this->varArrayFloatTable[this->bytecode[i].arg].set_at(popStackInt(), popStackReel());
+            }
+            if (this->bytecode[i].type == Type::STRING)
+            {
+                this->varArrayStrTable[this->bytecode[i].arg].set_at(popStackInt(), popStackString());
+            }
+            if (this->bytecode[i].type == Type::BOOL)
+            {
+                this->varArrayBoolTable[this->bytecode[i].arg].set_at(popStackInt(), popStackBool());
+            }
+            break;
+        case NEW_ARRAY:
             if (this->bytecode[i].type == Type::ENTIER) 
             { 
-                std::vector<int> tempInt;
-
-                this->varArrayIntTable[this->bytecode[i].arg];
+                // Insérer un FixedSizeVector avec une taille max de popStackInt pour la clé array_name
+                this->varArrayIntTable.emplace( this->bytecode[i].arg, FixedSizeVector<int>() );
+                this->varArrayIntTable[this->bytecode[i].arg].set_size(popStackInt());
+            }
+            if (this->bytecode[i].type == Type::REEL)
+            {
+                // Insérer un FixedSizeVector avec une taille max de popStackInt pour la clé array_name
+                this->varArrayFloatTable.emplace(this->bytecode[i].arg, FixedSizeVector<float>());
+                this->varArrayFloatTable[this->bytecode[i].arg].set_size(popStackInt());
+            }
+            if (this->bytecode[i].type == Type::STRING)
+            {
+                // Insérer un FixedSizeVector avec une taille max de popStackInt pour la clé array_name
+                this->varArrayStrTable.emplace(this->bytecode[i].arg, FixedSizeVector<std::string>());
+                this->varArrayStrTable[this->bytecode[i].arg].set_size(popStackInt());
+            }
+            if (this->bytecode[i].type == Type::BOOL)
+            {
+                // Insérer un FixedSizeVector avec une taille max de popStackInt pour la clé array_name
+                this->varArrayBoolTable.emplace(this->bytecode[i].arg, FixedSizeVector<bool>());
+                this->varArrayBoolTable[this->bytecode[i].arg].set_size(popStackInt());
             }
             break;
         case ADD:

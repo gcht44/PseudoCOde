@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="AST.cpp" />
     <ClCompile Include="ByteCode.cpp" />
+    <ClCompile Include="Debugger.cpp" />
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Parser.cpp" />
@@ -144,6 +145,8 @@
   <ItemGroup>
     <ClInclude Include="AST.hpp" />
     <ClInclude Include="ByteCode.hpp" />
+    <ClInclude Include="Debugger.hpp" />
+    <ClInclude Include="FixedSizeVector.hpp" />
     <ClInclude Include="Lexer.hpp" />
     <ClInclude Include="Opcode.hpp" />
     <ClInclude Include="Parser.hpp" />
