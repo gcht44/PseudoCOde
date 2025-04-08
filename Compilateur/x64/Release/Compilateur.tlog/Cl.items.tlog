@@ -1,0 +1,9 @@
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\AST.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Release\AST.obj
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Release\ByteCode.obj
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Debugger.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Release\Debugger.obj
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Lexer.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Release\Lexer.obj
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Main.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Release\Main.obj
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Parser.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Release\Parser.obj
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\SemantiqueAnalize.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Release\SemantiqueAnalize.obj
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\Opcode.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Release\Opcode.obj
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\SymbolTable.cpp;C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\x64\Release\SymbolTable.obj

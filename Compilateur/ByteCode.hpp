@@ -126,9 +126,13 @@ private:
     std::string popStackString();
 public:
     ByteCode();
+    std::vector<Instruction>& getBC();
     void generateAllByteCode(const std::vector<std::unique_ptr<ASTNode>>& AST, SymbolTable& symbolTable);
     void printByteCode();
+    void printOneByteCode(Instruction opcode);
     void executeByteCode();
+    void executeByteCode(Instruction instr, int& i);
+    void printStacks();
 
 
 
