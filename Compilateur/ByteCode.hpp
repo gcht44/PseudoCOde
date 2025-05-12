@@ -34,9 +34,12 @@ enum Opcode {
     LESS_EQUAL,     // Opérateur <=
     EQUAL,          // Opérateur ==
     NOT_EQUAL,      // Opérateur !=
-    LOAD_ARRAY,
+    LOAD_ARRAY,     
     STORE_ARRAY,
+    AND,
+    OR,
     NEW_ARRAY,
+    INPUT,
 };
 
 struct ValueVisitor {
@@ -81,7 +84,7 @@ struct Instruction {
     Type type;
     Value value;
 
-    // Instruction(Opcode op) : opcode(op), value() {}
+    Instruction(Opcode op) : opcode(op), value() {}
     Instruction(Opcode op, Value val) : opcode(op), value(val) {}
     Instruction(Opcode op, std::string var) : opcode(op), arg(std::move(var)) {}
     Instruction(Opcode op, std::string var, Type t) : opcode(op), arg(std::move(var)), type(t) {}

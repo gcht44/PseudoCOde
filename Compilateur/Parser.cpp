@@ -105,11 +105,30 @@ std::unique_ptr<ASTNode> Parser::parseStatement() {
     {
         return parsePour();
     }
+    else if (type == TokenType::LIRE)
+    {
+        return parseLire();
+    }
     else 
     {
         err("Instruction non reconnue: " + TokenList[pos].value);
         return nullptr;
     }
+}
+
+std::unique_ptr<ASTNode> Parser::parseLire()
+{
+    if (!match(TokenType::LIRE)) { err("Mot clef 'lire' attendu."); }
+    if (!match(TokenType::LPAREN)) { err("'(' attendu après le mot clé lire."); }
+    if (!match(TokenType::NAME)) { err("Nom attendu."); }
+    
+    std::string name = TokenList[pos - 1].value;
+    auto varID = std::make_unique<IdentifierNode>(name);
+
+    if (!match(TokenType::RPAREN)) { err("')' attendu après le nom de la variable."); }
+    if (!match(TokenType::SEMICOLON)) { err("';' attendu à la fin de l'instruction"); }
+
+    return std::make_unique<LireNode>(std::move(varID));
 }
 
 std::unique_ptr<ASTNode> Parser::parseArrayAcces()
@@ -586,6 +605,8 @@ int Parser::getTokenPrecedence() {
     TokenType type = TokenList[pos].type;
     switch (type) {
     case TokenType::DOT:
+    case TokenType::ET:
+    case TokenType::OU:
         return 1;
     case TokenType::PLUS:
     case TokenType::MINUS:

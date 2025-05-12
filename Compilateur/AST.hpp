@@ -224,6 +224,19 @@ public:
     Type checkType(SymbolTable& symbolTable) const { return Type::NONE; }
 };
 
+class LireNode : public ASTNode {
+public:
+    std::unique_ptr<IdentifierNode> varID;
+
+    LireNode(std::unique_ptr<IdentifierNode> varid)
+        : varID(std::move(varid)) {
+    }
+
+    void print(int indent = 0) const override;
+    const std::unique_ptr<IdentifierNode>& getVarID() const;
+    Type checkType(SymbolTable& symbolTable) const;
+};
+
 
 // Noeud racine contenant toutes les instructions
 class ProgramNode : public ASTNode {

@@ -1,0 +1,9 @@
+VARIABLE:
+	STRING salaire <- "0";
+	STRING smic <- "1200";
+    ENTIER age <- 18;
+DEBUT:
+	ecrire("Veuillez saisir votre salaire");
+	lire(salaire);
+	ecrire("Votre salaire est de ".salaire."€");
+FIN

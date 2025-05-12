@@ -154,6 +154,8 @@
     <ClInclude Include="SymbolTable.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="lire.txt" />
+    <Text Include="opl.txt" />
     <Text Include="pour.txt" />
     <Text Include="tableaux.txt" />
     <Text Include="tantque.txt" />

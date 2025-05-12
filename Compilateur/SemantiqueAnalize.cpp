@@ -113,6 +113,14 @@ bool AnalizeSemantique::analize(ASTNode* node, SymbolTable& symbolTable)
 		// std::cout << "Print" << std::endl;
 		analize(printNode->getExpr().get(), symbolTable);
 	}
+	else if (auto lireNode = dynamic_cast<const LireNode*>(node))
+	{
+		// std::cout << "LireNode" << std::endl;
+		analize(lireNode->getVarID().get(), symbolTable);
+		lireNode->checkType(symbolTable);
+	}
+
+
 	else if (auto entierNode = dynamic_cast<const IntNode*>(node))
 	{
 		return true;

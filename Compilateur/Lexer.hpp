@@ -15,7 +15,7 @@ enum class TokenType {
     TRUE,
     FALSE,
     // Opérateurs
-    PLUS, MINUS, MULTIPLY, DIVIDE,
+    PLUS, MINUS, MULTIPLY, DIVIDE, ET, OU,
     // Comparaisons
     EQUAL, NOT_EQUAL, LESS, LESS_EQUAL, GREATER, GREATER_EQUAL, EQUAL_EQUAL,
     // Parenthèses, crochets, etc.
@@ -23,7 +23,7 @@ enum class TokenType {
     // Ponctuation
     COMMA, COLON, SEMICOLON, DOT,
     // Mots-clés
-    IF, ELSE, INT, STRINGVAR, FLOAT, BOOL, PRINT, VARIABLE, DEBUT, TANTQUE, POUR, DE, A, TABLEAU,
+    IF, ELSE, INT, STRINGVAR, FLOAT, BOOL, PRINT, VARIABLE, DEBUT, TANTQUE, POUR, DE, A, TABLEAU, LIRE,
     // FIN
     FIN, FINSI, FINTANTQUE, FINPOUR,
     // Indentation

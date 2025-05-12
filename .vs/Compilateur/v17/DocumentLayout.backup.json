@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\lire.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\lire.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\ByteCode.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -13,6 +17,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\ByteCode.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{8C5C8848-1A98-4149-9369-473A32EC2018}|Compilateur\\Compilateur.vcxproj|solutionrelative:Compilateur\\AST.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,43 +30,69 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
+              "Title": "ByteCode.cpp",
+              "DocumentMoniker": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.cpp",
+              "RelativeDocumentMoniker": "Compilateur\\ByteCode.cpp",
+              "ToolTip": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.cpp",
+              "RelativeToolTip": "Compilateur\\ByteCode.cpp",
+              "ViewState": "AgIAABoDAAAAAAAAAAAAAC8DAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-05-12T13:32:09.984Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "ByteCode.hpp",
               "DocumentMoniker": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.hpp",
               "RelativeDocumentMoniker": "Compilateur\\ByteCode.hpp",
               "ToolTip": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.hpp",
               "RelativeToolTip": "Compilateur\\ByteCode.hpp",
-              "ViewState": "AgIAAHIAAAAAAAAAAAAAAIYAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAFMAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-03-31T17:10:48.869Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ByteCode.cpp",
-              "DocumentMoniker": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.cpp",
-              "RelativeDocumentMoniker": "Compilateur\\ByteCode.cpp",
-              "ToolTip": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\ByteCode.cpp",
-              "RelativeToolTip": "Compilateur\\ByteCode.cpp",
-              "ViewState": "AgIAAFkEAAAAAAAAAAAswHcEAAABAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "AST.cpp",
+              "DocumentMoniker": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.cpp",
+              "RelativeDocumentMoniker": "Compilateur\\AST.cpp",
+              "ToolTip": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\AST.cpp",
+              "RelativeToolTip": "Compilateur\\AST.cpp",
+              "ViewState": "AgIAALQBAAAAAAAAAAAQwLsBAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-31T17:10:46.314Z",
+              "WhenOpened": "2025-05-12T13:01:20.264Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "lire.txt",
+              "DocumentMoniker": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\lire.txt",
+              "RelativeDocumentMoniker": "Compilateur\\lire.txt",
+              "ToolTip": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\lire.txt",
+              "RelativeToolTip": "Compilateur\\lire.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-05-12T12:50:10.098Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Main.cpp",
               "DocumentMoniker": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Main.cpp",
               "RelativeDocumentMoniker": "Compilateur\\Main.cpp",
               "ToolTip": "C:\\Users\\gabch\\Documents\\GitHub\\PseudoCOde\\Compilateur\\Main.cpp",
               "RelativeToolTip": "Compilateur\\Main.cpp",
-              "ViewState": "AgIAAIkAAAAAAAAAAAAswKEAAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAHkAAAAAAAAAAAAAAIEAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-03-23T15:40:11.494Z",
               "EditorCaption": ""

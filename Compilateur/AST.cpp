@@ -146,7 +146,7 @@ Type BinaryOpNode::checkType(SymbolTable& symbolTable) const
     else if (op == ">" || op == "<" || op == ">=" || op == "<=" || op == "==" || op == "!=") {
         return Type::BOOL;
     }
-    else if (op == "ET" || op == "OU") // Pas encore implémenter 
+    else if (op == "ET" || op == "OU") 
     {
         if (leftType != Type::BOOL) 
         {
@@ -423,8 +423,26 @@ const std::vector<std::unique_ptr<ASTNode>>& BlockNode::getBlock() const
     return this->Block;
 }
 
-
-
+void LireNode::print(int indent) const
+{
+    printIndent(indent);
+    std::cout << "LireNode: "; 
+    varID->print();
+}
+const std::unique_ptr<IdentifierNode>& LireNode::getVarID() const
+{
+    return varID;
+}
+Type LireNode::checkType(SymbolTable& symbolTable) const
+{ 
+    Type t = varID->checkType(symbolTable);
+    if (t != Type::STRING)
+    {
+        std::cerr << "[AST]: Erreur de type dans lire. Seul le type STRING est accepter";
+        exit(1);
+    }
+    return t; 
+}
 
 // Noeud racine contenant toutes les instructions
 void ProgramNode::addStatement(std::unique_ptr<ASTNode> stmt) 

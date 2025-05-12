@@ -105,6 +105,11 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
 
         // this->bytecode.push_back({ PUSH_ARRAY, std::string{std::to_string(size)}, arrayDecl->checkType(symbolTable) });
     }
+    else if (auto lire = dynamic_cast<const LireNode*>(node))
+    {
+        this->bytecode.push_back({ INPUT });
+        this->bytecode.push_back({ STORE_VAR, std::string{lire->getVarID()->getName()}, lire->checkType(symbolTable)});
+    }
     else if (auto block = dynamic_cast<const BlockNode*>(node)) 
     {
         for (int i = 0; i < block->getBlock().size(); i++)
@@ -154,6 +159,14 @@ void ByteCode::generateExpressionBytecode(const ASTNode* node, SymbolTable& symb
         if (binaryOp->getOp() == "+") 
         {
             this->bytecode.push_back({ ADD, checktype });
+        }
+        else if (binaryOp->getOp() == "ET")
+        {
+            this->bytecode.push_back({ AND, checktype });
+        }
+        else if (binaryOp->getOp() == "OU")
+        {
+            this->bytecode.push_back({ OR, checktype });
         }
         else if (binaryOp->getOp() == "-") 
         {
@@ -224,6 +237,12 @@ void ByteCode::printByteCode()
         case PUSH_VAR:
             std::cout << "PUSH_VAR " << bytecode[i].arg << "\n";
             break;
+        case AND:
+            std::cout << "AND" << "\n";
+            break;
+        case OR:
+            std::cout << "OR" << "\n";
+            break;
         case STORE_VAR:
             std::cout << "STORE_VAR " << bytecode[i].arg << "\n";
             break;
@@ -278,6 +297,9 @@ void ByteCode::printByteCode()
             break;
         case NEW_ARRAY:
             std::cout << "NEW_ARRAY " << bytecode[i].arg << "\n";
+            break;
+        case INPUT:
+            std::cout << "INPUT " << bytecode[i].arg << "\n";
             break;
         case ENDIF:
             std::cout << "ENDIF " << "\n";
@@ -441,24 +463,24 @@ void ByteCode::executeByteCode()
     {
         switch (bytecode[i].opcode) {
         case PUSH_CONST:
-            if (std::holds_alternative<int>(this->bytecode[i].value.data))              { pushStackInt(std::get<int>(this->bytecode[i].value.data));            }
-            else if (std::holds_alternative<float>(this->bytecode[i].value.data))       { pushStackFloat(std::get<float>(this->bytecode[i].value.data));        }
-            else if (std::holds_alternative<bool>(this->bytecode[i].value.data))        { pushStackBool(std::get<bool>(this->bytecode[i].value.data));          }
+            if (std::holds_alternative<int>(this->bytecode[i].value.data)) { pushStackInt(std::get<int>(this->bytecode[i].value.data)); }
+            else if (std::holds_alternative<float>(this->bytecode[i].value.data)) { pushStackFloat(std::get<float>(this->bytecode[i].value.data)); }
+            else if (std::holds_alternative<bool>(this->bytecode[i].value.data)) { pushStackBool(std::get<bool>(this->bytecode[i].value.data)); }
             else if (std::holds_alternative<std::string>(this->bytecode[i].value.data)) { pushStackString(std::get<std::string>(this->bytecode[i].value.data)); }
             else { std::cerr << "[EXEC BYTECODE] ERR: PUSH_CONST " << this->bytecode[i].arg << " Type inconnu" << std::endl; }
             break;
         case PUSH_VAR:
-            if (this->bytecode[i].type == Type::ENTIER)      { pushStackInt(this->varIntTable[this->bytecode[i].arg]);     }
-            else if (this->bytecode[i].type == Type::REEL)   { pushStackFloat(this->varReelTable[this->bytecode[i].arg]);  }
-            else if (this->bytecode[i].type == Type::BOOL)   { pushStackBool(this->varBoolTable[this->bytecode[i].arg]);   }
-            else if (this->bytecode[i].type == Type::STRING) { pushStackString(this->varStrTable[this->bytecode[i].arg]);  }
+            if (this->bytecode[i].type == Type::ENTIER) { pushStackInt(this->varIntTable[this->bytecode[i].arg]); }
+            else if (this->bytecode[i].type == Type::REEL) { pushStackFloat(this->varReelTable[this->bytecode[i].arg]); }
+            else if (this->bytecode[i].type == Type::BOOL) { pushStackBool(this->varBoolTable[this->bytecode[i].arg]); }
+            else if (this->bytecode[i].type == Type::STRING) { pushStackString(this->varStrTable[this->bytecode[i].arg]); }
             else { std::cerr << "[EXEC BYTECODE] ERR: PUSH_VAR " << this->bytecode[i].arg << " Type inconnu" << std::endl; }
             break;
         case STORE_VAR:
-            if (this->bytecode[i].type == Type::ENTIER)      { this->varIntTable[this->bytecode[i].arg] = popStackInt();    }
-            else if (this->bytecode[i].type == Type::REEL)   { this->varReelTable[this->bytecode[i].arg] = popStackReel();  }
-            else if (this->bytecode[i].type == Type::BOOL)   { this->varBoolTable[this->bytecode[i].arg] = popStackBool();  } 
-            else if (this->bytecode[i].type == Type::STRING) { this->varStrTable[this->bytecode[i].arg] = popStackString(); } 
+            if (this->bytecode[i].type == Type::ENTIER) { this->varIntTable[this->bytecode[i].arg] = popStackInt(); }
+            else if (this->bytecode[i].type == Type::REEL) { this->varReelTable[this->bytecode[i].arg] = popStackReel(); }
+            else if (this->bytecode[i].type == Type::BOOL) { this->varBoolTable[this->bytecode[i].arg] = popStackBool(); }
+            else if (this->bytecode[i].type == Type::STRING) { this->varStrTable[this->bytecode[i].arg] = popStackString(); }
             else { std::cerr << "[EXEC BYTECODE] ERR: STORE_VAR " << this->bytecode[i].arg << " Type inconnu" << std::endl; }
             break;
         case LOAD_ARRAY:
@@ -498,10 +520,10 @@ void ByteCode::executeByteCode()
             }
             break;
         case NEW_ARRAY:
-            if (this->bytecode[i].type == Type::ENTIER) 
-            { 
+            if (this->bytecode[i].type == Type::ENTIER)
+            {
                 // Insérer un FixedSizeVector avec une taille max de popStackInt pour la clé array_name
-                this->varArrayIntTable.emplace( this->bytecode[i].arg, FixedSizeVector<int>() );
+                this->varArrayIntTable.emplace(this->bytecode[i].arg, FixedSizeVector<int>());
                 this->varArrayIntTable[this->bytecode[i].arg].set_size(popStackInt());
             }
             if (this->bytecode[i].type == Type::REEL)
@@ -522,6 +544,24 @@ void ByteCode::executeByteCode()
                 this->varArrayBoolTable.emplace(this->bytecode[i].arg, FixedSizeVector<bool>());
                 this->varArrayBoolTable[this->bytecode[i].arg].set_size(popStackInt());
             }
+            break;
+        case AND:
+            if (this->bytecode[i].type == Type::BOOL)
+            {
+                bool nbBool = popStackBool();
+                bool nbBool2 = popStackBool();
+                pushStackBool(nbBool && nbBool2);
+            }
+            else { std::cerr << "[EXEC BYTECODE] ERR: ADD " << this->bytecode[i].arg << " Type non pris en charge" << std::endl; }
+            break;
+        case OR:
+            if (this->bytecode[i].type == Type::BOOL)
+            {
+                bool nbBool = popStackBool();
+                bool nbBool2 = popStackBool();
+                pushStackBool(nbBool || nbBool2);
+            }
+            else { std::cerr << "[EXEC BYTECODE] ERR: ADD " << this->bytecode[i].arg << " Type non pris en charge" << std::endl; }
             break;
         case ADD:
             if (this->bytecode[i].type == Type::ENTIER)
@@ -673,7 +713,7 @@ void ByteCode::executeByteCode()
             }
             else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
             break;
-        
+
         case NOT_EQUAL:
             if (this->bytecode[i].type == Type::ENTIER)
             {
@@ -770,375 +810,12 @@ void ByteCode::executeByteCode()
             }
             else { std::cerr << "[EXEC BYTECODE] ERR: PRINT " << this->bytecode[i].arg << " Type non pris en charge" << std::endl; }
             break;
-        }
-    }
-
-}
-
-void ByteCode::executeByteCode(Instruction instr, int& i)
-{
-        switch (instr.opcode) {
-        case PUSH_CONST:
-            if (std::holds_alternative<int>(instr.value.data)) { pushStackInt(std::get<int>(instr.value.data)); }
-            else if (std::holds_alternative<float>(instr.value.data)) { pushStackFloat(std::get<float>(instr.value.data)); }
-            else if (std::holds_alternative<bool>(instr.value.data)) { pushStackBool(std::get<bool>(instr.value.data)); }
-            else if (std::holds_alternative<std::string>(instr.value.data)) { pushStackString(std::get<std::string>(instr.value.data)); }
-            else { std::cerr << "[EXEC BYTECODE] ERR: PUSH_CONST " << instr.arg << " Type inconnu" << std::endl; }
-            break;
-        case PUSH_VAR:
-            if (instr.type == Type::ENTIER) { pushStackInt(this->varIntTable[instr.arg]); }
-            else if (instr.type == Type::REEL) { pushStackFloat(this->varReelTable[instr.arg]); }
-            else if (instr.type == Type::BOOL) { pushStackBool(this->varBoolTable[instr.arg]); }
-            else if (instr.type == Type::STRING) { pushStackString(this->varStrTable[instr.arg]); }
-            else { std::cerr << "[EXEC BYTECODE] ERR: PUSH_VAR " << instr.arg << " Type inconnu" << std::endl; }
-            break;
-        case STORE_VAR:
-            if (instr.type == Type::ENTIER) { this->varIntTable[instr.arg] = popStackInt(); }
-            else if (instr.type == Type::REEL) { this->varReelTable[instr.arg] = popStackReel(); }
-            else if (instr.type == Type::BOOL) { this->varBoolTable[instr.arg] = popStackBool(); }
-            else if (instr.type == Type::STRING) { this->varStrTable[instr.arg] = popStackString(); }
-            else { std::cerr << "[EXEC BYTECODE] ERR: STORE_VAR " << instr.arg << " Type inconnu" << std::endl; }
-            break;
-        case LOAD_ARRAY:
-            if (instr.type == Type::ENTIER)
-            {
-                pushStackInt(this->varArrayIntTable[instr.arg][popStackInt()]);
-            }
-            if (instr.type == Type::REEL)
-            {
-                pushStackFloat(this->varArrayFloatTable[instr.arg][popStackInt()]);
-            }
-            if (instr.type == Type::STRING)
-            {
-                pushStackString(this->varArrayStrTable[instr.arg][popStackInt()]);
-            }
-            if (instr.type == Type::BOOL)
-            {
-                pushStackInt(this->varArrayBoolTable[instr.arg][popStackInt()]);
-            }
-            break;
-        case STORE_ARRAY:
-            if (instr.type == Type::ENTIER)
-            {
-                this->varArrayIntTable[instr.arg].set_at(popStackInt(), popStackInt());
-            }
-            if (instr.type == Type::REEL)
-            {
-                this->varArrayFloatTable[instr.arg].set_at(popStackInt(), popStackReel());
-            }
-            if (instr.type == Type::STRING)
-            {
-                this->varArrayStrTable[instr.arg].set_at(popStackInt(), popStackString());
-            }
-            if (instr.type == Type::BOOL)
-            {
-                this->varArrayBoolTable[instr.arg].set_at(popStackInt(), popStackBool());
-            }
-            break;
-        case NEW_ARRAY:
-            if (instr.type == Type::ENTIER)
-            {
-                // Insérer un FixedSizeVector avec une taille max de popStackInt pour la clé array_name
-                this->varArrayIntTable.emplace(instr.arg, FixedSizeVector<int>());
-                this->varArrayIntTable[instr.arg].set_size(popStackInt());
-            }
-            if (instr.type == Type::REEL)
-            {
-                // Insérer un FixedSizeVector avec une taille max de popStackInt pour la clé array_name
-                this->varArrayFloatTable.emplace(instr.arg, FixedSizeVector<float>());
-                this->varArrayFloatTable[instr.arg].set_size(popStackInt());
-            }
-            if (instr.type == Type::STRING)
-            {
-                // Insérer un FixedSizeVector avec une taille max de popStackInt pour la clé array_name
-                this->varArrayStrTable.emplace(instr.arg, FixedSizeVector<std::string>());
-                this->varArrayStrTable[instr.arg].set_size(popStackInt());
-            }
-            if (instr.type == Type::BOOL)
-            {
-                // Insérer un FixedSizeVector avec une taille max de popStackInt pour la clé array_name
-                this->varArrayBoolTable.emplace(instr.arg, FixedSizeVector<bool>());
-                this->varArrayBoolTable[instr.arg].set_size(popStackInt());
-            }
-            break;
-        case ADD:
-            if (instr.type == Type::ENTIER)
-            {
-                int nbEntier1 = popStackInt();
-                int nbEntier2 = popStackInt();
-                pushStackInt(nbEntier1 + nbEntier2);
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float nbReel1 = popStackReel();
-                float nbReel2 = popStackReel();
-                pushStackFloat(nbReel1 + nbReel2);
-            }
-            else if (instr.type == Type::STRING)
-            {
-                std::string nbStr1 = popStackString();
-                std::string nbStr2 = popStackString();
-                pushStackString(nbStr2 + nbStr1);
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: ADD " << instr.arg << " Type non pris en charge" << std::endl; }
-            break;
-        case SUB:
-            if (instr.type == Type::ENTIER)
-            {
-                int nbEntier1 = popStackInt();
-                int nbEntier2 = popStackInt();
-                pushStackInt(nbEntier2 + nbEntier1);
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float nbReel1 = popStackReel();
-                float nbReel2 = popStackReel();
-                pushStackFloat(nbReel2 - nbReel1);
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: SUB " << instr.arg << " Type non pris en charge" << std::endl; }
-            break;
-        case MULT:
-            if (instr.type == Type::ENTIER)
-            {
-                int nbEntier1 = popStackInt();
-                int nbEntier2 = popStackInt();
-                pushStackInt(nbEntier1 * nbEntier2);
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float nbReel1 = popStackReel();
-                float nbReel2 = popStackReel();
-                pushStackFloat(nbReel1 * nbReel2);
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: MULT " << instr.arg << " Type non pris en charge" << std::endl; }
-            break;
-        case DIV:
-            if (instr.type == Type::ENTIER)
-            {
-                int nbEntier1 = popStackInt();
-                int nbEntier2 = popStackInt();
-                pushStackInt(nbEntier1 / nbEntier2);
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float nbReel1 = popStackReel();
-                float nbReel2 = popStackReel();
-                pushStackFloat(nbReel1 / nbReel2);
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: DIV " << instr.arg << " Type non pris en charge" << std::endl; }
-            break;
-        case LESS:
-            if (instr.type == Type::ENTIER)
-            {
-                int rightInt = popStackInt();
-                int leftInt = popStackInt();
-                pushStackBool(leftInt < rightInt);
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float rightReel = popStackReel();
-                float leftReel = popStackReel();
-                pushStackBool(leftReel < rightReel);
-            }
-            else if (instr.type == Type::BOOL)
-            {
-                bool rightBool = popStackBool();
-                bool leftBool = popStackBool();
-                pushStackBool(leftBool < rightBool);
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
-            break;
-        case LESS_EQUAL:
-            if (instr.type == Type::ENTIER)
-            {
-                int rightInt = popStackInt();
-                int leftInt = popStackInt();
-                pushStackBool(leftInt <= rightInt);
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float rightReel = popStackReel();
-                float leftReel = popStackReel();
-                pushStackBool(leftReel <= rightReel);
-            }
-            else if (instr.type == Type::BOOL)
-            {
-                bool rightBool = popStackBool();
-                bool leftBool = popStackBool();
-                pushStackBool(leftBool <= rightBool);
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
-            break;
-        case GREATER:
-            if (instr.type == Type::ENTIER)
-            {
-                int rightInt = popStackInt();
-                int leftInt = popStackInt();
-                pushStackBool(leftInt > rightInt);
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float rightReel = popStackReel();
-                float leftReel = popStackReel();
-                pushStackBool(leftReel > rightReel);
-            }
-            else if (instr.type == Type::BOOL)
-            {
-                bool rightBool = popStackBool();
-                bool leftBool = popStackBool();
-                pushStackBool(leftBool > rightBool);
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
-            break;
-        case GREATER_EQUAL:
-            if (instr.type == Type::ENTIER)
-            {
-                int rightInt = popStackInt();
-                int leftInt = popStackInt();
-                pushStackBool(leftInt >= rightInt);
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float rightReel = popStackReel();
-                float leftReel = popStackReel();
-                pushStackBool(leftReel >= rightReel);
-            }
-            else if (instr.type == Type::BOOL)
-            {
-                bool rightBool = popStackBool();
-                bool leftBool = popStackBool();
-                pushStackBool(leftBool >= rightBool);
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
-            break;
-
-        case NOT_EQUAL:
-            if (instr.type == Type::ENTIER)
-            {
-                int rightInt = popStackInt();
-                int leftInt = popStackInt();
-                pushStackBool(leftInt != rightInt);
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float rightReel = popStackReel();
-                float leftReel = popStackReel();
-                pushStackBool(leftReel != rightReel);
-            }
-            else if (instr.type == Type::BOOL)
-            {
-                bool rightBool = popStackBool();
-                bool leftBool = popStackBool();
-                pushStackBool(leftBool != rightBool);
-            }
-            else if (instr.type == Type::STRING)
-            {
-                std::string rightStr = popStackString();
-                std::string leftStr = popStackString();
-                pushStackBool(leftStr != rightStr);
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
-            break;
-        case EQUAL:
-            if (instr.type == Type::ENTIER)
-            {
-                int rightInt = popStackInt();
-                int leftInt = popStackInt();
-                pushStackBool(leftInt == rightInt);
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float rightReel = popStackReel();
-                float leftReel = popStackReel();
-                pushStackBool(leftReel == rightReel);
-            }
-            else if (instr.type == Type::BOOL)
-            {
-                bool rightBool = popStackBool();
-                bool leftBool = popStackBool();
-                pushStackBool(leftBool == rightBool);
-            }
-            else if (instr.type == Type::STRING)
-            {
-                std::string rightStr = popStackString();
-                std::string leftStr = popStackString();
-                pushStackBool(leftStr == rightStr);
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: Type incompatible avec cette opération" << std::endl; exit(1); }
-            break;
-
-        case JUMP_IF_FALSE:
-            if (!popStackBool())
-            {
-                i = std::stoi(bytecode[i].arg) - 1;
-                break;
-            }
-            break;
-        case JUMP_IF_TRUE:
-            if (popStackBool())
-            {
-                i = std::stoi(bytecode[i].arg) - 1;
-                break;
-            }
-            break;
-        case JUMP:
-            i = std::stoi(bytecode[i].arg) - 1;
-            break;
-        case PRINT:
-            if (instr.type == Type::ENTIER)
-            {
-                int nbEntier = popStackInt();
-                std::cout << nbEntier << std::endl;
-            }
-            else if (instr.type == Type::REEL)
-            {
-                float nbFloat = popStackReel();
-                std::cout << std::fixed << std::setprecision(1);
-                std::cout << nbFloat << std::endl;
-            }
-            else if (instr.type == Type::BOOL)
-            {
-                bool bool_ = popStackBool();
-                std::cout << bool_ << std::endl;
-            }
-            else if (instr.type == Type::STRING)
-            {
-                std::string str = popStackString();
-                std::cout << str << std::endl;
-            }
-            else { std::cerr << "[EXEC BYTECODE] ERR: PRINT " << instr.arg << " Type non pris en charge" << std::endl; }
+        case INPUT:
+            std::string temp;
+            std::cin >> temp;
+            pushStackString(temp);
             break;
         }
-}
-
-
-
-std::vector<Instruction>& ByteCode::getBC()
-{
-    return this->bytecode;
-}
-
-
-void ByteCode::printStacks()
-{
-    std::cout << "- Stacks -" << std::endl;
-    std::cout << "- ENTIER -        - REEL -        - BOOL -        - STRING -" << std::endl;
-    for (int i = this->stackInt.size() - 1; i >= 0; i--)
-    {
-        std::cout << "  " << this->stackInt[i] << std::endl;
-    }
-    for (int j = this->stackReel.size() - 1; j >= 0; j--)
-    {
-        std::cout << "  " << this->stackReel[j] << "        ";
-    }
-    for (int k = this->stackBool.size() - 1; k >= 0; k--)
-    {
-        std::cout << "  " << this->stackBool[k] << "        ";
-    }
-    for (int l = this->stackStr.size() - 1; l >= 0; l--)
-    {
-        std::cout << "  " << this->stackStr[l] << "        ";
     }
 
-    std::cout << "\n";
 }

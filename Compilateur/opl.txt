@@ -1,0 +1,11 @@
+VARIABLE:
+	ENTIER salaire <- 800;
+	ENTIER smic <- 1200;
+    ENTIER age <- 18;
+DEBUT:
+	SI salaire > smic ET age >= 18:
+		ecrire("Vous gagnez au dessus du smic et vous etes majeur");
+	SINON:
+		ecrire("Vous gagnez en dessous ou au dessus du smic mais vous etes mineur");
+	FINSI
+FIN

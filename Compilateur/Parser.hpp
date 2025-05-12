@@ -43,6 +43,7 @@ private:
 	std::unique_ptr<ASTNode> parsePrint();
 	std::unique_ptr<ASTNode> parseArrayDeclaration();
 	std::unique_ptr<ASTNode> parseArrayAcces();
+	std::unique_ptr<ASTNode> parseLire();
 };
 
 #endif

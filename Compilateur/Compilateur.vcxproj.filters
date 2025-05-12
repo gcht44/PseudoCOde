@@ -80,5 +80,7 @@
     <Text Include="pour.txt" />
     <Text Include="variable.txt" />
     <Text Include="tableaux.txt" />
+    <Text Include="opl.txt" />
+    <Text Include="lire.txt" />
   </ItemGroup>
 </Project>

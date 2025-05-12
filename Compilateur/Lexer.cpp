@@ -297,10 +297,11 @@ Token Lexer::ProcessIdentifier()
     if (value == "TRUE") return Token(TokenType::TRUE, value, nbLigne, pos);
     if (value == "FALSE") return Token(TokenType::FALSE, value, nbLigne, pos);
     if (value == "ecrire") return Token(TokenType::PRINT, value, nbLigne, pos);
+    if (value == "lire") return Token(TokenType::LIRE, value, nbLigne, pos);
     if (value == "VARIABLE") return Token(TokenType::VARIABLE, value, nbLigne, pos);
     if (value == "DEBUT") return Token(TokenType::DEBUT, value, nbLigne, pos);
-    /*if (value == "ET") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);
-    if (value == "OU") return Token(TokenType::KEYWORD, value, nbLigne + 1, pos);*/
+    if (value == "ET") return Token(TokenType::ET, value, nbLigne + 1, pos);
+    if (value == "OU") return Token(TokenType::OU, value, nbLigne + 1, pos);
     if (value == "SI") return Token(TokenType::IF, value, nbLigne, pos);
     if (value == "SINON") return Token(TokenType::ELSE, value, nbLigne, pos);
     if (value == "FIN") return Token(TokenType::FIN, value, nbLigne, pos);
