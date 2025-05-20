@@ -223,6 +223,7 @@ Token Lexer::GetNextToken()
 
     case '=':
         if (NextChar() == '=') { pos++; return Token(TokenType::EQUAL_EQUAL, "==", nbLigne, pos); }
+        return Token(TokenType::EQUAL, "=", nbLigne, pos);
         break;
 
     case '>':
@@ -371,4 +372,59 @@ void Lexer::printTokens(std::vector<Token> tokenList)
 
         std::clog << "[" << i << "] " << s << std::endl;
     }
+}
+
+std::string Lexer::printToken(Token token)
+{
+    std::string s;
+        
+    switch (token.type)
+    {
+        case TokenType::EQUAL: s = "Type: EQUALS, "; break;
+        case TokenType::NAME: s = "Type: NAME, Value:" + token.value; break;
+        case TokenType::IF: s = "Type: IF"; break;
+        case TokenType::ELSE: s = "Type: ELSE"; break;
+        case TokenType::INDENT: s = "Type: INDENT"; break;
+        case TokenType::DEDENT: s = "Type: DEDENT"; break;
+        case TokenType::LPAREN: s = "Type: LPAREN"; break;
+        case TokenType::NUMBER: s = "Type: NUMBER, " + token.value; break;
+        case TokenType::PLUS: s = "Type: PLUS"; break;
+        case TokenType::RPAREN: s = "Type: RPAREN"; break;
+        case TokenType::SEMICOLON: s = "Type: SEMICOLON"; break;
+        case TokenType::MINUS: s = "Type: MINUS"; break;
+        case TokenType::MULTIPLY: s = "Type: MULTIPLY"; break;
+        case TokenType::DIVIDE: s = "Type: DIVIDE"; break;
+        case TokenType::EQUAL_EQUAL: s = "Type: EQUAL_EQUAL"; break;
+        case TokenType::COLON: s = "Type: COLON"; break;
+        case TokenType::DOT: s = "Type: DOT"; break;
+        case TokenType::COMMA: s = "Type: COMMA"; break;
+        case TokenType::LESS: s = "Type: LESS"; break;
+        case TokenType::LESS_EQUAL: s = "Type: LESS_EQUAL"; break;
+        case TokenType::GREATER: s = "Type: GREATER"; break;
+        case TokenType::GREATER_EQUAL: s = "Type: GREATER_EQUAL"; break;
+        case TokenType::NOT_EQUAL: s = "Type: NOT_EQUAL"; break;
+        case TokenType::TABLEAU: s = "Type: TABLEAU"; break;
+        case TokenType::NEWLINE: s = "Type: NEWLINE"; break;
+        case TokenType::INT: s = "Type: INT"; break;
+        case TokenType::STRING: s = "Type: STRING, Value: " + token.value; break;
+        case TokenType::STRINGVAR: s = "Type: STRINGVAR"; break;
+        case TokenType::DEBUT: s = "Type: DEBUT"; break;
+        case TokenType::VARIABLE: s = "Type: VARIABLE"; break;
+        case TokenType::PRINT: s = "Type: PRINT"; break;
+        case TokenType::TANTQUE: s = "Type: TANTQUE"; break;
+        case TokenType::POUR: s = "Type: POUR"; break;
+        case TokenType::DE: s = "Type: DE"; break;
+        case TokenType::A: s = "Type: A"; break;
+        case TokenType::FINPOUR: s = "Type: FINPOUR"; break;
+        case TokenType::LBRACKET: s = "Type: LBRACKET"; break;
+        case TokenType::RBRACKET: s = "Type: RBRACKET"; break;
+        case TokenType::FIN: s = "Type: FIN"; break;
+        case TokenType::END: s = "Type: END"; break;
+        default:
+            s = "Token non implémenter dans le print Value: " + token.value;
+            break;
+    }
+
+    return s;
+    
 }

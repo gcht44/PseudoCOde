@@ -210,6 +210,23 @@ public:
     Type checkType(SymbolTable& symbolTable) const;
 };
 
+class ArrayAssignementNode : public ASTNode {
+public:
+    std::string name;
+    std::unique_ptr<ASTNode> index;
+    std::unique_ptr<ASTNode> expr;
+
+    ArrayAssignementNode(std::string n, std::unique_ptr<ASTNode> i, std::unique_ptr<ASTNode> e)
+        : name(n), index(std::move(i)), expr(std::move(e)) {
+    }
+
+    void print(int indent = 0) const override;
+    const std::string& getName() const;
+    const std::unique_ptr<ASTNode>& getIndex() const;
+    const std::unique_ptr<ASTNode>& getExpr() const;
+    Type checkType(SymbolTable& symbolTable) const;
+};
+
 // Noeud pour une instruction block
 class BlockNode : public ASTNode {
 public:

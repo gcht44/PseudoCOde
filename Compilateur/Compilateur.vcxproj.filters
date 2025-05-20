@@ -82,5 +82,6 @@
     <Text Include="tableaux.txt" />
     <Text Include="opl.txt" />
     <Text Include="lire.txt" />
+    <Text Include="tableaux2.txt" />
   </ItemGroup>
 </Project>

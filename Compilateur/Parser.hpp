@@ -16,6 +16,7 @@ public:
 	std::unique_ptr<ProgramNode>& getAST();
 	SymbolTable& getSymbolTable();
 private:
+	Lexer lexerInstance;
 	int pos;
 	std::vector<Token> TokenList;
 	std::unique_ptr<ProgramNode> programAST;

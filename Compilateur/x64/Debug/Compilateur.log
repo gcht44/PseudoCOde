@@ -1,2 +1,10 @@
-﻿  Main.cpp
+﻿  ByteCode.cpp
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(42,23): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(48,24): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(62,23): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(65,26): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(74,22): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(77,28): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\ByteCode.cpp(92,18): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\gabch\Documents\GitHub\PseudoCOde\Compilateur\FixedSizeVector.hpp(50,1): warning C4172: retour de l’adresse de la variable locale ou temporaire 
   Compilateur.vcxproj -> C:\Users\gabch\Documents\GitHub\PseudoCOde\x64\Debug\Compilateur.exe

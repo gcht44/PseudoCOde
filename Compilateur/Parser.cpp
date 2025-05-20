@@ -2,7 +2,8 @@
 #include <iostream>
 
 Parser::Parser(std::vector<Token> tokens) : TokenList(std::move(tokens)), pos(0), isVarParse(false), currentIndent(0) {
-    this->programAST = std::make_unique<ProgramNode>();;
+    this->programAST = std::make_unique<ProgramNode>();
+    Lexer lexerInstance();
 }
 
 bool Parser::parseProg() {
@@ -111,7 +112,7 @@ std::unique_ptr<ASTNode> Parser::parseStatement() {
     }
     else 
     {
-        err("Instruction non reconnue: " + TokenList[pos].value);
+        err("Instruction non reconnue: " + lexerInstance.printToken(TokenList[pos]));
         return nullptr;
     }
 }
@@ -140,7 +141,9 @@ std::unique_ptr<ASTNode> Parser::parseArrayAcces()
     if (!match(TokenType::RBRACKET)) { err("Attendu: ']'"); return nullptr; }
     if (match(TokenType::EQUAL)) 
     { 
-        // Ajouter l'assignation à un index 
+        auto assign = parseExpressionAST();
+        if (!match(TokenType::SEMICOLON)) { err("Attendu: ';' après l'assignation"); }
+        return std::make_unique<ArrayAssignementNode>(varName, std::move(expr), std::move(assign));
     }
     return std::make_unique<ArrayAccesNode>(varName, std::move(expr));
 }

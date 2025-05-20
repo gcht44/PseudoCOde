@@ -5,4 +5,7 @@ DEBUT:
 	POUR i DE 0 A 5:
 		ecrire(test[i]);
 	FINPOUR
+	ecrire(test[4]);
+	test[4] = 1;
+	ecrire(test[4]);
 FIN

@@ -394,7 +394,7 @@ void ArrayAccesNode::print(int indent) const
     printIndent(indent);
     std::cout << "ArrayAccessNode: \n";
     printIndent(indent);
-    std::cout << "Name: " + this->name;
+    std::cout << "Name: " + this->name << std::endl ;
 }
 const std::string& ArrayAccesNode::getName() const
 {
@@ -409,6 +409,38 @@ Type ArrayAccesNode::checkType(SymbolTable& symbolTable) const
     return symbolTable.getVariableType(this->name);;
 }
 
+void ArrayAssignementNode::print(int indent) const
+{
+    printIndent(indent);
+    std::cout << "ArrayAssignementNode: \n";
+    printIndent(indent+1);
+    std::cout << "Name: " << this->name << std::endl;
+    printIndent(indent+1);
+    std::cout << "Index: " << std::endl;
+    this->index->print(indent+2);
+    printIndent(indent+1);
+    std::cout << "Expr: " << std::endl;
+    this->expr->print(indent + 2);
+}
+const std::string& ArrayAssignementNode::getName() const
+{
+    return this->name;
+}
+const std::unique_ptr<ASTNode>& ArrayAssignementNode::getIndex() const
+{
+    return this->index;
+}
+
+const std::unique_ptr<ASTNode>& ArrayAssignementNode::getExpr() const
+{
+    return this->expr;
+}
+Type ArrayAssignementNode::checkType(SymbolTable& symbolTable) const
+{
+    return symbolTable.getVariableType(this->name);;
+}
+
+
 
 void BlockNode::print(int indent) const
 {
@@ -419,9 +451,11 @@ void BlockNode::print(int indent) const
     }
 }
 const std::vector<std::unique_ptr<ASTNode>>& BlockNode::getBlock() const
-{
+{ 
     return this->Block;
 }
+
+
 
 void LireNode::print(int indent) const
 {

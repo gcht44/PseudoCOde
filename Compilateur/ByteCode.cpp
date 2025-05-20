@@ -91,8 +91,6 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
     else if (auto arrayDecl = dynamic_cast<const ArrayDeclarationNode*>(node)) {
         int size = arrayDecl->getElems().size();
 
-        // if (size > arrayDecl->getIndex()) { std::cerr << "Erreur: Taille du tableau trop petite"; }
-
         generateExpressionBytecode(arrayDecl->getIndex().get(), symbolTable);
         this->bytecode.push_back({ NEW_ARRAY, std::string{arrayDecl->name}, arrayDecl->checkType(symbolTable) });
 
@@ -104,6 +102,12 @@ void ByteCode::generateBytecode(const ASTNode* node, SymbolTable& symbolTable) {
         }
 
         // this->bytecode.push_back({ PUSH_ARRAY, std::string{std::to_string(size)}, arrayDecl->checkType(symbolTable) });
+    }
+    else if (auto arrayAssignement = dynamic_cast<const ArrayAssignementNode*>(node)) 
+    {
+        generateExpressionBytecode(arrayAssignement->getIndex().get(), symbolTable);
+        generateExpressionBytecode(arrayAssignement->getExpr().get(), symbolTable);
+        this->bytecode.push_back({ STORE_ARRAY, std::string{arrayAssignement->getName()}, arrayAssignement->checkType(symbolTable)});
     }
     else if (auto lire = dynamic_cast<const LireNode*>(node))
     {

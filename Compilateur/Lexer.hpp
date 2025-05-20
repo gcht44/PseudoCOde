@@ -48,9 +48,11 @@ public:
     Lexer(const std::string& source) : contenu(source), pos(0), nbLigne(1), currentIndent(0) {
         indentStack.push(0); // Niveau d'indentation initial
     }
+    Lexer () {}
 
     std::vector<Token> Tokenise();
     void printTokens(std::vector<Token> tokenList);
+    std::string printToken(Token token);
 
 private:
     std::string contenu;

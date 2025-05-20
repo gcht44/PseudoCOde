@@ -31,12 +31,12 @@ int main(int argc, char* argv[])
 {
 	// std::string arg = "debug"; // temporaire
 
-	std::string filename = "lire.txt";
+	std::string filename = "tableaux2.txt";
 	bool FILESELECT = false;
 	bool DEBUG = false;
 	bool DEBUGFORDEV = false;
 
-	// std::cout << "Nombre d'arguments : " << argc << std::endl;
+	//  std::cout << "Nombre d'arguments : " << argc << std::endl;
 
 	/*for (int i = 1; i < argc; i++)
 	{
